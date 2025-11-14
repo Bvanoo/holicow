@@ -15,9 +15,10 @@ const router = createRouter({
       path: '/about',
       component: AboutView,
     },
+    //Capture de toutes les routes non définies
     {
-      path: '/:catchAll(.*)', // Capture toutes les routes non définies
-      redirect: '/', // Redirige vers la route home
+      path: '/:catchAll(.*)',
+      redirect: '/',
     },
   ],
 })

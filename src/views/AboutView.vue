@@ -2,5 +2,5 @@
 </script>
 
 <template>
-    AboutView
+    <div class="text-3xl font-bold underline">AboutView</div>
 </template>
