@@ -2,5 +2,5 @@
 </script>
 
 <template>
-    HomeView
+    <div class="text-3xl font-bold underline">Homeview</div>
 </template>
