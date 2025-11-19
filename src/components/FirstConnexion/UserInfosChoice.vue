@@ -2,12 +2,6 @@
     import { NEl, NSelect, NGi, NGrid } from 'naive-ui';
     import { ref } from 'vue';
 
-    const emit = defineEmits<{
-        (event: 'changeAnimalType', value: number | string): void,
-        (event: 'changeFoodType', value: number | string): void
-        (event: 'changeSoilType', value: number | string): void
-    }>();
-
     const valueRegion = ref<number | string>("");
     const valueBio = ref<number | string>("");
     const valueRobot = ref<number | string>("");
@@ -47,18 +41,29 @@
         },
     ]
 
+    //Emits
+    const emit = defineEmits<{
+        (event: 'updateRegion', value: number | string): void,
+        (event: 'updateBio', value: number | string): void
+        (event: 'updateRobot', value: number | string): void
+    }>();
+
     const updateValueRegion = () => {
         const index: number = typeof valueRegion.value === "string" ? 0 : valueRegion.value;
-        console.log("Region", optionsRegion[index]?.label)
+        const region: string = typeof optionsRegion[index]?.label === "undefined" ? "" : optionsRegion[index]?.label;
+        emit("updateRegion", region)
     }
     const updateValueBio = () => {
         const index: number = typeof valueBio.value === "string" ? 0 : valueBio.value;
-        console.log("Bio ", optionsBio[index]?.label)
+        const bio: number = typeof optionsBio[index]?.value === "undefined" ? 0 : optionsBio[index]?.value;
+        emit("updateBio", bio)
     }
     const updateValueRobot = () => {
         const index: number = typeof valueRobot.value === "string" ? 0 : valueRobot.value;
-        console.log("Robot", optionsRobot[index]?.label)
+        const robot: number = typeof optionsRobot[index]?.value === "undefined" ? 0 : optionsRobot[index]?.value;
+        emit("updateRobot", robot)
     }
+    //End Emits
 
 </script>
 

@@ -33,6 +33,23 @@
         isCancelLogin.value = false
     }
 
+    const userRegion = ref<number | string>("")
+    const userBio = ref<number | string>("")
+    const userRobot = ref<number | string>("")
+
+    const updateRegion = (newRegion: number | string) => {
+        userRegion.value = newRegion;
+        console.log("userRegion.value", userRegion.value)
+    }
+    const updateBio = (newbio: number | string) => {
+        userBio.value = newbio;
+        console.log("userBio.value", userBio.value)
+    }
+    const updateRobot = (newRobot: number | string) => {
+        userRobot.value = newRobot;
+        console.log("userRobot.value", userRobot.value)
+    }
+
     //End Functions click
 </script>
 
@@ -47,7 +64,7 @@
         <n-flex vertical align="center" class="firstConnexion__main">
             <!--First connexion-->
             <n-el tag="div" v-if="!isCancelLogin">
-                <FirstConnexionCard />
+                <FirstConnexionCard @updateRegion="updateRegion" @updateBio="updateBio" @updateRobot="updateRobot" />
                 <n-el tag="div">
                     <n-el tag="p">Vous pourrez modifier ces informations ultérieurement en cliquant sur votre
                         profil.</n-el>
