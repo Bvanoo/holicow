@@ -46,24 +46,30 @@
 
         <n-flex vertical align="center" class="firstConnexion__main">
             <!--First connexion-->
-            <FirstConnexionCard v-if="!isCancelLogin" />
             <n-el tag="div" v-if="!isCancelLogin">
-                <n-el tag="p">Vous pourrez modifier ces informations ultérieurement en cliquant sur votre profil.</n-el>
-                <n-flex justify="center">
-                    <n-button quaternary @click.prevent="cancelLogin">Annuler</n-button>
-                    <n-button type="primary" @click.prevent="goToProfil">Valider</n-button>
-                </n-flex>
+                <FirstConnexionCard />
+                <n-el tag="div">
+                    <n-el tag="p">Vous pourrez modifier ces informations ultérieurement en cliquant sur votre
+                        profil.</n-el>
+                    <n-flex justify="center">
+                        <n-button quaternary @click.prevent="cancelLogin">Annuler</n-button>
+                        <n-button type="primary" @click.prevent="goToProfil">Valider</n-button>
+                    </n-flex>
+                </n-el>
             </n-el>
             <!--End First connexion-->
 
             <!--Cancel connexion-->
-            <CancelConnexionCard v-if="isCancelLogin" />
             <n-el tag="div" v-if="isCancelLogin">
-                <n-el tag="p">Vous pourrez modifier ces informations ultérieurement en cliquant sur votre profil.</n-el>
-                <n-flex justify="center">
-                    <n-button quaternary @click.prevent="quitApp">Retour WALLeSmart</n-button>
-                    <n-button type="primary" @click.prevent="undoCancelLogin">Se connecter</n-button>
-                </n-flex>
+                <CancelConnexionCard />
+                <n-el tag="div">
+                    <n-el tag="p">Vous pourrez modifier ces informations ultérieurement en cliquant sur votre
+                        profil.</n-el>
+                    <n-flex justify="center">
+                        <n-button quaternary @click.prevent="quitApp">Retour WALLeSmart</n-button>
+                        <n-button type="primary" @click.prevent="undoCancelLogin">Se connecter</n-button>
+                    </n-flex>
+                </n-el>
             </n-el>
             <!--End Cancel connexion-->
 

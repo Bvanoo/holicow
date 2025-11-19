@@ -50,7 +50,6 @@
     const updateValueRegion = () => {
         const index: number = typeof valueRegion.value === "string" ? 0 : valueRegion.value;
         console.log("Region", optionsRegion[index]?.label)
-
     }
     const updateValueBio = () => {
         const index: number = typeof valueBio.value === "string" ? 0 : valueBio.value;

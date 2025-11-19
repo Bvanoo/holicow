@@ -1,8 +1,11 @@
 <script setup lang="ts">
-    import { NEl, NFlex, NCheckbox } from 'naive-ui';
+    import { NEl, NFlex, NCheckbox, NInput } from 'naive-ui';
     import { ref } from 'vue';
     const mailValue = ref(false);
-    const smsValue = ref(false);
+    const phoneValue = ref(false);
+
+    const mail = ref("");
+    const phone = ref("");
 </script>
 
 <template>
@@ -14,9 +17,12 @@
             <n-checkbox v-model:checked="mailValue">
                 Mail
             </n-checkbox>
-            <n-checkbox v-model:checked="smsValue">
+            <n-input v-if="mailValue" v-model="mail" placeholder="Entrez votre mail" />
+            <n-checkbox v-model:checked="phoneValue">
                 SMS
             </n-checkbox>
+            <n-input v-if="phoneValue" v-model="phone" placeholder="Entrez votre n° de téléphone" />
+
         </n-flex>
     </n-flex>
 </template>
