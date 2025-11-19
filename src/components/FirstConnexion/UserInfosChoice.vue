@@ -1,53 +1,57 @@
 <script setup lang="ts">
-    import { NEl, NDropdown, NGi, NGrid, NButton, useMessage } from 'naive-ui';
+    import { NEl, NSelect, NGi, NGrid } from 'naive-ui';
+    import { ref } from 'vue';
 
-    const message = useMessage();
-
+    const valueAnimalType = ref<number | string>("");
+    const valueFoodType = ref<number | string>("");
+    const valueSoilType = ref<number | string>("");
     const optionsAnimalType = [
         {
             label: 'Option 1',
-            key: 'option1',
+            value: 0,
         },
         {
             label: 'Option 2',
-            key: 'option2',
+            value: 1,
         },
         {
             label: 'Option 3',
-            key: 'option3',
+            value: 2,
         }
     ]
     const optionsFoodType = [
         {
             label: 'Option 1',
-            key: 'option1',
+            value: 'option1',
         },
         {
             label: 'Option 2',
-            key: 'option2',
+            value: 'option2',
         },
         {
             label: 'Option 3',
-            key: 'option3',
+            value: 'option3',
         }
     ]
     const optionsSoilType = [
         {
             label: 'Option 1',
-            key: 'option1',
+            value: 'option1',
         },
         {
             label: 'Option 2',
-            key: 'option2',
+            value: 'option2',
         },
         {
             label: 'Option 3',
-            key: 'option3',
+            value: 'option3',
         }
     ]
 
-    function handleSelect(key: string | number) {
-        message.info(String(key))
+    const test = () => {
+        console.log("valueAnimalType.value", valueAnimalType.value)
+        // const index: number = typeof valueAnimalType.value === "string" ? 0 : valueAnimalType.value;
+        // console.log(optionsAnimalType[index])
     }
 
 </script>
@@ -58,25 +62,19 @@
             <n-el tag="span">Type d'animal* :</n-el>
         </n-gi>
         <n-gi>
-            <n-dropdown trigger="hover" :options="optionsAnimalType" @select="handleSelect">
-                <n-button secondary>Type d'animal</n-button>
-            </n-dropdown>
+            <n-select :options="optionsAnimalType" v-model:value="valueAnimalType" @update:value="test" />
         </n-gi>
         <n-gi>
             <n-el tag="span">Type de nourriture* :</n-el>
         </n-gi>
         <n-gi>
-            <n-dropdown trigger="hover" :options="optionsFoodType" @select="handleSelect">
-                <n-button secondary>Type de nourriture</n-button>
-            </n-dropdown>
+            <n-select :options="optionsFoodType" v-model:value="valueFoodType" />
         </n-gi>
         <n-gi>
             <n-el tag="span">Type de sol* :</n-el>
         </n-gi>
         <n-gi>
-            <n-dropdown trigger="hover" :options="optionsSoilType" @select="handleSelect">
-                <n-button secondary>Type de sol</n-button>
-            </n-dropdown>
+            <n-select :options="optionsSoilType" v-model:value="valueSoilType" />
         </n-gi>
     </n-grid>
 </template>

@@ -1,0 +1,9 @@
+@use '../variables' as *;
+
+.profilView {
+  width: 100%;
+  &__userCard {
+    background-color: $main_color;
+    width: 80%;
+  }
+}

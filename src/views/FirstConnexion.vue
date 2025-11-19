@@ -1,11 +1,39 @@
 <script lang="ts" setup>
-    import AlertsChoice from '../components/firstConnexion/AlertsChoice.vue';
-    import UserInfosChoice from '../components/firstConnexion/UserInfosChoice.vue';
-    import { NCard, NEl, NButton, NFlex } from 'naive-ui'
 
-    const introText = "Bienvenue sur l'application Holicow. Profitez de nos services pour identifier des maladies potentielles et profitez du partage de connaissance de tous nos membres pour mettre en place des solutions rapides et efficaces."
-    const firstTextConnexion = "C'est votre première connexion sur l'application Holicow en tant qu'éleveur. Afin de vous proposer les solutions les plus pertinentes nous définissons des groupes d'éleveur similaires appelé <strong>AVATARS</strong> qui seront représenté par des icones différentes (couleur de la vache de l'icone)."
-    const secondTextConnexion = "<strong>" + "Merci de remplir les champs ci-dessous afin de définir votre avatar." + "</strong>"
+    import { NEl, NButton, NFlex } from 'naive-ui'
+    import { useRouter } from 'vue-router'
+    import { ref } from 'vue'
+    import FirstConnexionCard from '@/components/FirstConnexion/FirstConnexionCard.vue'
+    import CancelConnexionCard from '@/components/FirstConnexion/CancelConnexionCard.vue'
+
+    const router = useRouter()
+
+    //Text variables
+    const introText =
+        "Bienvenue sur l'application Holicow. Profitez de nos services pour identifier des maladies potentielles et profitez du partage de connaissance de tous nos membres pour mettre en place des solutions rapides et efficaces."
+
+    //End Text variables
+
+    //Variables click
+    const isCancelLogin = ref(false)
+    //End Variables click
+
+    //Functions click
+    const goToProfil = () => {
+        router.push('/profil')
+    }
+
+    const cancelLogin = () => {
+        isCancelLogin.value = true
+    }
+    const quitApp = () => {
+        isCancelLogin.value = true
+    }
+    const undoCancelLogin = () => {
+        isCancelLogin.value = false
+    }
+
+    //End Functions click
 </script>
 
 <template>
@@ -17,28 +45,28 @@
         <!--End Intro text-->
 
         <n-flex vertical align="center" class="firstConnexion__main">
-            <n-card title="Première connexion" class="firstConnexion__card">
-                <!--first connexion text-->
-                <n-el tag="header" class="firstConnexion__paragraph">
-                    <p v-html="firstTextConnexion"></p>
-                </n-el>
-                <!--End first connexion text-->
+            <!--First connexion-->
+            <FirstConnexionCard v-if="!isCancelLogin" />
+            <n-el tag="div" v-if="!isCancelLogin">
+                <n-el tag="p">Vous pourrez modifier ces informations ultérieurement en cliquant sur votre profil.</n-el>
+                <n-flex justify="center">
+                    <n-button quaternary @click.prevent="cancelLogin">Annuler</n-button>
+                    <n-button type="primary" @click.prevent="goToProfil">Valider</n-button>
+                </n-flex>
+            </n-el>
+            <!--End First connexion-->
 
-                <n-el tag="main">
-                    <!--second connexion text-->
-                    <n-el tag="div" class="firstConnexion__paragraph">
-                        <p v-html="secondTextConnexion"></p>
-                    </n-el>
-                    <!--End second connexion text-->
-                    <UserInfosChoice />
-                    <AlertsChoice />
-                </n-el>
-            </n-card>
-            <n-el tag="p">Vous pourrez modifier ces informations ultérieurement en cliquant sur votre profil.</n-el>
-            <n-flex>
-                <n-button quaternary>Annuler</n-button>
-                <n-button type="primary">Valider</n-button>
-            </n-flex>
+            <!--Cancel connexion-->
+            <CancelConnexionCard v-if="isCancelLogin" />
+            <n-el tag="div" v-if="isCancelLogin">
+                <n-el tag="p">Vous pourrez modifier ces informations ultérieurement en cliquant sur votre profil.</n-el>
+                <n-flex justify="center">
+                    <n-button quaternary @click.prevent="quitApp">Retour WALLeSmart</n-button>
+                    <n-button type="primary" @click.prevent="undoCancelLogin">Se connecter</n-button>
+                </n-flex>
+            </n-el>
+            <!--End Cancel connexion-->
+
         </n-flex>
     </n-flex>
 </template>

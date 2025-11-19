@@ -6,11 +6,11 @@
 </script>
 
 <template>
-    <n-flex vertical class="FirstConnexion__alertsChoice">
-        <n-el tag="p" class="FirstConnexion__paragraph">
+    <n-flex vertical class="firstConnexion__alertsChoice">
+        <n-el tag="p" class="firstConnexion__paragraph">
             Recevoir les alertes maladie via :
         </n-el>
-        <n-flex vertical class="FirstConnexion__card__alerts">
+        <n-flex vertical class="firstConnexion__card__alerts">
             <n-checkbox v-model:checked="mailValue">
                 Mail
             </n-checkbox>
