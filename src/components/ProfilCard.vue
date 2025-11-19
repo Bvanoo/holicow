@@ -1,14 +1,22 @@
 <script setup lang="ts">
   import { useUserStore } from '@/stores/user'
+  import type User from '../entities/user'
   import { NButton, NCard, NEl, NFlex, NImage, NInput } from 'naive-ui'
   import { ref } from 'vue'
+  import type { Ref } from 'vue'
 
   const userStore = useUserStore()
 
   const isModify = ref(false)
 
-  const show_modify_inputs = () => {
+  const user: Ref<User> = ref<User>({ "profileId": "153", "firstname": 'max@gmail.com' });
+
+  const toggleModifyInputs = () => {
     isModify.value = !isModify.value
+  }
+
+  const modifyInputs = () => {
+    toggleModifyInputs();
   }
 </script>
 
@@ -22,20 +30,23 @@
       </n-flex>
       <!--id-->
       <n-el tag="span">Id</n-el>
-      <n-el tag="span">{{ userStore.currentUser?.getId() }}</n-el>
+      <n-el tag="span">{{ user?.profileId }}</n-el>
       <!--email-->
       <n-el tag="span">Email</n-el>
-      <n-el v-if="!isModify" tag="span">{{ userStore.currentUser?.getMail() }}</n-el>
-      <n-input v-if="isModify" :v-model="userStore.currentUser?.mail" :value="userStore.getCurrentUserMail"></n-input>
+      <n-el v-if="!isModify" tag="span">{{ user?.firstname }}</n-el>
+      <n-input v-if="isModify" :v-model="user?.firstname" />
       <!--phone-->
-      <n-el tag="span">Téléphone</n-el>
+      <!-- <n-el tag="span">Téléphone</n-el>
       <n-el v-if="!isModify" tag="span">{{ userStore.currentUser?.getPhone() }}</n-el>
-      <n-input v-if="isModify" :v-model="userStore.currentUser?.phone" :value="userStore?.getCurrentUserPhone"></n-input>
+      <n-input v-if="isModify" :v-model="userStore.currentUser?.phone"
+        :value="userStore?.getCurrentUserPhone"></n-input> -->
 
-      <n-button v-if="!isModify" strong round type="success" @click.prevent="show_modify_inputs">Modifier mon profil</n-button>
+      <n-button v-if="!isModify" strong round type="success" @click.prevent="toggleModifyInputs">Modifier mon
+        profil</n-button>
 
-      <n-button v-if="isModify" strong round type="success" @click.prevent="show_modify_inputs">Appliquer les modifications</n-button>
-      <n-button class="test" v-if="isModify" round quaternary @click.prevent="show_modify_inputs">Annuler</n-button>
+      <n-button v-if="isModify" strong round type="success" @click.prevent="modifyInputs">Appliquer les
+        modifications</n-button>
+      <n-button class="test" v-if="isModify" round quaternary @click.prevent="toggleModifyInputs">Annuler</n-button>
     </n-flex>
   </n-card>
   <!--Fin profil card-->

@@ -2,10 +2,10 @@
   import { NEl, NFlex } from 'naive-ui'
   import ProfilCard from '../components/ProfilCard.vue'
   import { useUserStore } from '@/stores/user'
-  import User from '@/models/user'
+  // import type User from '../entities/user'
 
   const userStore = useUserStore()
-  userStore.setCurrentUser(new User(153, 'max@gmail.com', '0032485976581', 'Novice'))
+  userStore.setCurrentUser({ "profileId": "153", "firstname": 'max@gmail.com' })
 </script>
 
 <template>

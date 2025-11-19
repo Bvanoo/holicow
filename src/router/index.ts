@@ -2,7 +2,7 @@ import AlertsView from '@/views/AlertsView.vue'
 import CommentsView from '@/views/CommentsView.vue'
 import DiseasesView from '@/views/DiseasesView.vue'
 import FirstConnexion from '@/views/FirstConnexion.vue'
-import ProfilView from '@/views/ProfilView.vue'
+import ProfileView from '@/views/ProfilView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -29,9 +29,9 @@ const router = createRouter({
       component: AlertsView,
     },
     {
-      name: 'Profil',
-      path: '/profil',
-      component: ProfilView,
+      name: 'Profile',
+      path: '/profile',
+      component: ProfileView,
     },
     //Capture de toutes les routes non définies
     {

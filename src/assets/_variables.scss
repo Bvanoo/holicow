@@ -1,4 +1,10 @@
-$main_color: #18baa8;
+@use 'sass:color';
 
+$main_color: #18baa8;
 $white: white;
 $black: black;
+$L_black_50: color.adjust($black, $lightness: 50%);
+
+@mixin bgcolor($color) {
+  background-color: $color;
+}

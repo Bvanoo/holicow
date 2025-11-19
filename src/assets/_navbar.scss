@@ -1,0 +1,141 @@
+.navbar {
+  width: 100%;
+  background: linear-gradient(180deg, #fff, #fbfdff);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 8px 16px;
+  box-sizing: border-box;
+}
+
+.navbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+.logo-placeholder {
+  height: 40px;
+  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef2ff;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+.center {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.tab {
+  background: transparent;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.tab:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+.tab.active {
+  background: #f0f6ff;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  cursor: pointer;
+}
+
+.stars-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.stars-svg {
+  width: 70px;
+  height: 70px;
+  transform: rotate(-10deg);
+  opacity: 0.95;
+}
+.stars-svg polygon {
+  fill: gold;
+}
+
+.menu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Drawer styles */
+.drawer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+}
+.drawer-item {
+  background: transparent;
+  border: none;
+  padding: 12px;
+  text-align: left;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.drawer-item.active {
+  background: #f0f6ff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .center {
+    display: none;
+  }
+}
+/* Dark theme */
+:root.dark .navbar {
+  background: linear-gradient(180deg, #1e1e1e, #111);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+:root.dark .tab:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+:root.dark .tab.active {
+  background: rgba(255, 255, 255, 0.12);
+}
+:root.dark .drawer-item.active {
+  background: rgba(255, 255, 255, 0.12);
+}
+:root.dark .logo-placeholder {
+  background: #333;
+}

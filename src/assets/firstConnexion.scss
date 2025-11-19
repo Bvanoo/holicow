@@ -4,8 +4,15 @@
   width: 80%;
   text-align: justify;
   &__card {
-    background-color: $main_color;
+    // background-color: $main_color;
   }
   &__paragraph {
+    @include bgcolor(red);
+    &:hover {
+      @include bgcolor(blue);
+    }
+  }
+  &__text {
+    @include bgcolor($L_black_50);
   }
 }

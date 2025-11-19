@@ -1,4 +1,4 @@
-import User from '@/models/user'
+import type User from '../entities/user'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -8,9 +8,8 @@ export const useUserStore = defineStore('userStore', {
   }),
   getters: {
     getCurrentUser: (state) => state.currentUser,
-    getCurrentUserId: (state) => state.currentUser?.getId(),
-    getCurrentUserMail: (state) => state.currentUser?.getMail(),
-    getCurrentUserPhone: (state) => state.currentUser?.getPhone(),
+    getCurrentUserId: (state) => state.currentUser?.profileId,
+    getCurrentUserMail: (state) => state.currentUser?.firstname,
   },
   actions: {
     setCurrentUser(newUser: User) {

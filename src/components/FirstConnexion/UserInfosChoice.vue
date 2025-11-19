@@ -70,7 +70,7 @@
 <template>
     <n-grid y-gap="16" :cols="2" item-responsive responsive="screen" class="firstConnexion__card__types">
         <n-gi>
-            <n-el tag="span">Région* :</n-el>
+            <n-el tag="span" class="firstConnexion__text">Région* :</n-el>
         </n-gi>
         <n-gi>
             <n-select :options="optionsRegion" v-model:value="valueRegion" @update:value="updateValueRegion" />
