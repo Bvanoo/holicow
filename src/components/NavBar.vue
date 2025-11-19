@@ -1,7 +1,9 @@
-<script lang="ts" setup>
+<script lang="ts">
+
 </script>
 
 <template>
+
     <router-link to="/">Home</router-link>
     <router-link to="/maladies">Maladies</router-link>
     <router-link to="/commentaires">Commentaires</router-link>

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import ProfilCard from '../components/ProfilCard.vue'
 </script>
 
 <template>
-    <div class="text-3xl font-bold underline">ProfilView</div>
+  <ProfilCard></ProfilCard>
 </template>

@@ -1,7 +1,0 @@
-@import "tailwindcss";
-@import "./_normalizer.css";
-@import "./_variables.css";
-
-body {
-    background-color: var(--main_color)
-}

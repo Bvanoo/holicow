@@ -1,7 +1,7 @@
 import AlertsView from '@/views/AlertsView.vue'
 import CommentsView from '@/views/CommentsView.vue'
 import DiseasesView from '@/views/DiseasesView.vue'
-import HomeView from '@/views/HomeView.vue'
+import FirstConnexion from '@/views/FirstConnexion.vue'
 import ProfilView from '@/views/ProfilView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -9,9 +9,9 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      name: 'home',
+      name: 'First Connexion',
       path: '/',
-      component: HomeView,
+      component: FirstConnexion,
     },
     {
       name: 'maladies',
