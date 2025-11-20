@@ -7,12 +7,12 @@
     // background-color: $main_color;
   }
   &__paragraph {
-    @include bgcolor(red);
+    // @include bgcolor(red);
     &:hover {
-      @include bgcolor(blue);
+      // @include bgcolor(blue);
     }
   }
   &__text {
-    @include bgcolor($L_black_50);
+    // @include bgcolor($L_black_50);
   }
 }

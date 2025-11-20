@@ -5,5 +5,5 @@ export default interface User extends UserType {
   first_name?: string
   last_name?: string
   country?: string
-  user_status?: boolean
+  user_status?: string
 }
