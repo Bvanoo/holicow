@@ -2,6 +2,7 @@
     import { ref, computed, onMounted, onUnmounted, defineProps, defineEmits } from 'vue'
     import { useRouter } from 'vue-router'
     import { NAvatar, NDrawer, NButton } from 'naive-ui'
+    const router = useRouter()
 
     interface Tab {
         key: string
@@ -10,16 +11,15 @@
 
     const props = defineProps<{
         logoSrc?: string
+        logoSrcUE?: string
         profileSrc?: string
         modelValue?: string
     }>()
 
-    const router = useRouter()
-
     const emit = defineEmits(['update:active'])
 
     const tabs: Tab[] = [
-        { key: 'home', label: 'Home' },
+        { key: '', label: 'Home' },
         { key: 'maladies', label: 'Maladies' },
         { key: 'commentaires', label: 'Commentaires' },
         { key: 'alertes', label: 'Alertes' },
@@ -32,6 +32,7 @@
     const mobile = ref(false)
 
     const logoSrc = props.logoSrc ?? ''
+    const logoSrcUE = props.logoSrcUE ?? ''
     const profileSrc = props.profileSrc ?? ''
 
     function checkMobile() {
@@ -66,6 +67,7 @@
         <div class="navbar-inner">
             <div class="left">
                 <img v-if="logoSrc" :src="logoSrc" alt="logo" class="logo" />
+                <img v-if="logoSrcUE" :src="logoSrcUE" alt="logo" class="logo UE" />
                 <slot name="logo" v-else>
                     <div class="logo-placeholder">LOGO</div>
                 </slot>

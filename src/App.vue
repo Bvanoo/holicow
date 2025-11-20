@@ -1,14 +1,21 @@
 <script setup lang="ts">
   import NavBar from './components/NavBar.vue'
   import { NConfigProvider, NLoadingBarProvider, NMessageProvider, NNotificationProvider, NModalProvider, NDialogProvider, NFlex, darkTheme } from 'naive-ui';
-
   import { ref } from 'vue'
   import router from './router'
+  import { useUserStore } from './stores/user';
+  const usersStore = useUserStore()
 
-  const activeTab = ref('maladies')
-  const isDark = ref(true) // tu peux lier ça à un bouton
+  const logoHolicowUE = "/images/logo_UE_holicow.svg"
+  const logoHolicow = "/images/logo_holicow.svg"
+
+  if (usersStore.checkCurrentUser() === false) router.push("/notAllowed");
+
+  const activeTab = ref('home')
+  const isDark = ref(false) // tu peux lier ça à un bouton
 
   function onMenuItemClick(key: string) {
+    if (usersStore.checkCurrentUser() === false) return;
     router.push('/' + key)
     activeTab.value = key
     console.log(key)
@@ -23,9 +30,10 @@
         <n-notification-provider>
           <n-modal-provider>
             <n-dialog-provider>
-              <NavBar v-model:active="activeTab" @update:active="onMenuItemClick" />
+              <NavBar v-model:active="activeTab" @update:active="onMenuItemClick" :logoSrc="logoHolicow"
+                :logoSrcUE="logoHolicowUE" />
               <n-flex vertical align="center">
-                <router-view />
+                <router-view class="routerView" />
               </n-flex>
             </n-dialog-provider>
           </n-modal-provider>

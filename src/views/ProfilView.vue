@@ -2,15 +2,18 @@
   import { NEl, NFlex } from 'naive-ui'
   import ProfilCard from '../components/ProfilCard.vue'
   import { useUserStore } from '@/stores/user'
+  import router from '@/router';
   // import type User from '../entities/user'
 
-  const userStore = useUserStore()
+  const usersStore = useUserStore()
+  if (usersStore.checkCurrentUser() === false) router.push("/notAllowed");
+
 </script>
 
 <template>
   <n-flex vertical align="center" class="profilView">
     <!--Chargement ...-->
-    <n-flex v-if="userStore?.getCurrentUser === null" vertical>
+    <n-flex v-if="usersStore?.getCurrentUser === null" vertical>
       <n-spin size="large" />
       <n-el tag="p">Récupération du profil...</n-el>
     </n-flex>

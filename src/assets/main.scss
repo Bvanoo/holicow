@@ -4,5 +4,6 @@
 @use 'navbar';
 @use 'ProfilView/profilView';
 
-body {
+.routerView {
+  margin-top: 120px;
 }

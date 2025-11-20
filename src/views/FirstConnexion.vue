@@ -1,17 +1,18 @@
 <script lang="ts" setup>
 
     import { NEl, NButton, NFlex } from 'naive-ui'
-    import { useRouter } from 'vue-router'
     import { onMounted, ref } from 'vue'
     import FirstConnexionCard from '@/components/FirstConnexion/FirstConnexionCard.vue'
     import CancelConnexionCard from '@/components/FirstConnexion/CancelConnexionCard.vue'
-    import { useUserStore } from '@/stores/user'
+    import router from '@/router';
+    import { useUserStore } from '@/stores/user';
 
-    const router = useRouter()
-    const userStore = useUserStore();
+    const usersStore = useUserStore();
+    if (usersStore.checkCurrentUser() === false) router.push("/notAllowed");
+
     onMounted(async () => {
-        if (userStore.getCurrentUser) {
-            console.log(userStore.getCurrentUser)
+        if (usersStore.getCurrentUser) {
+            console.log(usersStore.getCurrentUser)
             router.push("/profile")
         }
     })

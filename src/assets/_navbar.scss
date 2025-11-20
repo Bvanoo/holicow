@@ -1,9 +1,14 @@
+@use 'variables' as *;
+
 .navbar {
   width: 100%;
-  background: linear-gradient(180deg, #fff, #fbfdff);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: linear-gradient(135deg, hsla(0, 0%, 100%, 0.8) 20%, $main_color);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid $shadow_0_1;
+  box-shadow: 0 0 16px $shadow_0_3;
   padding: 8px 16px;
-  box-sizing: border-box;
+  position: fixed;
+  z-index: 1000;
 }
 
 .navbar-inner {
@@ -11,7 +16,7 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 .left {
@@ -21,7 +26,7 @@
 }
 
 .logo {
-  height: 40px;
+  height: 100px;
   width: auto;
   display: block;
 }
@@ -50,10 +55,10 @@
   font-weight: 600;
 }
 .tab:hover {
-  background: rgba(0, 0, 0, 0.03);
+  background: $main_color;
 }
 .tab.active {
-  background: #f0f6ff;
+  background: $main_color;
 }
 
 .right {

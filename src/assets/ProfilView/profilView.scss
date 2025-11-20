@@ -3,7 +3,18 @@
 .profilView {
   width: 100%;
   &__userCard {
-    // background-color: $main_color;
+    background-color: $main_color;
     width: 80%;
+    margin: 16px;
+    border-radius: 16px;
+    border: none;
+    &:hover {
+      box-shadow: 0 0 8px 0 $shadow_0_3;
+    }
+
+    &__buttons {
+      &:hover {
+      }
+    }
   }
 }

@@ -4,8 +4,9 @@
 
     const usersStore = useUserStore();
     if (usersStore.checkCurrentUser() === false) router.push("/notAllowed");
+
 </script>
 
 <template>
-    <div class="text-3xl font-bold underline">CommentsView</div>
+    <div>Homeview</div>
 </template>

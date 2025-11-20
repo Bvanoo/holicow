@@ -84,7 +84,8 @@
       <n-input v-if="isModify" :v-model="userStore.currentUser?.phone"
         :value="userStore?.getCurrentUserPhone"></n-input> -->
 
-      <n-button v-if="!isModify" strong round type="success" @click.prevent="toggleModifyInputs">Modifier mon
+      <n-button v-if="!isModify" class="profilView__userCard__buttons" strong round type="success"
+        @click.prevent="toggleModifyInputs">Modifier mon
         profil</n-button>
 
       <n-button v-if="isModify" strong round type="success" @click.prevent="updateProfile">Appliquer les

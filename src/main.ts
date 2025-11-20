@@ -25,6 +25,6 @@ const existingUser: ExistingUser | void = await usersService.getFirstLogin(userI
 
 userStore.setCurrentUser(existingUser)
 
-console.log('usersService.getFirstLogin("101")', userStore.getCurrentUser)
+// console.log('usersService.getFirstLogin("101")', userStore.getCurrentUser)
 
 app.mount('#app')
