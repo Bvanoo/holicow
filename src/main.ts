@@ -17,9 +17,12 @@ app.use(naive)
 
 //Hydrate
 const userStore = useUserStore()
+const userIdWALLeSmart: string = '3cc7e361-c7f3-45c8-9097-979ddcb709f4'
+// const userIdWALLeSmart: string = ''
 
 const usersService = new UsersServices()
-const existingUser: ExistingUser | void = await usersService.getFirstLogin('101')
+const existingUser: ExistingUser | void = await usersService.getFirstLogin(userIdWALLeSmart)
+
 userStore.setCurrentUser(existingUser)
 
 console.log('usersService.getFirstLogin("101")', userStore.getCurrentUser)

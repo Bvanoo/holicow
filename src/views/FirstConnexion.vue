@@ -11,6 +11,7 @@
     const userStore = useUserStore();
     onMounted(async () => {
         if (userStore.getCurrentUser) {
+            console.log(userStore.getCurrentUser)
             router.push("/profile")
         }
     })

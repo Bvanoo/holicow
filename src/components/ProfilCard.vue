@@ -1,24 +1,39 @@
 <script setup lang="ts">
-  import type ExistingUser from '@/entities/existingUser'
   import type User from '@/entities/user'
+  import type UserUpdate from '@/entities/userUpdate'
+  import UsersServices from '@/services/usersServices'
+  // import UsersServices from '@/services/usersServices'
   import { useUserStore } from '@/stores/user'
   import { NButton, NCard, NEl, NFlex, NImage, NInput } from 'naive-ui'
   import { ref } from 'vue'
+  import type { Ref } from 'vue'
+
+  // import type { Ref } from 'vue'
 
   const usersStore = useUserStore()
 
   const isModify = ref(false)
 
-  const user: User | ExistingUser | void = usersStore.currentUser;
+  const user: User | void = usersStore.currentUser;
+
+  const email: Ref<string | void> = ref(user?.email)
 
   console.log("user", user)
   const toggleModifyInputs = () => {
     isModify.value = !isModify.value
   }
 
-  const modifyInputs = () => {
+  const updateProfile = () => {
     toggleModifyInputs();
+    console.log("email", email.value);
+    usersStore.setNewEmail(email.value);
+    // const userUpdate: UserUpdate = {
+    //   region: user.region
+    // }
+    // const usersServices = new UsersServices();
+    // usersServices.updateUserProfile(usersStore.currentUser)
   }
+
 </script>
 
 <template>
@@ -32,20 +47,37 @@
       <!--id-->
       <n-el tag="h3">Id</n-el>
       <n-el tag="span">{{ user?.profilId }}</n-el>
+      <n-el tag="h3">userId</n-el>
+      <n-el tag="span">{{ user?.userId }}</n-el>
       <!--email-->
       <template v-if="!isModify">
-        <n-el tag="h3">Prénom</n-el>
-        <n-el tag="span">{{ user?.firstname }}</n-el>
         <n-el tag="h3">Nom</n-el>
         <n-el tag="span">{{ user?.lastname }}</n-el>
-        <n-el tag="h3">Pays</n-el>
+        <n-el tag="h3">Prénom</n-el>
+        <n-el tag="span">{{ user?.firstname }}</n-el>
+        <n-el tag="h3">denomination</n-el>
+        <n-el tag="span">{{ user?.denomination }}</n-el>
+        <n-el tag="h3">role</n-el>
+        <n-el tag="span">{{ user?.role }}</n-el>
+        <n-el tag="h3">email</n-el>
+        <n-el tag="span">{{ user?.email }}</n-el>
+        <n-el tag="h3">mobile</n-el>
+        <n-el tag="span">{{ user?.mobile }}</n-el>
+        <n-el tag="h3">language</n-el>
+        <n-el tag="span">{{ user?.language }}</n-el>
+        <n-el tag="h3">links</n-el>
+        <n-el tag="span">{{ user?.links }}</n-el>
+        <n-el tag="h3">country</n-el>
         <n-el tag="span">{{ user?.country }}</n-el>
-        <n-el tag="h3">User status</n-el>
+        <n-el tag="h3">user_status</n-el>
         <n-el tag="span">{{ user?.user_status }}</n-el>
-        <n-el tag="h3">User type name</n-el>
-        <n-el tag="span">{{ user?.user_type_name }}</n-el>
       </template>
-      <n-input v-if="isModify" :v-model="user?.firstname" :value="user?.firstname" />
+      <template v-if="isModify">
+        <n-el tag="h3">email</n-el>
+        <input v-model="email" />
+        <n-el tag="h3">mobile</n-el>
+        <n-input :v-model:value="user?.mobile" />
+      </template>
       <!--phone-->
       <!-- <n-el tag="span">Téléphone</n-el>
       <n-el v-if="!isModify" tag="span">{{ userStore.currentUser?.getPhone() }}</n-el>
@@ -55,8 +87,9 @@
       <n-button v-if="!isModify" strong round type="success" @click.prevent="toggleModifyInputs">Modifier mon
         profil</n-button>
 
-      <n-button v-if="isModify" strong round type="success" @click.prevent="modifyInputs">Appliquer les
+      <n-button v-if="isModify" strong round type="success" @click.prevent="updateProfile">Appliquer les
         modifications</n-button>
+
       <n-button class="test" v-if="isModify" round quaternary @click.prevent="toggleModifyInputs">Annuler</n-button>
     </n-flex>
   </n-card>
