@@ -5,7 +5,6 @@
   // import type User from '../entities/user'
 
   const userStore = useUserStore()
-  userStore.setCurrentUser({ "profileId": "153", "firstname": 'max@gmail.com' })
 </script>
 
 <template>

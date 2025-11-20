@@ -5,14 +5,15 @@
     import { onMounted, ref } from 'vue'
     import FirstConnexionCard from '@/components/FirstConnexion/FirstConnexionCard.vue'
     import CancelConnexionCard from '@/components/FirstConnexion/CancelConnexionCard.vue'
-    import UsersServices from '@/services/usersServices'
-
-    onMounted(async () => {
-        const usersService = new UsersServices();
-        console.log("usersService.getFirstLogin(\"101\")", await usersService.getFirstLogin("101"))
-    })
+    import { useUserStore } from '@/stores/user'
 
     const router = useRouter()
+    const userStore = useUserStore();
+    onMounted(async () => {
+        if (userStore.getCurrentUser) {
+            router.push("/profile")
+        }
+    })
 
     //Text variables
     const introText =

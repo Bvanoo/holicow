@@ -1,16 +1,17 @@
 <script setup lang="ts">
+  import type ExistingUser from '@/entities/existingUser'
+  import type User from '@/entities/user'
   import { useUserStore } from '@/stores/user'
-  import type Farmer from '../entities/farmer'
   import { NButton, NCard, NEl, NFlex, NImage, NInput } from 'naive-ui'
   import { ref } from 'vue'
-  import type { Ref } from 'vue'
 
-  const userStore = useUserStore()
+  const usersStore = useUserStore()
 
   const isModify = ref(false)
 
-  const user: Ref<Farmer> = ref<Farmer>({ profil_id: "13", first_name: 'Maximilien', last_name: "Moc", country: "Belgium", user_status: false, user_type_name: 0, nbr_min_comment: 0, nbr_max_comment: 0, user_type_picture: "3" });
+  const user: User | ExistingUser | void = usersStore.currentUser;
 
+  console.log("user", user)
   const toggleModifyInputs = () => {
     isModify.value = !isModify.value
   }
@@ -22,7 +23,7 @@
 
 <template>
   <!--Profil Card-->
-  <n-card v-if="userStore?.getCurrentUser !== null" title="user_card" class="profilView__userCard">
+  <n-card v-if="usersStore?.getCurrentUser !== null" title="user_card" class="profilView__userCard">
     <n-flex vertical>
       <n-flex justify="center">
         <n-image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7csvPWMdfAHEAnhIRTdJKCK5SPK4cHfskow&s"
@@ -30,13 +31,13 @@
       </n-flex>
       <!--id-->
       <n-el tag="h3">Id</n-el>
-      <n-el tag="span">{{ user?.profil_id }}</n-el>
+      <n-el tag="span">{{ user?.profilId }}</n-el>
       <!--email-->
       <template v-if="!isModify">
         <n-el tag="h3">Prénom</n-el>
-        <n-el tag="span">{{ user?.first_name }}</n-el>
+        <n-el tag="span">{{ user?.firstname }}</n-el>
         <n-el tag="h3">Nom</n-el>
-        <n-el tag="span">{{ user?.last_name }}</n-el>
+        <n-el tag="span">{{ user?.lastname }}</n-el>
         <n-el tag="h3">Pays</n-el>
         <n-el tag="span">{{ user?.country }}</n-el>
         <n-el tag="h3">User status</n-el>
@@ -44,7 +45,7 @@
         <n-el tag="h3">User type name</n-el>
         <n-el tag="span">{{ user?.user_type_name }}</n-el>
       </template>
-      <n-input v-if="isModify" :v-model="user?.first_name" :value="user?.first_name" />
+      <n-input v-if="isModify" :v-model="user?.firstname" :value="user?.firstname" />
       <!--phone-->
       <!-- <n-el tag="span">Téléphone</n-el>
       <n-el v-if="!isModify" tag="span">{{ userStore.currentUser?.getPhone() }}</n-el>
