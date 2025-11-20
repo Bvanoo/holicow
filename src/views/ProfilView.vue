@@ -2,11 +2,10 @@
   import { NEl, NFlex } from 'naive-ui'
   import ProfilCard from '../components/ProfilCard.vue'
   import { useUserStore } from '@/stores/user'
-  import router from '@/router';
   // import type User from '../entities/user'
 
   const usersStore = useUserStore()
-  if (usersStore.checkCurrentUser() === false) router.push("/notAllowed");
+  usersStore.checkCurrentUser()
 
 </script>
 

@@ -1,8 +1,7 @@
 <script setup lang="ts">
     import { ref, computed, onMounted, onUnmounted, defineProps, defineEmits } from 'vue'
-    import { useRouter } from 'vue-router'
+    import router from '@/router'
     import { NAvatar, NDrawer, NButton } from 'naive-ui'
-    const router = useRouter()
 
     interface Tab {
         key: string

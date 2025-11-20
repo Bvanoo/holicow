@@ -22,7 +22,7 @@ export const useUserStore = defineStore('userStore', {
       console.log('usersStore.currentUser', this.currentUser)
 
       if (!this.currentUser) {
-        console.log('not Allowed HomeView')
+        console.log('not Allowed')
         router.push('/notAllowed')
         return false
       }

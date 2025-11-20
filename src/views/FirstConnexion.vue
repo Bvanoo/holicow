@@ -8,7 +8,7 @@
     import { useUserStore } from '@/stores/user';
 
     const usersStore = useUserStore();
-    if (usersStore.checkCurrentUser() === false) router.push("/notAllowed");
+    usersStore.checkCurrentUser()
 
     onMounted(async () => {
         if (usersStore.getCurrentUser) {

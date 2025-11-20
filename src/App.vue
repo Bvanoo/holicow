@@ -5,11 +5,10 @@
   import router from './router'
   import { useUserStore } from './stores/user';
   const usersStore = useUserStore()
+  usersStore.checkCurrentUser()
 
   const logoHolicowUE = "/images/logo_UE_holicow.svg"
   const logoHolicow = "/images/logo_holicow.svg"
-
-  if (usersStore.checkCurrentUser() === false) router.push("/notAllowed");
 
   const activeTab = ref('home')
   const isDark = ref(false) // tu peux lier ça à un bouton
@@ -30,8 +29,8 @@
         <n-notification-provider>
           <n-modal-provider>
             <n-dialog-provider>
-              <NavBar v-model:active="activeTab" @update:active="onMenuItemClick" :logoSrc="logoHolicow"
-                :logoSrcUE="logoHolicowUE" />
+              <NavBar v-if="usersStore.checkCurrentUser()" v-model:active="activeTab" @update:active="onMenuItemClick"
+                :logoSrc="logoHolicow" :logoSrcUE="logoHolicowUE" />
               <n-flex vertical align="center">
                 <router-view class="routerView" />
               </n-flex>
