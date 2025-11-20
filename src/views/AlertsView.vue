@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-    import { useUserStore } from '@/stores/user';
+    import { useFarmerStore } from '@/stores/farmer';
 
-    const usersStore = useUserStore();
-    usersStore.checkCurrentUser()
+    const usersStore = useFarmerStore();
+    usersStore.checkCurrentFarmer()
 
 </script>
 

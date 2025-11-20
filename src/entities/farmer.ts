@@ -9,3 +9,4 @@ export default interface Farmer extends User {
   notif_mail?: boolean
   notif_phone?: boolean
 }
+/** */

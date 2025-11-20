@@ -3,9 +3,9 @@
   import { NConfigProvider, NLoadingBarProvider, NMessageProvider, NNotificationProvider, NModalProvider, NDialogProvider, NFlex, darkTheme } from 'naive-ui';
   import { ref } from 'vue'
   import router from './router'
-  import { useUserStore } from './stores/user';
-  const usersStore = useUserStore()
-  usersStore.checkCurrentUser()
+  import { useFarmerStore } from './stores/farmer';
+  const usersStore = useFarmerStore()
+  // usersStore.checkCurrentFarmer()
 
   const logoHolicowUE = "/images/logo_UE_holicow.svg"
   const logoHolicow = "/images/logo_holicow.svg"
@@ -14,7 +14,7 @@
   const isDark = ref(false) // tu peux lier ça à un bouton
 
   function onMenuItemClick(key: string) {
-    if (usersStore.checkCurrentUser() === false) return;
+    if (usersStore.checkCurrentFarmer() === false) return;
     router.push('/' + key)
     activeTab.value = key
     console.log(key)
@@ -29,7 +29,7 @@
         <n-notification-provider>
           <n-modal-provider>
             <n-dialog-provider>
-              <NavBar v-if="usersStore.checkCurrentUser()" v-model:active="activeTab" @update:active="onMenuItemClick"
+              <NavBar v-if="usersStore.checkCurrentFarmer()" v-model:active="activeTab" @update:active="onMenuItemClick"
                 :logoSrc="logoHolicow" :logoSrcUE="logoHolicowUE" />
               <n-flex vertical align="center">
                 <router-view class="routerView" />

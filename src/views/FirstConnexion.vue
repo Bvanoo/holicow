@@ -5,16 +5,12 @@
     import FirstConnexionCard from '@/components/FirstConnexion/FirstConnexionCard.vue'
     import CancelConnexionCard from '@/components/FirstConnexion/CancelConnexionCard.vue'
     import router from '@/router';
-    import { useUserStore } from '@/stores/user';
+    import { useFarmerStore } from '@/stores/farmer';
 
-    const usersStore = useUserStore();
-    usersStore.checkCurrentUser()
+    const farmerStore = useFarmerStore();
+    farmerStore.checkCurrentFarmer()
 
     onMounted(async () => {
-        if (usersStore.getCurrentUser) {
-            console.log(usersStore.getCurrentUser)
-            router.push("/profile")
-        }
     })
 
     //Text variables

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
   import { NEl, NFlex } from 'naive-ui'
   import ProfilCard from '../components/ProfilCard.vue'
-  import { useUserStore } from '@/stores/user'
+  import { useFarmerStore } from '@/stores/farmer'
   // import type User from '../entities/user'
 
-  const usersStore = useUserStore()
-  usersStore.checkCurrentUser()
+  const usersStore = useFarmerStore()
+  usersStore.checkCurrentFarmer()
 
 </script>
 

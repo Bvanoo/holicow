@@ -1,3 +1,4 @@
+import type Farmer from './farmer'
 import type UserType from './userType'
 
 export default interface User extends UserType {
@@ -13,4 +14,5 @@ export default interface User extends UserType {
   links: string
   country: string
   user_status: boolean
+  farmer: Farmer
 }
