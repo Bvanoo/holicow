@@ -8,9 +8,9 @@ import { InvalidParameterException } from '@/exception/InvalidParameterException
 export default class UsersServices {
   private usersDAL = useUsersDAL()
 
-  public async getFirstLogin(): Promise<User | ExistingUser | void> {
+  public async getFirstLogin(profil_id: string): Promise<User | ExistingUser | void> {
     return await this.usersDAL
-      .getFirstLogin()
+      .getFirstLogin(profil_id)
       .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
   }
 

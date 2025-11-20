@@ -2,9 +2,15 @@
 
     import { NEl, NButton, NFlex } from 'naive-ui'
     import { useRouter } from 'vue-router'
-    import { ref } from 'vue'
+    import { onMounted, ref } from 'vue'
     import FirstConnexionCard from '@/components/FirstConnexion/FirstConnexionCard.vue'
     import CancelConnexionCard from '@/components/FirstConnexion/CancelConnexionCard.vue'
+    import UsersServices from '@/services/usersServices'
+
+    onMounted(async () => {
+        const usersService = new UsersServices();
+        console.log("usersService.getFirstLogin(\"101\")", await usersService.getFirstLogin("101"))
+    })
 
     const router = useRouter()
 
@@ -20,7 +26,7 @@
 
     //Functions click
     const goToProfil = () => {
-        router.push('/profil')
+        router.push('/profile')
     }
 
     const cancelLogin = () => {

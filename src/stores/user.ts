@@ -8,8 +8,6 @@ export const useUserStore = defineStore('userStore', {
   }),
   getters: {
     getCurrentUser: (state) => state.currentUser,
-    getCurrentUserId: (state) => state.currentUser?.profileId,
-    getCurrentUserMail: (state) => state.currentUser?.firstname,
   },
   actions: {
     setCurrentUser(newUser: User) {

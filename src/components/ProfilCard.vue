@@ -9,7 +9,7 @@
 
   const isModify = ref(false)
 
-  const user: Ref<Farmer> = ref<Farmer>({ profil_id: "13", first_name: 'Maximilien', last_name: "Moc", country: "Belgium", user_status: "Novice", user_type_name: 0, nbr_min_comment: 0, nbr_max_comment: 0, user_type_picture: "3" });
+  const user: Ref<Farmer> = ref<Farmer>({ profil_id: "13", first_name: 'Maximilien', last_name: "Moc", country: "Belgium", user_status: false, user_type_name: 0, nbr_min_comment: 0, nbr_max_comment: 0, user_type_picture: "3" });
 
   const toggleModifyInputs = () => {
     isModify.value = !isModify.value
@@ -32,16 +32,18 @@
       <n-el tag="h3">Id</n-el>
       <n-el tag="span">{{ user?.profil_id }}</n-el>
       <!--email-->
-      <n-el tag="h3">Prénom</n-el>
-      <n-el v-if="!isModify" tag="span">{{ user?.first_name }}</n-el>
-      <n-el tag="h3">Nom</n-el>
-      <n-el v-if="!isModify" tag="span">{{ user?.last_name }}</n-el>
-      <n-el tag="h3">Pays</n-el>
-      <n-el v-if="!isModify" tag="span">{{ user?.country }}</n-el>
-      <n-el tag="h3">User status</n-el>
-      <n-el v-if="!isModify" tag="span">{{ user?.user_status }}</n-el>
-      <n-el tag="h3">User type name</n-el>
-      <n-el v-if="!isModify" tag="span">{{ user?.user_type_name }}</n-el>
+      <template v-if="!isModify">
+        <n-el tag="h3">Prénom</n-el>
+        <n-el tag="span">{{ user?.first_name }}</n-el>
+        <n-el tag="h3">Nom</n-el>
+        <n-el tag="span">{{ user?.last_name }}</n-el>
+        <n-el tag="h3">Pays</n-el>
+        <n-el tag="span">{{ user?.country }}</n-el>
+        <n-el tag="h3">User status</n-el>
+        <n-el tag="span">{{ user?.user_status }}</n-el>
+        <n-el tag="h3">User type name</n-el>
+        <n-el tag="span">{{ user?.user_type_name }}</n-el>
+      </template>
       <n-input v-if="isModify" :v-model="user?.first_name" :value="user?.first_name" />
       <!--phone-->
       <!-- <n-el tag="span">Téléphone</n-el>
