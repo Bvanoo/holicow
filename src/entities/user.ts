@@ -1,18 +1,17 @@
-import type Farmer from './farmer'
 import type UserType from './userType'
 
-export default interface User extends UserType {
+export default interface IUser extends UserType {
   profilId: string
-  userId: number
   lastname: string
   firstname: string
-  denomination: string
-  role: string
-  email: string
-  mobile: string
-  language: string
-  links: string
   country: string
+  type: string
+  adr_mail: string
+  phone: string
+  region: string
+  bio: boolean
+  robot: boolean
+  mail_notif: boolean
+  phone_notif: boolean
   user_status: boolean
-  farmer: Farmer
 }

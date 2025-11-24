@@ -1,4 +1,4 @@
-export default interface UserUpdate {
+export default interface IUserProfile {
   region?: string
   bio?: boolean
   robot?: boolean

@@ -3,7 +3,7 @@
   import { NConfigProvider, NLoadingBarProvider, NMessageProvider, NNotificationProvider, NModalProvider, NDialogProvider, NFlex, darkTheme } from 'naive-ui';
   import { ref } from 'vue'
   import router from './router'
-  import { useFarmerStore } from './stores/farmer';
+  import { useFarmerStore } from './stores/User';
   const usersStore = useFarmerStore()
   // usersStore.checkCurrentFarmer()
 
@@ -29,11 +29,11 @@
         <n-notification-provider>
           <n-modal-provider>
             <n-dialog-provider>
-              <NavBar v-if="usersStore.checkCurrentFarmer()" v-model:active="activeTab" @update:active="onMenuItemClick"
+              <NavBar v-if="!usersStore.checkIfNewUser()" v-model:active="activeTab" @update:active="onMenuItemClick"
                 :logoSrc="logoHolicow" :logoSrcUE="logoHolicowUE" />
-              <n-flex vertical align="center">
+              <div class="main">
                 <router-view class="routerView" />
-              </n-flex>
+              </div>
             </n-dialog-provider>
           </n-modal-provider>
         </n-notification-provider>

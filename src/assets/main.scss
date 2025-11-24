@@ -4,6 +4,15 @@
 @use 'navbar';
 @use 'ProfilView/profilView';
 
+body {
+  background-color: $main_color;
+  height: 100%;
+}
+.main {
+  display: flex;
+  justify-content: center;
+}
+
 .routerView {
-  margin-top: 120px;
+  padding-top: 130px;
 }

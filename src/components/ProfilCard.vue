@@ -3,7 +3,7 @@
   import type UserUpdate from '@/entities/userUpdate'
   import UsersServices from '@/services/usersServices'
   // import UsersServices from '@/services/usersServices'
-  import { useFarmerStore } from '@/stores/farmer'
+  import { useFarmerStore } from '@/stores/User'
   import { NButton, NCard, NEl, NFlex, NImage, NInput } from 'naive-ui'
   import { ref } from 'vue'
   import type { Ref } from 'vue'
@@ -17,9 +17,9 @@
   const currentFarmer: Farmer | void = farmerStore.currentFarmer;
   console.log("currentFarmer", currentFarmer)
 
-  const region: Ref<string | void> = ref(currentFarmer?.farmer.region)
-  const bio: Ref<boolean | void> = ref(currentFarmer?.farmer.bio)
-  const robot: Ref<boolean | void> = ref(currentFarmer?.farmer.robot)
+  const region: Ref<string | void> = ref(currentFarmer?.region)
+  const bio: Ref<boolean | void> = ref(currentFarmer?.bio)
+  const robot: Ref<boolean | void> = ref(currentFarmer?.robot)
 
   const toggleModifyInputs = () => {
     isModify.value = !isModify.value

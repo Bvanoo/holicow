@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-    import { useFarmerStore } from '@/stores/farmer';
+    import { useFarmerStore } from '@/stores/User';
 
     const usersStore = useFarmerStore();
-    usersStore.checkCurrentFarmer()
-
+    usersStore.checkIfNewUser()
 </script>
 
 <template>

@@ -5,22 +5,16 @@
     import FirstConnexionCard from '@/components/FirstConnexion/FirstConnexionCard.vue'
     import CancelConnexionCard from '@/components/FirstConnexion/CancelConnexionCard.vue'
     import router from '@/router';
-    import { useFarmerStore } from '@/stores/farmer';
+    import { useFarmerStore } from '@/stores/User';
+    import type UserUpdate from '@/entities/userUpdate';
 
     const farmerStore = useFarmerStore();
-    farmerStore.checkCurrentFarmer()
 
     onMounted(async () => {
     })
-
-    //Text variables
-    const introText =
-        "Bienvenue sur l'application Holicow. Profitez de nos services pour identifier des maladies potentielles et profitez du partage de connaissance de tous nos membres pour mettre en place des solutions rapides et efficaces."
-
-    //End Text variables
-
     //Variables click
     const isCancelLogin = ref(false)
+    const userUpdate = ref<UserUpdate | void>()
     //End Variables click
 
     //Functions click
@@ -34,25 +28,16 @@
     const quitApp = () => {
         isCancelLogin.value = true
     }
-    const undoCancelLogin = () => {
+    const quitLogin = () => {
+        isCancelLogin.value = true
+    }
+    const cancelQuitApp = () => {
         isCancelLogin.value = false
     }
 
-    const userRegion = ref<number | string>("")
-    const userBio = ref<number | string>("")
-    const userRobot = ref<number | string>("")
-
-    const updateRegion = (newRegion: number | string) => {
-        userRegion.value = newRegion;
-        console.log("userRegion.value", userRegion.value)
-    }
-    const updateBio = (newbio: number | string) => {
-        userBio.value = newbio;
-        console.log("userBio.value", userBio.value)
-    }
-    const updateRobot = (newRobot: number | string) => {
-        userRobot.value = newRobot;
-        console.log("userRobot.value", userRobot.value)
+    const updateUserChoices = (value: UserUpdate) => {
+        userUpdate.value = value;
+        console.log("userRegion.value", userUpdate.value)
     }
 
     //End Functions click
@@ -60,41 +45,19 @@
 
 <template>
     <n-flex vertical align="center" class="firstConnexion">
-        <!--Intro text-->
-        <n-el tag="header">
-            <p v-html="introText" class="firstConnexion__paragraph"></p>
-        </n-el>
-        <!--End Intro text-->
 
-        <n-flex vertical align="center" class="firstConnexion__main">
-            <!--First connexion-->
-            <n-el tag="div" v-if="!isCancelLogin">
-                <FirstConnexionCard @updateRegion="updateRegion" @updateBio="updateBio" @updateRobot="updateRobot" />
-                <n-el tag="div">
-                    <n-el tag="p">Vous pourrez modifier ces informations ultérieurement en cliquant sur votre
-                        profil.</n-el>
-                    <n-flex justify="center">
-                        <n-button quaternary @click.prevent="cancelLogin">Annuler</n-button>
-                        <n-button type="primary" @click.prevent="goToProfil">Valider</n-button>
-                    </n-flex>
-                </n-el>
-            </n-el>
-            <!--End First connexion-->
+        <!--First connexion-->
+        <div class="firstConnexion__main" v-if="!isCancelLogin">
+            <h1 class="firstConnexion__main__title">Votre première connexion</h1>
+            <FirstConnexionCard @updateUserChoices="updateUserChoices" @quitLogin="quitLogin" />
+        </div>
+        <!--End First connexion-->
 
-            <!--Cancel connexion-->
-            <n-el tag="div" v-if="isCancelLogin">
-                <CancelConnexionCard />
-                <n-el tag="div">
-                    <n-el tag="p">Vous pourrez modifier ces informations ultérieurement en cliquant sur votre
-                        profil.</n-el>
-                    <n-flex justify="center">
-                        <n-button quaternary @click.prevent="quitApp">Retour WALLeSmart</n-button>
-                        <n-button type="primary" @click.prevent="undoCancelLogin">Se connecter</n-button>
-                    </n-flex>
-                </n-el>
-            </n-el>
-            <!--End Cancel connexion-->
+        <!--Cancel connexion-->
+        <div v-if="isCancelLogin">
+            <CancelConnexionCard @quitApp="quitApp" @cancelQuitApp="cancelQuitApp" />
+        </div>
+        <!--End Cancel connexion-->
 
-        </n-flex>
     </n-flex>
 </template>
