@@ -1,7 +1,7 @@
 import useUsersDAL from '@/dal/user'
-import { checkUndefinedAndNullValue, showSimpleErrorBox } from '@/exception/utils'
-import type User from '@/entities/user'
-import { InvalidParameterException } from '@/exception/InvalidParameterException'
+import { checkUndefinedAndNullValue, showSimpleErrorBox } from '@/domain/exception/utils'
+import type User from '@/domain/entities/user'
+import { InvalidParameterException } from '@/domain/exception/InvalidParameterException'
 
 export default class UsersServices {
   private usersDAL = useUsersDAL()

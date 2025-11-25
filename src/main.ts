@@ -6,11 +6,13 @@ import router from './router'
 import naive from 'naive-ui'
 
 import './assets/main.scss'
-import UsersServices from './services/usersServices'
+import UsersServices from './domain/services/UserServices'
 import { useUserStore } from './stores/user'
-import type User from './entities/user'
-const app = createApp(App)
+import type User from './domain/entities/user'
+import { registerDependencies } from './di/DependenciesProvider'
 
+const app = createApp(App)
+registerDependencies(app)
 app.use(createPinia())
 app.use(router)
 app.use(naive)

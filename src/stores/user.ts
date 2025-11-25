@@ -1,5 +1,5 @@
 // import type ExistingUser from '@/entities/existingUser'
-import type User from '../entities/user'
+import type User from '../domain/entities/user'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import router from '../router'

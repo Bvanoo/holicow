@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import type User from '@/entities/user'
-  import type UserUpdate from '@/entities/userUpdate'
-  import UsersServices from '@/services/usersServices'
+  import type User from '@/domain/entities/user'
+  import type UserUpdate from '@/domain/entities/userUpdate'
+  import UsersServices from '@/domain/services/UserServices'
   // import UsersServices from '@/services/usersServices'
   import { useUserStore } from '@/stores/user'
   import { NButton, NCard, NEl, NFlex, NImage, NInput } from 'naive-ui'
