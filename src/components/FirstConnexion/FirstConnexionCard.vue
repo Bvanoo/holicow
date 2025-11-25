@@ -1,9 +1,13 @@
 <script setup lang="ts">
-    import { type FormInst, NEl, NSelect, NGrid, NForm, NButton, NFormItemGi, NRadioGroup, NRadioButton, NGi, NFlex, NCheckboxGroup, NSpace, NCheckbox, NFormItem, NInput, type FormItemRule } from 'naive-ui';
+    import { type FormInst, NSelect, NForm, NButton, NRadioGroup, NRadioButton, NFormItem, NInput, type FormItemRule } from 'naive-ui';
     import { ref } from 'vue';
-    import type UserProfile from '../../entities/IUserProfile';
     import { useUserStore } from '@/stores/User';
     import type IUserProfile from '../../entities/IUserProfile';
+    //Emits
+    const emit = defineEmits<{
+        (event: 'updateUserChoices', value: IUserProfile): void,
+        (event: 'quitLogin', value: boolean): void,
+    }>();
 
     const userStore = useUserStore();
     const optionsRegion = [
@@ -20,12 +24,6 @@
             value: 'Autres provinces',
         }
     ]
-
-    //Emits
-    const emit = defineEmits<{
-        (event: 'updateUserChoices', value: UserProfile): void,
-        (event: 'quitLogin', value: boolean): void,
-    }>();
 
     const UserUpdateRef = ref<FormInst | null>(null)
     const UserUpdateValues = userStore.currentProfile
@@ -52,10 +50,12 @@
             trigger: ['input'],
             message: '0499/12.34.56',
             validator: (rule: FormItemRule, value: string) => {
+                console.log("value", value)
+
                 return /^0\d{3}\/?\d{2}\.?\d{2}\.?\d{2}$/.test(value)
             }
         },
-        mail: {
+        adr_mail: {
             required: true,
             trigger: ['input'],
             message: 'monEmail@email.be',
@@ -73,16 +73,15 @@
                 // message.success('Valid')
                 //Obligé de refaire un objet car les n-inputs de naive Ui ne peuvent pas renvoyer de false ou true 
                 // (c'est utilisé pour les rules)
-                const profileTmp = {
-                    profilId: UserUpdateValues?.profilId,
+                const profileTmp: IUserProfile = {
                     adr_mail: UserUpdateValues?.adr_mail,
                     phone: UserUpdateValues?.phone?.replace(/[\/\.]/g, ""),
-                    region: UserUpdateValues?.region,
-                    bio: UserUpdateValues?.bio === 'true',
-                    robot: UserUpdateValues?.robot === 'true',
-                    mail_notif: UserUpdateValues?.mail_notif === 'true',
-                    phone_notif: UserUpdateValues?.phone_notif === 'true',
-                } as IUserProfile
+                    region: UserUpdateValues!.region,
+                    bio: getBoolFrom(UserUpdateValues?.bio),
+                    robot: getBoolFrom(UserUpdateValues?.robot),
+                    mail_notif: getBoolFrom(UserUpdateValues?.mail_notif),
+                    phone_notif: getBoolFrom(UserUpdateValues?.phone_notif),
+                }
 
                 console.log("profileTmp")
                 emit("updateUserChoices", profileTmp)
@@ -93,11 +92,14 @@
             }
         })
     }
+    const getBoolFrom = (value: unknown): boolean => {
+        return value === true || value === "true"
+    }
 
 </script>
 
 <template>
-    <n-form class="firstConnexion__card" ref="UserUpdateRef" inline :label-width="18" :model="UserUpdateValues"
+    <n-form class="firstConnexion__card" ref="UserUpdateRef" inline :label-width="18" :model="UserUpdateValues!"
         :rules="rules">
         <!-- En‑tête de la carte -->
         <header class="firstConnexion__card__header">
@@ -121,12 +123,12 @@
                     <!-- Région -->
                     <n-form-item label="Région" path="region">
                         <n-select class="firstConnexion__region" :options="optionsRegion"
-                            v-model:value="UserUpdateValues.region" placeholder="Choisir" />
+                            v-model:value="UserUpdateValues!.region" placeholder="Choisir" />
                     </n-form-item>
 
                     <!-- Bio -->
                     <n-form-item label="Bio" path="bio">
-                        <n-radio-group v-model:value="UserUpdateValues.bio" name="bio-group"
+                        <n-radio-group v-model:value="UserUpdateValues!.bio" name="bio-group"
                             class="firstConnexion__radio-group">
                             <n-radio-button value="true">Oui</n-radio-button>
                             <n-radio-button value="false">Non</n-radio-button>
@@ -135,7 +137,7 @@
 
                     <!-- Robots -->
                     <n-form-item label="Robots" path="robot">
-                        <n-radio-group v-model:value="UserUpdateValues.robot" name="robot-group"
+                        <n-radio-group v-model:value="UserUpdateValues!.robot" name="robot-group"
                             class="firstConnexion__radio-group">
                             <n-radio-button value="true">Oui</n-radio-button>
                             <n-radio-button value="false">Non</n-radio-button>
@@ -154,26 +156,26 @@
                     <!-- Alertes email -->
                     <div class="firstConnexion__card__alert-item">
                         <span class="firstConnexion__card__alert-label">Email</span>
-                        <n-radio-group class="firstConnexion__radio-group" v-model:value="UserUpdateValues.mail_notif"
-                            name="mail_notif">
+                        <n-radio-group v-model:value="UserUpdateValues!.mail_notif" name="mail_notif"
+                            class="firstConnexion__radio-group">
                             <n-radio-button value="true">Oui</n-radio-button>
                             <n-radio-button value="false">Non</n-radio-button>
                         </n-radio-group>
-                        <n-form-item v-if="UserUpdateValues?.mail_notif === 'true'" label="Mail" path="mail_notif">
-                            <n-input type="text" v-model:value="UserUpdateValues.adr_mail" />
+                        <n-form-item v-if="getBoolFrom(UserUpdateValues?.mail_notif)" label="Mail" path="adr_mail">
+                            <n-input type="text" v-model:value="UserUpdateValues!.adr_mail" />
                         </n-form-item>
                     </div>
 
                     <!-- Alertes téléphone -->
                     <div class="firstConnexion__card__alert-item">
                         <span class="firstConnexion__card__alert-label">Téléphone</span>
-                        <n-radio-group v-model:value="UserUpdateValues.phone_notif" name="phone_notif"
+                        <n-radio-group v-model:value="UserUpdateValues!.phone_notif" name="phone_notif"
                             class="firstConnexion__radio-group">
                             <n-radio-button value="true">Oui</n-radio-button>
                             <n-radio-button value="false">Non</n-radio-button>
                         </n-radio-group>
-                        <n-form-item v-if="UserUpdateValues?.phone_notif === 'true'" label="Phone" path="phone">
-                            <n-input placeholder="Basic Input" v-model:value="UserUpdateValues.phone" path="phone" />
+                        <n-form-item v-if="getBoolFrom(UserUpdateValues?.phone_notif)" label="Phone" path="phone">
+                            <n-input placeholder="phone" v-model:value="UserUpdateValues!.phone" />
                         </n-form-item>
                     </div>
 

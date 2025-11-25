@@ -2,12 +2,12 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import router from '../router'
-import type UserProfile from '@/entities/IUserProfile'
 import UsersServices from '@/services/usersServices'
+import type IUserProfile from '@/entities/IUserProfile'
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
-    currentProfile: ref<UserProfile | void>(),
+    currentProfile: ref<IUserProfile | void>(),
     currentUserId: ref<string | void>(),
     isNewProfil: ref<boolean>(false),
   }),
@@ -15,7 +15,7 @@ export const useUserStore = defineStore('userStore', {
     getCurrentUser: (state) => state.currentProfile,
   },
   actions: {
-    updateCurrentUser(newUser: UserProfile | void) {
+    updateCurrentUser(newUser: IUserProfile | void) {
       this.currentProfile = newUser
     },
     setNewEmail(newEmail: string) {
