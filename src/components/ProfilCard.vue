@@ -57,7 +57,7 @@
     const usersServices = new UsersServices();
     console.log("currentFarmer.profilId", userProfile?.profilId)
     usersServices.updateUserProfile(userProfile?.profilId as string, userUpdate)
-    userStore.currentProfile = userProfile
+    userStore.currentProfile = userUpdate
 
   }
 
@@ -73,33 +73,33 @@
       </n-flex>
       <!--id-->
       <n-el tag="h3">Id</n-el>
-      <n-el tag="span">{{ userProfile?.profilId }}</n-el>
+      <n-el tag="span">{{ userStore.currentProfile?.profilId }}</n-el>
       <!-- <n-el tag="h3">userId</n-el>
       <n-el tag="span">{{ currentFarmer?.farmer.userId }}</n-el> -->
       <!--email-->
       <template v-if="!isModify">
         <n-el tag="h3">Nom</n-el>
-        <n-el tag="span">{{ userProfile?.lastname }}</n-el>
+        <n-el tag="span">{{ userStore.currentProfile?.lastname }}</n-el>
         <n-el tag="h3">Prénom</n-el>
-        <n-el tag="span">{{ userProfile?.firstname }}</n-el>
+        <n-el tag="span">{{ userStore.currentProfile?.firstname }}</n-el>
         <n-el tag="h3">role</n-el>
-        <n-el tag="span">{{ userProfile?.role }}</n-el>
+        <n-el tag="span">{{ userStore.currentProfile?.role }}</n-el>
         <n-el tag="h3">email</n-el>
-        <n-el tag="span">{{ userProfile?.adr_mail }}</n-el>
+        <n-el tag="span">{{ userStore.currentProfile?.adr_mail }}</n-el>
         <n-el tag="h3">mobile</n-el>
-        <n-el tag="span">{{ userProfile?.phone }}</n-el>
+        <n-el tag="span">{{ userStore.currentProfile?.phone }}</n-el>
         <n-el tag="h3">language</n-el>
-        <n-el tag="span">{{ userProfile?.language }}</n-el>
+        <n-el tag="span">{{ userStore.currentProfile?.language }}</n-el>
         <n-el tag="h3">country</n-el>
-        <n-el tag="span">{{ userProfile?.country }}</n-el>
+        <n-el tag="span">{{ userStore.currentProfile?.country }}</n-el>
         <n-el tag="h3">user_status</n-el>
-        <n-el tag="span">{{ userProfile?.user_status }}</n-el>
+        <n-el tag="span">{{ userStore.currentProfile?.user_status }}</n-el>
         <n-el tag="h3">region</n-el>
-        <n-el tag="span">{{ userProfile?.region }}</n-el>
+        <n-el tag="span">{{ userStore.currentProfile?.region }}</n-el>
         <n-el tag="h3">bio</n-el>
-        <n-el tag="span">{{ userProfile?.bio }}</n-el>
+        <n-el tag="span">{{ userStore.currentProfile?.bio }}</n-el>
         <n-el tag="h3">robot</n-el>
-        <n-el tag="span">{{ userProfile?.robot }}</n-el>
+        <n-el tag="span">{{ userStore.currentProfile?.robot }}</n-el>
       </template>
       <template v-if="isModify">
         <n-el tag="h3">region</n-el>
