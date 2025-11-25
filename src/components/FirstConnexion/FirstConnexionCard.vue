@@ -33,7 +33,11 @@
         region: {
             required: true,
             message: 'Sélectionnez la région',
-            trigger: ['select']
+            trigger: ['select'],
+            validator: (rule: FormItemRule, value: string) => {
+                console.log("value", value)
+                return value !== "BE"
+            }
         },
         bio: {
             required: true,

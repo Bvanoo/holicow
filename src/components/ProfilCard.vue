@@ -1,12 +1,9 @@
 <script setup lang="ts">
   import type IUserProfile from '@/entities/IUserProfile'
   import UsersServices from '@/services/usersServices'
-  // import UsersServices from '@/services/usersServices'
   import { useUserStore } from '@/stores/User'
-  import { NButton, NCard, NEl, NFlex, NImage, type FormInst, type FormItemRule } from 'naive-ui'
+  import { NButton, NCard, NFlex, NImage, type FormInst, type FormItemRule } from 'naive-ui'
   import { ref } from 'vue'
-
-  // import type { Ref } from 'vue'
 
   const userStore = useUserStore()
 
@@ -83,22 +80,24 @@
 
     //Naive-UI ne permet pas d'utiliser des booleans dans des radio-button, on peut juste comparer si la chaine renvoyé par le rabio button est === "true" pour avoir un état boolean
     const profileTmp = {
-      profilId: ProfilUpdateValues?.profilId,
+      profilId: userStore.currentUserId,
       adr_mail: ProfilUpdateValues?.adr_mail,
       phone: ProfilUpdateValues?.phone?.replace(/[\/\.]/g, ""),
-      region: ProfilUpdateValues?.region,
-      bio: ProfilUpdateValues?.bio === 'true',
-      robot: ProfilUpdateValues?.robot === 'true',
-      mail_notif: ProfilUpdateValues?.mail_notif === 'true',
-      phone_notif: ProfilUpdateValues?.phone_notif === 'true',
-    } as IUserProfile
+      region: ProfilUpdateValues!.region,
+      bio: getBoolFrom(ProfilUpdateValues?.bio),
+      robot: getBoolFrom(ProfilUpdateValues?.robot),
+      mail_notif: getBoolFrom(ProfilUpdateValues?.mail_notif),
+      phone_notif: getBoolFrom(ProfilUpdateValues?.phone_notif),
+    }
 
     const usersServices = new UsersServices();
-    console.log("userProfile.profilId", userProfile?.profilId)
-    usersServices.updateUserProfile(userProfile?.profilId as string, profileTmp)
+    console.log("profileTmp.profilId", profileTmp.profilId)
+    usersServices.updateUserProfile(profileTmp.profilId as string, profileTmp)
     userStore.currentProfile = profileTmp
   }
-
+  const getBoolFrom = (value: unknown): boolean => {
+    return value === true || value === "true"
+  }
 </script>
 
 <template>
@@ -110,53 +109,56 @@
           preview-disabled></n-image>
       </n-flex>
 
-      <!-- <n-el tag="h3">userId</n-el>
-      <n-el tag="span">{{ currentFarmer?.farmer.userId }}</n-el> -->
+      <!-- <h3>userId</h3>
+      <span>{{ currentFarmer?.farmer.userId }}</span> -->
       <!--email-->
       <template v-if="!isModify">
-        <n-el tag="h3">email</n-el>
-        <n-el tag="span">{{ ProfilUpdateValues!.adr_mail }}</n-el>
-        <n-el tag="h3">mobile</n-el>
-        <n-el tag="span">{{ ProfilUpdateValues!.phone }}</n-el>
-        <n-el tag="h3">region</n-el>
-        <n-el tag="span">{{ ProfilUpdateValues!.region }}</n-el>
-        <n-el tag="h3">bio</n-el>
-        <n-el tag="span">{{ ProfilUpdateValues!.bio }}</n-el>
-        <n-el tag="h3">robot</n-el>
-        <n-el tag="span">{{ ProfilUpdateValues!.robot }}</n-el>
+        <h3>email</h3>
+        <span>{{ ProfilUpdateValues!.adr_mail }}</span>
+        <h3>mobile</h3>
+        <span>{{ ProfilUpdateValues!.phone }}</span>
+        <h3>region</h3>
+        <span>{{ ProfilUpdateValues!.region }}</span>
+        <h3>bio</h3>
+        <span>{{ ProfilUpdateValues!.bio }}</span>
+        <h3>robot</h3>
+        <span>{{ ProfilUpdateValues!.robot }}</span>
+        <h1>Alertes</h1>
+        <h3>mail</h3>
+        <span>{{ ProfilUpdateValues!.mail_notif }}</span>
+        <h3>phone</h3>
+        <span>{{ ProfilUpdateValues!.phone_notif }}</span>
       </template>
       <template v-if="isModify">
-        <n-form class="firstConnexion__card" ref="UserUpdateRef" inline :label-width="18" :model="ProfilUpdateValues"
-          :rules="rules">
+        <n-form class="" ref="UserUpdateRef" inline :label-width="18" :model="ProfilUpdateValues" :rules="rules">
           <!-- En‑tête de la carte -->
-          <header class="firstConnexion__card__header">
-            <h2 class="firstConnexion__card__title">
+          <header class="">
+            <h2 class="">
               Première connexion
             </h2>
-            <p class="firstConnexion__card__subtitle">
+            <p class="">
               Quelques questions pour personnaliser votre expérience Holicow.
             </p>
           </header>
 
           <!-- Contenu principal : infos + alertes -->
-          <div class="firstConnexion__card__body">
+          <div class="">
             <!-- infos exploitation -->
-            <section class="firstConnexion__card__section firstConnexion__card__section--infos">
-              <h3 class="firstConnexion__card__section-title">
+            <section class=" ">
+              <h3 class="">
                 Vos informations d'exploitation
               </h3>
 
-              <div class="firstConnexion__card__flex">
+              <div class="">
                 <!-- Région -->
                 <n-form-item label="Région" path="region">
-                  <n-select class="firstConnexion__region" :options="optionsRegion"
-                    v-model:value="ProfilUpdateValues!.region" placeholder="Choisir" />
+                  <n-select class="" :options="optionsRegion" v-model:value="ProfilUpdateValues!.region"
+                    placeholder="Choisir" />
                 </n-form-item>
 
                 <!-- Bio -->
                 <n-form-item label="Bio" path="bio">
-                  <n-radio-group v-model:value="ProfilUpdateValues!.bio" name="bio-group"
-                    class="firstConnexion__radio-group">
+                  <n-radio-group v-model:value="ProfilUpdateValues!.bio" name="bio-group" class="">
                     <n-radio-button value="true">Oui</n-radio-button>
                     <n-radio-button value="false">Non</n-radio-button>
                   </n-radio-group>
@@ -164,8 +166,7 @@
 
                 <!-- Robots -->
                 <n-form-item label="Robots" path="robot">
-                  <n-radio-group v-model:value="ProfilUpdateValues!.robot" name="robot-group"
-                    class="firstConnexion__radio-group">
+                  <n-radio-group v-model:value="ProfilUpdateValues!.robot" name="robot-group" class="">
                     <n-radio-button value="true">Oui</n-radio-button>
                     <n-radio-button value="false">Non</n-radio-button>
                   </n-radio-group>
@@ -174,16 +175,15 @@
             </section>
 
             <!-- Alertes -->
-            <section class="firstConnexion__card__section firstConnexion__card__section--alerts">
-              <h3 class="firstConnexion__card__section-title">
+            <section class=" ">
+              <h3 class="">
                 Alertes maladie
               </h3>
 
-              <div class="firstConnexion__card__alerts-list">
-                <div class="firstConnexion__card__alert-item">
-                  <span class="firstConnexion__card__alert-label">Email</span>
-                  <n-radio-group class="firstConnexion__radio-group" v-model:value="ProfilUpdateValues!.mail_notif"
-                    name="mail_notif">
+              <div class="">
+                <div class="">
+                  <span class="">Email</span>
+                  <n-radio-group class="" v-model:value="ProfilUpdateValues!.mail_notif" name="mail_notif">
                     <n-radio-button value="true">Oui</n-radio-button>
                     <n-radio-button value="false">Non</n-radio-button>
                   </n-radio-group>
@@ -192,10 +192,9 @@
                   </n-form-item>
                 </div>
 
-                <div class="firstConnexion__card__alert-item">
-                  <span class="firstConnexion__card__alert-label">Téléphone</span>
-                  <n-radio-group v-model:value="ProfilUpdateValues!.phone_notif" name="phone_notif"
-                    class="firstConnexion__radio-group">
+                <div class="">
+                  <span class="">Téléphone</span>
+                  <n-radio-group v-model:value="ProfilUpdateValues!.phone_notif" name="phone_notif" class="">
                     <n-radio-button value="true">Oui</n-radio-button>
                     <n-radio-button value="false">Non</n-radio-button>
                   </n-radio-group>
@@ -209,26 +208,19 @@
           </div>
 
           <!-- Pied de carte : boutons -->
-          <footer class="firstConnexion__card__footer">
+          <footer class="">
             <n-button class="test" v-if="isModify" round quaternary
               @click.prevent="toggleModifyInputs">Annuler</n-button>
 
-            <n-button type="primary" color="black" class="firstConnexion__card__btn firstConnexion__card__btn--validate"
-              @click.prevent="updateProfile">
+            <n-button type="primary" class="" @click.prevent="updateProfile">
               Valider
             </n-button>
           </footer>
         </n-form>
       </template>
-      <!--phone-->
-      <!-- <n-el tag="span">Téléphone</n-el>
-      <n-el v-if="!isModify" tag="span">{{ userStore.currentUser?.getPhone() }}</n-el>
-      <n-input v-if="isModify" :v-model="userStore.currentUser?.phone"
-        :value="userStore?.getCurrentUserPhone"></n-input> -->
 
       <n-button v-if="!isModify" class="profilView__userCard__buttons" strong round type="success"
-        @click.prevent="toggleModifyInputs">Modifier mon
-        profil</n-button>
+        @click.prevent="toggleModifyInputs">Modifier mon profil</n-button>
 
     </n-flex>
   </n-card>
