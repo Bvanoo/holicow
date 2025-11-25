@@ -1,11 +1,9 @@
 <script setup lang="ts">
   import type IUserProfile from '@/entities/IUserProfile'
-  import type Farmer from '@/entities/user'
-  import type UserUpdate from '@/entities/userUpdate'
   import UsersServices from '@/services/usersServices'
   // import UsersServices from '@/services/usersServices'
   import { useUserStore } from '@/stores/User'
-  import { NButton, NCard, NEl, NFlex, NImage, NInput } from 'naive-ui'
+  import { NButton, NCard, NEl, NFlex, NImage } from 'naive-ui'
   import { ref } from 'vue'
   import type { Ref } from 'vue'
 
@@ -18,7 +16,7 @@
   const userProfile: IUserProfile | void = userStore.currentProfile;
   console.log("currentFarmer", userProfile)
 
-  const region: Ref<string | void> = ref(userProfile?.region)
+  const region: Ref<string | undefined> = ref(userProfile?.region)
   const bio: Ref<boolean | void> = ref(userProfile?.bio)
   const robot: Ref<boolean | void> = ref(userProfile?.robot)
 
@@ -32,22 +30,16 @@
     console.log("bio", bio.value);
     console.log("robot", robot.value);
 
-    if (userProfile) {
-
-      userProfile.bio = bio.value === "true";
-      userProfile.robot = robot.value === "true";
-    }
-
     const userUpdate: IUserProfile = {
       region: region.value,
-      bio: bio.value === "true",
-      robot: robot.value === "true",
+      bio: bio.value,
+      robot: robot.value,
       mail_notif: false,
       adr_mail: userProfile?.adr_mail,
       phone_notif: false,
       phone: userProfile?.phone
 
-    }
+    } as IUserProfile
 
     console.log("userUpdate", userUpdate)
     // farmerStore.setNewEmail(email.value);
