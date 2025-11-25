@@ -4,17 +4,17 @@
     import { onMounted, ref } from 'vue'
     import FirstConnexionCard from '@/components/FirstConnexion/FirstConnexionCard.vue'
     import CancelConnexionCard from '@/components/FirstConnexion/CancelConnexionCard.vue'
-    import router from '@/router';
-    import { useFarmerStore } from '@/stores/User';
-    import type UserUpdate from '@/entities/userUpdate';
+    import router from '../router';
+    import { useUserStore as useUserStore } from '@/stores/User';
+    import type UserProfile from '@/entities/IUserProfile';
 
-    const farmerStore = useFarmerStore();
-
+    const userStore = useUserStore();
+    if (!userStore.isNewProfil) router.push("/")
     onMounted(async () => {
     })
     //Variables click
     const isCancelLogin = ref(false)
-    const userUpdate = ref<UserUpdate | void>()
+    const userProfile = ref<UserProfile | void>()
     //End Variables click
 
     //Functions click
@@ -35,9 +35,11 @@
         isCancelLogin.value = false
     }
 
-    const updateUserChoices = (value: UserUpdate) => {
-        userUpdate.value = value;
-        console.log("userRegion.value", userUpdate.value)
+    const updateUserChoices = (value: UserProfile) => {
+        userStore.currentProfile = value
+        userStore.updateProfile();
+        console.log("userProfile.value", userProfile.value)
+        router.push("/")
     }
 
     //End Functions click
@@ -48,7 +50,6 @@
 
         <!--First connexion-->
         <div class="firstConnexion__main" v-if="!isCancelLogin">
-            <h1 class="firstConnexion__main__title">Votre première connexion</h1>
             <FirstConnexionCard @updateUserChoices="updateUserChoices" @quitLogin="quitLogin" />
         </div>
         <!--End First connexion-->

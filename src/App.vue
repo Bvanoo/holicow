@@ -2,9 +2,9 @@
   import NavBar from './components/NavBar.vue'
   import { NConfigProvider, NLoadingBarProvider, NMessageProvider, NNotificationProvider, NModalProvider, NDialogProvider, NFlex, darkTheme } from 'naive-ui';
   import { ref } from 'vue'
-  import router from './router'
-  import { useFarmerStore } from './stores/User';
-  const usersStore = useFarmerStore()
+  import router from './router/index'
+  import { useUserStore } from './stores/User';
+  const usersStore = useUserStore()
   // usersStore.checkCurrentFarmer()
 
   const logoHolicowUE = "/images/logo_UE_holicow.svg"
@@ -14,7 +14,7 @@
   const isDark = ref(false) // tu peux lier ça à un bouton
 
   function onMenuItemClick(key: string) {
-    if (usersStore.checkCurrentFarmer() === false) return;
+    if (usersStore.isNewProfil) return;
     router.push('/' + key)
     activeTab.value = key
     console.log(key)

@@ -1,4 +1,6 @@
-export default interface IUserProfile {
+import type IFirstLogin from './IFirstLogin'
+
+export default interface IUserProfile extends IFirstLogin {
   region?: string
   bio?: boolean
   robot?: boolean

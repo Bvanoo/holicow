@@ -3,10 +3,10 @@ export default interface IFirstLogin {
   firstname: string
   denomination: string
   role: string
-  adr_mail: string | null
-  phone: string | null
+  adr_mail?: string
+  phone?: string
   language: string
-  links: string | null
+  links?: string
   userId: number
   profilId: string
   country: string

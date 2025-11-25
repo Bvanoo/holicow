@@ -2,30 +2,40 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import router from '../router'
-import type Farmer from '@/entities/farmer'
-import type IUser from '@/entities/user'
+import type UserProfile from '@/entities/IUserProfile'
+import UsersServices from '@/services/usersServices'
 
-export const useFarmerStore = defineStore('farmerStore', {
+export const useUserStore = defineStore('userStore', {
   state: () => ({
-    currentFarmer: ref<IUser | void>(),
+    currentProfile: ref<UserProfile | void>(),
+    currentUserId: ref<string | void>(),
+    isNewProfil: ref<boolean>(false),
   }),
   getters: {
-    getCurrentUser: (state) => state.currentFarmer,
+    getCurrentUser: (state) => state.currentProfile,
   },
   actions: {
-    setCurrentUser(newUser: IUser | void) {
-      this.currentFarmer = newUser
+    updateCurrentUser(newUser: UserProfile | void) {
+      this.currentProfile = newUser
     },
     setNewEmail(newEmail: string) {
-      if (this.currentFarmer !== undefined) this.currentFarmer.adr_mail = newEmail
+      if (this.currentProfile !== undefined) this.currentProfile.adr_mail = newEmail
     },
     checkIfNewUser() {
-      if (!this.currentFarmer?.region && !this.currentFarmer?.bio && !this.currentFarmer?.robot) {
-        console.log('new profile', this.currentFarmer)
+      if (this.isNewProfil) {
+        console.log('new profile')
         router.push('/firstConnexion')
         return true
       }
       return false
+    },
+    updateProfile() {
+      if (this.currentProfile && this.currentUserId) {
+        const userServices = new UsersServices()
+        //Problème ici car je dois transformer la string "true" en boolean value
+        userServices.updateUserProfile(this.currentUserId, this.currentProfile)
+        this.isNewProfil = false
+      }
     },
   },
 })

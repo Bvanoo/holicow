@@ -2,97 +2,176 @@
 
 .firstConnexion {
   width: 100%;
-  &__main {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    width: 40%;
-    background: $white;
-    border-radius: 16px;
-    padding: 16px;
-    &__title {
-      text-align: center;
-      //[START] linear-gradient sur texte
-      background: linear-gradient(135deg, $black, $main_color);
-      -webkit-background-clip: text; /* Safari/Chrome */
-      background-clip: text; /* Standard */
-      -webkit-text-fill-color: transparent;
-      color: transparent;
-      //[END] linear-gradient sur texte
-    }
+  display: flex;
+  justify-content: center;
+  padding: 32px 16px;
+
+  .n-form.n-form--inline {
+    align-items: center;
   }
+  // ===== Carte principale =====
   &__card {
     width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    background: $white;
+    border-radius: 16px;
+    padding: 24px 24px 20px;
+    box-shadow: 0 12px 30px $shadow_0_3;
+    border: 2px solid $main_color;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
 
-    &__infos {
-      width: 100%;
-      justify-content: center;
-      display: flex;
-      gap: 16px;
+    // En‑tête
+    &__header {
+      text-align: center;
+      margin-bottom: 8px;
     }
-    &__choices {
+
+    &__title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      text-transform: none;
+      margin-bottom: 4px;
+      // texte en dégradé
+      background: linear-gradient(135deg, $black, $main_color);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    &__subtitle {
+      font-size: 0.9rem;
+      color: $lightgray;
+    }
+
+    // Corps : 2 colonnes sur desktop
+    &__body {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+      flex-flow: row wrap;
+    }
+
+    &__section {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 16px 16px 14px;
+      border: 1px solid $lightgray_0_3;
+
+      &-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        text-decoration: underline;
+        text-decoration-color: $main_color;
+        text-underline-offset: 3px;
+      }
+    }
+
+    // Grille de champs infos
+    &__flex {
       display: flex;
-      width: 100%;
-      justify-content: center;
+      gap: 12px 16px;
       align-items: center;
-      border: 1px solid $lightgray_op;
-      border-radius: 8px;
-      flex-direction: column;
-      padding: 16px;
-      .choices {
-        display: flex;
-        flex-flow: row wrap;
-      }
+      flex-flow: row wrap;
     }
-    &__alerts {
+
+    // Zone alertes
+    &__alerts-list {
       display: flex;
       flex-direction: column;
-      padding: 16px;
-      border: 1px solid $lightgray_op;
-      border-radius: 8px;
-      .alerts {
-        display: flex;
-        gap: 16px;
-      }
+      gap: 12px;
     }
-    &__buttons {
-      width: 100%;
+
+    &__alert-item {
       display: flex;
-      justify-content: center;
-      gap: 16px;
-      button {
-        width: 100px;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: column;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: $alertItem;
+    }
+
+    &__alert-label {
+      font-weight: 500;
+    }
+
+    // Groupe de radios
+    .firstConnexion__radio-group {
+      display: inline-flex;
+      gap: 4px;
+    }
+
+    // Pied de carte (boutons)
+    &__footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    &__btn {
+      min-width: 120px;
+
+      &--cancel {
+        background-color: transparent;
+      }
+      &--validate {
+        font-weight: 600;
+        background-color: $main_color;
       }
     }
   }
 
-  &__text {
-    // @include bgcolor($L_black_50);
+  // Champs individuels
+  &__region {
+    width: 300px;
   }
-  &__formItem {
-    width: 200px;
+}
+
+// ===== Responsive =====
+@media (max-width: $tablet) {
+  .firstConnexion {
+    padding: 24px 12px;
+
+    &__card {
+      padding: 20px 16px;
+
+      &__footer {
+        flex-direction: column-reverse;
+        align-items: stretch;
+
+        .firstConnexion__card__btn {
+          width: 100%;
+        }
+      }
+    }
   }
 }
 
 @media (max-width: $mobile) {
   .firstConnexion {
-    width: 100%;
+    padding: 16px 10px;
 
-    &__main {
-      width: 90%;
-    }
     &__card {
-      &__choices {
-        .choices {
-          flex-direction: column;
-        }
+      border-radius: 12px;
+
+      &__body {
+        grid-template-columns: 1fr;
       }
-      &__infos {
-        flex-flow: wrap row;
+
+      &__title {
+        font-size: 1.35rem;
+      }
+
+      &__subtitle {
+        font-size: 0.85rem;
       }
     }
   }

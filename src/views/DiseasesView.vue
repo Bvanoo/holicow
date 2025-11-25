@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-    import { useFarmerStore } from '@/stores/User';
+    import { useUserStore } from '@/stores/User';
 
-    const usersStore = useFarmerStore();
+    const usersStore = useUserStore();
     usersStore.checkIfNewUser()
 </script>
 

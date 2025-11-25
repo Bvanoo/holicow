@@ -1,19 +1,12 @@
 <script lang="ts" setup>
-    import { useFarmerStore } from '@/stores/User';
+    import { useUserStore } from '@/stores/User';
 
-    const usersStore = useFarmerStore();
+    const usersStore = useUserStore();
     usersStore.checkIfNewUser()
 
 </script>
 
 <template>
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
     <div class="tesImage">
         <img class="logo" src="/logos/Herbagere.png">
         <img class="stars" src="/logos/star4.png">

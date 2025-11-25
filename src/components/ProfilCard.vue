@@ -1,25 +1,26 @@
 <script setup lang="ts">
+  import type IUserProfile from '@/entities/IUserProfile'
   import type Farmer from '@/entities/user'
   import type UserUpdate from '@/entities/userUpdate'
   import UsersServices from '@/services/usersServices'
   // import UsersServices from '@/services/usersServices'
-  import { useFarmerStore } from '@/stores/User'
+  import { useUserStore } from '@/stores/User'
   import { NButton, NCard, NEl, NFlex, NImage, NInput } from 'naive-ui'
   import { ref } from 'vue'
   import type { Ref } from 'vue'
 
   // import type { Ref } from 'vue'
 
-  const farmerStore = useFarmerStore()
+  const userStore = useUserStore()
 
   const isModify = ref(false)
 
-  const currentFarmer: Farmer | void = farmerStore.currentFarmer;
-  console.log("currentFarmer", currentFarmer)
+  const userProfile: IUserProfile | void = userStore.currentProfile;
+  console.log("currentFarmer", userProfile)
 
-  const region: Ref<string | void> = ref(currentFarmer?.region)
-  const bio: Ref<boolean | void> = ref(currentFarmer?.bio)
-  const robot: Ref<boolean | void> = ref(currentFarmer?.robot)
+  const region: Ref<string | void> = ref(userProfile?.region)
+  const bio: Ref<boolean | void> = ref(userProfile?.bio)
+  const robot: Ref<boolean | void> = ref(userProfile?.robot)
 
   const toggleModifyInputs = () => {
     isModify.value = !isModify.value
@@ -31,17 +32,20 @@
     console.log("bio", bio.value);
     console.log("robot", robot.value);
 
-    currentFarmer.farmer.bio = bio.value === "true";
-    currentFarmer.farmer.robot = robot.value === "true";
+    if (userProfile) {
 
-    const userUpdate: UserUpdate = {
-      "region": region.value,
-      "bio": bio.value === "true",
-      "robot": robot.value === "true",
-      "mail_notif": false,
-      "adr_mail": currentFarmer?.farmer.adr_mail,
-      "phone_notif": false,
-      "phone": currentFarmer?.farmer.phone
+      userProfile.bio = bio.value === "true";
+      userProfile.robot = robot.value === "true";
+    }
+
+    const userUpdate: IUserProfile = {
+      region: region.value,
+      bio: bio.value === "true",
+      robot: robot.value === "true",
+      mail_notif: false,
+      adr_mail: userProfile?.adr_mail,
+      phone_notif: false,
+      phone: userProfile?.phone
 
     }
 
@@ -51,8 +55,9 @@
     //   region: user.region
     // }
     const usersServices = new UsersServices();
-    console.log("currentFarmer.profilId", currentFarmer.profilId)
-    usersServices.updateUserProfile(currentFarmer.profilId, userUpdate)
+    console.log("currentFarmer.profilId", userProfile?.profilId)
+    usersServices.updateUserProfile(userProfile?.profilId as string, userUpdate)
+    userStore.currentProfile = userProfile
 
   }
 
@@ -60,7 +65,7 @@
 
 <template>
   <!--Profil Card-->
-  <n-card v-if="farmerStore?.getCurrentUser !== null" title="user_card" class="profilView__userCard">
+  <n-card v-if="userStore?.getCurrentUser !== null" title="user_card" class="profilView__userCard">
     <n-flex vertical>
       <n-flex justify="center">
         <n-image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7csvPWMdfAHEAnhIRTdJKCK5SPK4cHfskow&s"
@@ -68,33 +73,33 @@
       </n-flex>
       <!--id-->
       <n-el tag="h3">Id</n-el>
-      <n-el tag="span">{{ currentFarmer?.profilId }}</n-el>
+      <n-el tag="span">{{ userProfile?.profilId }}</n-el>
       <!-- <n-el tag="h3">userId</n-el>
       <n-el tag="span">{{ currentFarmer?.farmer.userId }}</n-el> -->
       <!--email-->
       <template v-if="!isModify">
         <n-el tag="h3">Nom</n-el>
-        <n-el tag="span">{{ currentFarmer?.lastname }}</n-el>
+        <n-el tag="span">{{ userProfile?.lastname }}</n-el>
         <n-el tag="h3">Prénom</n-el>
-        <n-el tag="span">{{ currentFarmer?.firstname }}</n-el>
+        <n-el tag="span">{{ userProfile?.firstname }}</n-el>
         <n-el tag="h3">role</n-el>
-        <n-el tag="span">{{ currentFarmer?.role }}</n-el>
+        <n-el tag="span">{{ userProfile?.role }}</n-el>
         <n-el tag="h3">email</n-el>
-        <n-el tag="span">{{ currentFarmer?.farmer.adr_mail }}</n-el>
+        <n-el tag="span">{{ userProfile?.adr_mail }}</n-el>
         <n-el tag="h3">mobile</n-el>
-        <n-el tag="span">{{ currentFarmer?.farmer.phone }}</n-el>
+        <n-el tag="span">{{ userProfile?.phone }}</n-el>
         <n-el tag="h3">language</n-el>
-        <n-el tag="span">{{ currentFarmer?.language }}</n-el>
+        <n-el tag="span">{{ userProfile?.language }}</n-el>
         <n-el tag="h3">country</n-el>
-        <n-el tag="span">{{ currentFarmer?.country }}</n-el>
+        <n-el tag="span">{{ userProfile?.country }}</n-el>
         <n-el tag="h3">user_status</n-el>
-        <n-el tag="span">{{ currentFarmer?.user_status }}</n-el>
+        <n-el tag="span">{{ userProfile?.user_status }}</n-el>
         <n-el tag="h3">region</n-el>
-        <n-el tag="span">{{ currentFarmer?.farmer.region }}</n-el>
+        <n-el tag="span">{{ userProfile?.region }}</n-el>
         <n-el tag="h3">bio</n-el>
-        <n-el tag="span">{{ currentFarmer?.farmer.bio }}</n-el>
+        <n-el tag="span">{{ userProfile?.bio }}</n-el>
         <n-el tag="h3">robot</n-el>
-        <n-el tag="span">{{ currentFarmer?.farmer.robot }}</n-el>
+        <n-el tag="span">{{ userProfile?.robot }}</n-el>
       </template>
       <template v-if="isModify">
         <n-el tag="h3">region</n-el>
