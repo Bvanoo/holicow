@@ -15,8 +15,8 @@ export const useUserStore = defineStore('userStore', {
     setCurrentUser(newUser: User | void) {
       this.currentUser = newUser
     },
-    setNewEmail(newEmail: string | void) {
-      this.currentUser.email = newEmail
+    setNewEmail(newEmail: string) {
+      this.currentUser!.email = newEmail
     },
     checkCurrentUser() {
       console.log('usersStore.currentUser', this.currentUser)

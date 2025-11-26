@@ -6,6 +6,7 @@ import type { App } from "vue";
 export function registerDependencies(app: App) {
 
   const http = new AxiosHttpClient();
+  
   const propRepository = new ProblemRepositoryHttp(http);
   const probService = new ProblemService(propRepository);
 

@@ -2,8 +2,8 @@
 
     import { NEl, NButton, NFlex } from 'naive-ui'
     import { onMounted, ref } from 'vue'
-    import FirstConnexionCard from '@/components/FirstConnexion/FirstConnexionCard.vue'
-    import CancelConnexionCard from '@/components/FirstConnexion/CancelConnexionCard.vue'
+    import FirstConnexionCard from '@/presentation/components/FirstConnexion/FirstConnexionCard.vue'
+    import CancelConnexionCard from '@/presentation/components/FirstConnexion/CancelConnexionCard.vue'
     import router from '@/router';
     import { useUserStore } from '@/stores/user';
 

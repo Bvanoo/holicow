@@ -1,10 +1,10 @@
-import AlertsView from '@/views/AlertsView.vue'
-import CommentsView from '@/views/CommentsView.vue'
-import DiseasesView from '@/views/DiseasesView.vue'
-import FirstConnexion from '@/views/FirstConnexion.vue'
-import HomeView from '@/views/HomeView.vue'
-import NotAllowed from '@/views/NotAllowed.vue'
-import ProfileView from '@/views/ProfilView.vue'
+import AlertsView from '@/presentation/views/AlertsView.vue'
+import CommentsView from '@/presentation/views/CommentsView.vue'
+import DiseasesView from '@/presentation/views/ProblemsView.vue'
+import FirstConnexion from '@/presentation/views/FirstConnexion.vue'
+import HomeView from '@/presentation/views/HomeView.vue'
+import NotAllowed from '@/presentation/views/NotAllowed.vue'
+import ProfileView from '@/presentation/views/ProfilView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
