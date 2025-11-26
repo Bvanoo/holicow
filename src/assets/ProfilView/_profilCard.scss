@@ -1,9 +1,54 @@
 @use '../variables' as *;
-
-.profilCard {
+.n-card {
   display: flex;
   width: 90%;
+}
+.n-image {
+  display: flex;
+  justify-self: center;
+}
+.n-card__content {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
   border-radius: 16px;
+  align-items: center;
+}
+.profilCard {
+  &__infos {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+
+    &-title {
+      width: 100%;
+      text-align: center;
+      font-weight: 900;
+      @include textGradiant($main_color_dark, $main_color);
+    }
+
+    &-cards {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      gap: 16px;
+    }
+  }
+  &__alerts {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    &-title {
+      width: 100%;
+      text-align: center;
+      font-weight: 900;
+      @include textGradiant($main_color_dark, $main_color_dark);
+    }
+  }
+
   &__modify {
     display: flex;
     flex-direction: column;
