@@ -97,7 +97,7 @@
       <n-image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7csvPWMdfAHEAnhIRTdJKCK5SPK4cHfskow&s"
         preview-disabled></n-image>
       <div class="profilCard__infos">
-        <h1 class="profilCard__infos-title">Vos informations</h1>
+        <h2 class="profilCard__infos-title">Vos informations</h2>
 
         <div class="profilCard__infos-cards">
           <div class="profilCard__infos-card">
@@ -123,14 +123,16 @@
         </div>
       </div>
       <div class="profilCard__alerts">
-        <h1 class="profilCard__alerts-title">Alertes</h1>
-        <div class="profilCard__alerts-card">
-          <h3>mail</h3>
-          <span>{{ ProfilUpdateValues!.mail_notif }}</span>
-        </div>
-        <div class="profilCard__alerts-card">
-          <h3>phone</h3>
-          <span>{{ ProfilUpdateValues!.phone_notif }}</span>
+        <h2 class="profilCard__alerts-title">Alertes</h2>
+        <div class="profilCard__alerts-cards">
+          <div class="profilCard__alerts__alert-card">
+            <h3>mail</h3>
+            <span>{{ ProfilUpdateValues!.mail_notif }}</span>
+          </div>
+          <div class="profilCard__alerts__alert-card">
+            <h3>phone</h3>
+            <span>{{ ProfilUpdateValues!.phone_notif }}</span>
+          </div>
         </div>
       </div>
     </template>
