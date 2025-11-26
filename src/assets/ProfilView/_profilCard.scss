@@ -2,6 +2,7 @@
 .n-card {
   display: flex;
   width: 90%;
+  max-width: $tablet;
 }
 .n-image {
   display: flex;
@@ -25,6 +26,7 @@
       width: 100%;
       text-align: center;
       font-weight: 900;
+      margin-block: 16px 4px;
       @include textGradiant($main_color_dark, $main_color);
     }
 
@@ -44,8 +46,15 @@
     &-title {
       width: 100%;
       text-align: center;
+      margin-block: 16px 4px;
       font-weight: 900;
-      @include textGradiant($main_color_dark, $main_color_dark);
+      @include textGradiant($main_color_dark, $main_color);
+    }
+    &-cards {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 16px;
     }
   }
 
@@ -60,6 +69,22 @@
     }
 
     &__footer {
+    }
+  }
+}
+@media (min-width: $mobile) {
+  .profilCard {
+    &__infos {
+      &-cards {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+    &__alerts {
+      &-cards {
+        flex-direction: row;
+        justify-content: center;
+      }
     }
   }
 }
