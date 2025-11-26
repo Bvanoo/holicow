@@ -142,7 +142,7 @@
         <h3>phone</h3>
         <span>{{ ProfilUpdateValues!.phone_notif }}</span>
       </template>
-      <template v-if="isModify">
+      <template v-else>
         <n-form class="profilCard__modify" ref="ProfilUpdateRef" :label-width="18" :model="ProfilUpdateValues!"
           :rules="rules">
           <!-- En‑tête de la carte -->
