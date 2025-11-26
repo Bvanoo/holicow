@@ -1,11 +1,10 @@
 import axios from 'axios'
-import type IFirstLogin from '@/entities/IFirstLogin'
-import type IUserProfile from '@/entities/IUserProfile'
-
+import type IFirstLogin from '@/domain/entities/IFirstLogin'
+import type IUserProfile from '@/domain/entities/IUserProfile'
 const userUrlApi = 'http://localhost:3000'
 
 export default function useUsersDAL() {
-  const getFirstLogin = async (profil_id: string): Promise<IFirstLogin> => {
+  const getFirstLogin = async (profil_id: string): Promise<IFirstLogin | void> => {
     return await axios
       .get(`${userUrlApi}/users/first-login`, {
         params: { profilId: profil_id },
