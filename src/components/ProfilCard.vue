@@ -2,7 +2,8 @@
   import type IUserProfile from '@/entities/IUserProfile'
   import UsersServices from '@/services/usersServices'
   import { useUserStore } from '@/stores/User'
-  import { NButton, NCard, NFlex, NImage, type FormInst, type FormItemRule } from 'naive-ui'
+  import { type FormInst, NSelect, NForm, NButton, NRadioGroup, NRadioButton, NFormItem, NInput, type FormItemRule } from 'naive-ui';
+
   import { ref } from 'vue'
 
   const userStore = useUserStore()
@@ -142,7 +143,7 @@
         <span>{{ ProfilUpdateValues!.phone_notif }}</span>
       </template>
       <template v-if="isModify">
-        <n-form class="profilCard__modify" ref="ProfilUpdateRef" :label-width="18" :model="ProfilUpdateValues"
+        <n-form class="profilCard__modify" ref="ProfilUpdateRef" :label-width="18" :model="ProfilUpdateValues!"
           :rules="rules">
           <!-- En‑tête de la carte -->
           <header class="profilCard__modify__header">
