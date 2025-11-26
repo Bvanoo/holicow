@@ -104,6 +104,8 @@
       }
     })
   }
+
+  //Naive-UI ne permet pas d'utiliser des booleans dans des radio-button, on peut juste comparer si la chaine renvoyé par le rabio button est === "true" pour avoir un état boolean
   const getBoolFrom = (value: unknown): boolean => {
     return value === true || value === "true"
   }
