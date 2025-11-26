@@ -70,8 +70,7 @@
         }
     }
 
-    const handleValidateClick = (e: MouseEvent) => {
-        e.preventDefault()
+    const updateProfil = () => {
         UserUpdateRef.value?.validate((errors) => {
             if (!errors) {
                 // message.success('Valid')
@@ -194,7 +193,7 @@
                 Quitter
             </n-button>
             <n-button type="primary" color="black" class="firstConnexion__card__btn firstConnexion__card__btn--validate"
-                @click.prevent="handleValidateClick">
+                @click.prevent="updateProfil">
                 Valider
             </n-button>
         </footer>

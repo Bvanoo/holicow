@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import NavBar from './components/NavBar.vue'
-  import { NConfigProvider, NLoadingBarProvider, NMessageProvider, NNotificationProvider, NModalProvider, NDialogProvider, NFlex, darkTheme } from 'naive-ui';
+  import { NConfigProvider, NLoadingBarProvider, NMessageProvider, NNotificationProvider, NModalProvider, NDialogProvider, darkTheme } from 'naive-ui';
   import { ref } from 'vue'
   import router from './router/index'
   import { useUserStore } from './stores/User';

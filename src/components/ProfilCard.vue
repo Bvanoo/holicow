@@ -12,7 +12,7 @@
   const userProfile: IUserProfile | void = userStore.currentProfile;
   console.log("currentFarmer", userProfile)
 
-  const UserUpdateRef = ref<FormInst | null>(null)
+  const ProfilUpdateRef = ref<FormInst | null>(null)
   const ProfilUpdateValues = userProfile
 
   const optionsRegion = [
@@ -54,7 +54,7 @@
         return /^0\d{3}\/?\d{2}\.?\d{2}\.?\d{2}$/.test(value)
       }
     },
-    mail: {
+    adr_mail: {
       required: true,
       trigger: ['input'],
       message: 'monEmail@email.be',
@@ -69,31 +69,40 @@
     isModify.value = !isModify.value
   }
 
-  const updateProfile = () => {
-    toggleModifyInputs();
+  const updateProfil = () => {
+    ProfilUpdateRef.value?.validate((errors) => {
+      if (!errors) {
+        toggleModifyInputs();
 
-    console.log("userUpdate", ProfilUpdateValues)
-    // farmerStore.setNewEmail(email.value);
-    // const userUpdate: UserUpdate = {
-    //   region: user.region
-    // }
+        console.log("userUpdate", ProfilUpdateValues)
+        // farmerStore.setNewEmail(email.value);
+        // const userUpdate: UserUpdate = {
+        //   region: user.region
+        // }
 
-    //Naive-UI ne permet pas d'utiliser des booleans dans des radio-button, on peut juste comparer si la chaine renvoyé par le rabio button est === "true" pour avoir un état boolean
-    const profileTmp = {
-      profilId: userStore.currentUserId,
-      adr_mail: ProfilUpdateValues?.adr_mail,
-      phone: ProfilUpdateValues?.phone?.replace(/[\/\.]/g, ""),
-      region: ProfilUpdateValues!.region,
-      bio: getBoolFrom(ProfilUpdateValues?.bio),
-      robot: getBoolFrom(ProfilUpdateValues?.robot),
-      mail_notif: getBoolFrom(ProfilUpdateValues?.mail_notif),
-      phone_notif: getBoolFrom(ProfilUpdateValues?.phone_notif),
-    }
+        //Naive-UI ne permet pas d'utiliser des booleans dans des radio-button, on peut juste comparer si la chaine renvoyé par le rabio button est === "true" pour avoir un état boolean
+        const profileTmp = {
+          profilId: userStore.currentUserId,
+          adr_mail: ProfilUpdateValues?.adr_mail,
+          phone: ProfilUpdateValues?.phone?.replace(/[\/\.]/g, ""),
+          region: ProfilUpdateValues!.region,
+          bio: getBoolFrom(ProfilUpdateValues?.bio),
+          robot: getBoolFrom(ProfilUpdateValues?.robot),
+          mail_notif: getBoolFrom(ProfilUpdateValues?.mail_notif),
+          phone_notif: getBoolFrom(ProfilUpdateValues?.phone_notif),
+        }
 
-    const usersServices = new UsersServices();
-    console.log("profileTmp.profilId", profileTmp.profilId)
-    usersServices.updateUserProfile(profileTmp.profilId as string, profileTmp)
-    userStore.currentProfile = profileTmp
+        const usersServices = new UsersServices();
+        console.log("profileTmp.profilId", profileTmp.profilId)
+        usersServices.updateUserProfile(profileTmp.profilId as string, profileTmp)
+        userStore.currentProfile = profileTmp
+
+      }
+      else {
+        console.error(errors)
+        // message.error('Invalid')
+      }
+    })
   }
   const getBoolFrom = (value: unknown): boolean => {
     return value === true || value === "true"
@@ -102,17 +111,18 @@
 
 <template>
   <!--Profil Card-->
-  <n-card v-if="userStore?.getCurrentUser !== null" title="user_card" class="profilView__userCard">
+  <n-card v-if="userStore?.getCurrentUser !== null" class="profilCard">
     <n-flex vertical>
       <n-flex justify="center">
-        <n-image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7csvPWMdfAHEAnhIRTdJKCK5SPK4cHfskow&s"
-          preview-disabled></n-image>
+
       </n-flex>
 
       <!-- <h3>userId</h3>
       <span>{{ currentFarmer?.farmer.userId }}</span> -->
       <!--email-->
       <template v-if="!isModify">
+        <n-image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7csvPWMdfAHEAnhIRTdJKCK5SPK4cHfskow&s"
+          preview-disabled></n-image>
         <h3>email</h3>
         <span>{{ ProfilUpdateValues!.adr_mail }}</span>
         <h3>mobile</h3>
@@ -130,21 +140,19 @@
         <span>{{ ProfilUpdateValues!.phone_notif }}</span>
       </template>
       <template v-if="isModify">
-        <n-form class="" ref="UserUpdateRef" inline :label-width="18" :model="ProfilUpdateValues" :rules="rules">
+        <n-form class="profilCard__modify" ref="ProfilUpdateRef" :label-width="18" :model="ProfilUpdateValues"
+          :rules="rules">
           <!-- En‑tête de la carte -->
-          <header class="">
-            <h2 class="">
-              Première connexion
-            </h2>
-            <p class="">
-              Quelques questions pour personnaliser votre expérience Holicow.
-            </p>
+          <header class="profilCard__modify__header">
+            <h1>
+              Modification
+            </h1>
           </header>
 
           <!-- Contenu principal : infos + alertes -->
-          <div class="">
+          <main class="profilCard__modify__body">
             <!-- infos exploitation -->
-            <section class=" ">
+            <section class="">
               <h3 class="">
                 Vos informations d'exploitation
               </h3>
@@ -172,6 +180,12 @@
                   </n-radio-group>
                 </n-form-item>
               </div>
+              <n-form-item label="Mail" path="adr_mail">
+                <n-input type="text" v-model:value="ProfilUpdateValues!.adr_mail" />
+              </n-form-item>
+              <n-form-item label="Phone" path="phone">
+                <n-input placeholder="Basic Input" v-model:value="ProfilUpdateValues!.phone" />
+              </n-form-item>
             </section>
 
             <!-- Alertes -->
@@ -187,9 +201,7 @@
                     <n-radio-button value="true">Oui</n-radio-button>
                     <n-radio-button value="false">Non</n-radio-button>
                   </n-radio-group>
-                  <n-form-item label="Mail" path="mail_notif">
-                    <n-input type="text" v-model:value="ProfilUpdateValues!.adr_mail" />
-                  </n-form-item>
+
                 </div>
 
                 <div class="">
@@ -198,21 +210,19 @@
                     <n-radio-button value="true">Oui</n-radio-button>
                     <n-radio-button value="false">Non</n-radio-button>
                   </n-radio-group>
-                  <n-form-item label="Phone" path="phone">
-                    <n-input placeholder="Basic Input" v-model:value="ProfilUpdateValues!.phone" path="phone" />
-                  </n-form-item>
+
                 </div>
 
               </div>
             </section>
-          </div>
+          </main>
 
           <!-- Pied de carte : boutons -->
-          <footer class="">
+          <footer class="profilCard__modify__footer">
             <n-button class="test" v-if="isModify" round quaternary
               @click.prevent="toggleModifyInputs">Annuler</n-button>
 
-            <n-button type="primary" class="" @click.prevent="updateProfile">
+            <n-button type="primary" class="" @click.prevent="updateProfil">
               Valider
             </n-button>
           </footer>
@@ -226,11 +236,3 @@
   </n-card>
   <!--Fin profil card-->
 </template>
-
-<style lang="scss">
-  .user {
-    &__card {
-      width: 50%;
-    }
-  }
-</style>

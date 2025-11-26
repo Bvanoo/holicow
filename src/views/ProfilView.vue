@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { NEl, NFlex } from 'naive-ui'
+  import { NFlex } from 'naive-ui'
   import ProfilCard from '../components/ProfilCard.vue'
   import { useUserStore } from '@/stores/User'
   // import type User from '../entities/user'
@@ -14,7 +14,7 @@
     <!--Chargement ...-->
     <n-flex v-if="usersStore?.getCurrentUser === null" vertical>
       <n-spin size="large" />
-      <n-el tag="p">Récupération du profil...</n-el>
+      <p>Récupération du profil...</p>
     </n-flex>
     <ProfilCard></ProfilCard>
   </n-flex>

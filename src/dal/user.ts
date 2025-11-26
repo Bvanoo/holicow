@@ -5,7 +5,7 @@ import type IUserProfile from '@/entities/IUserProfile'
 const userUrlApi = 'http://localhost:3000'
 
 export default function useUsersDAL() {
-  const getFirstLogin = async (profil_id: string): Promise<IFirstLogin | void> => {
+  const getFirstLogin = async (profil_id: string): Promise<IFirstLogin> => {
     return await axios
       .get(`${userUrlApi}/users/first-login`, {
         params: { profilId: profil_id },

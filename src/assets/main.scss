@@ -3,6 +3,7 @@
 @use 'firstConnexion';
 @use 'navbar';
 @use 'ProfilView/profilView';
+@use 'ProfilView/profilCard';
 
 body {
   background-color: $main_color;
@@ -15,4 +16,5 @@ body {
 }
 
 .routerView {
+  margin-top: 130px;
 }

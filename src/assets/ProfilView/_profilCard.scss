@@ -1,0 +1,20 @@
+@use '../variables' as *;
+
+.profilCard {
+  display: flex;
+  width: 90%;
+  border-radius: 16px;
+  &__modify {
+    display: flex;
+    flex-direction: column;
+    &__header {
+      text-align: center;
+    }
+
+    &__body {
+    }
+
+    &__footer {
+    }
+  }
+}
