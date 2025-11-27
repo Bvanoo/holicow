@@ -28,7 +28,8 @@
         <!-- Desktop layout -->
         <template v-if="!isMobile">
           <div class="row-cell" v-for="col in columns" :key="col.key">
-            <n-badge v-if="col.key == 'sub_disease_name_FR'" :value="row.sub_disease_name_FR" type="info" class="bubble" />
+            <n-badge v-if="col.key == 'sub_disease_name_FR'" :value="row.sub_disease_name_FR" type="info"
+              class="bubble" />
             <template v-else> ? </template>
           </div>
         </template>
@@ -58,7 +59,7 @@
   import { ref, onMounted, onUnmounted } from 'vue'
   import { NFlex, NBadge, NSelect, NButton } from 'naive-ui'
   import router from '@/router'
-import type SubProblem from '@/domain/entities/SubProblem'
+  import type SubProblem from '@/domain/entities/SubProblem'
 
   interface Column {
     key: string
@@ -123,13 +124,14 @@ import type SubProblem from '@/domain/entities/SubProblem'
 </script>
 
 <style lang='scss' scoped>
-@use '@/assets/variables' as *;
+  @use '@/assets/variables' as *;
+
   .responsive-table {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin-top:100px;
+    margin-top: 100px;
   }
 
   .table-header {
@@ -169,28 +171,30 @@ import type SubProblem from '@/domain/entities/SubProblem'
   .select-container {
     margin: 16px 0;
     display: flex;
-    justify-content: center!important;
+    justify-content: center !important;
     align-items: end;
     background-color: $main_color;
     gap: 16px;
     width: 100%;
-    height:100px;
-    position:fixed;
-    z-index:500;
-    left:0;
-    top:100px;
+    height: 100px;
+    position: fixed;
+    z-index: 500;
+    left: 0;
+    top: 100px;
   }
 
-  .sort-items{
+  .sort-items {
     position: relative;
-    display:flex;
+    display: flex;
     justify-content: center;
-    width:80%;
-    height:fit-content;
-    background-color: white;
-    padding:10px;
-    box-shadow: 0 0 10px ;
+    width: 80%;
+    height: fit-content;
+    background-color: $white;
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 12px;
   }
+
   .nselect {
     max-width: 150px;
 

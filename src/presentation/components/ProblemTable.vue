@@ -1,9 +1,9 @@
 <template>
   <section class="select-container">
-    <n-flex>
+    <n-flex justify="center" class="sort-items">
       <n-select class="nselect" v-model:value="sortKey"
         :options="columns.map((c) => ({ label: c.label, value: c.key }))" placeholder="Trier par..." />
-      <n-button v-on:click="toggleSortOrder">
+      <n-button :color="'white'" :text-color="'grey'" :bordered="true" v-on:click="toggleSortOrder">
         {{ sortOrder === 'asc' ? '⬆️ Asc' : '⬇️ Desc' }}
       </n-button>
     </n-flex>
@@ -43,7 +43,7 @@
                 <!-- <span>{{ row[col.key] }}</span> -->
               </template>
               <template v-else>
-                 <strong>{{ col.label }}:</strong>
+                <strong>{{ col.label }}:</strong>
                 ?
               </template>
             </div>
@@ -123,12 +123,15 @@
   // })
 </script>
 
-<style scoped>
+<style lang='scss' scoped>
+  @use '@/assets/variables' as *;
+
   .responsive-table {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    margin-top: 100px;
   }
 
   .table-header {
@@ -168,12 +171,33 @@
   .select-container {
     margin: 16px 0;
     display: flex;
+    justify-content: center !important;
+    align-items: end;
+    background-color: $main_color;
     gap: 16px;
-    flex-direction: column;
+    width: 100%;
+    height: 100px;
+    position: fixed;
+    z-index: 500;
+    left: 0;
+    top: 100px;
+  }
+
+  .sort-items {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    height: fit-content;
+    background-color: $white;
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 12px;
   }
 
   .nselect {
-    max-width: 25%;
+    max-width: 150px;
+
   }
 
   /* Mobile styles */
