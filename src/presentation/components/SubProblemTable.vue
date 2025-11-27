@@ -1,9 +1,9 @@
 <template>
   <section class="select-container">
-    <n-flex>
+    <n-flex justify="center" class="sort-items">
       <n-select class="nselect" v-model:value="sortKey"
         :options="columns.map((c) => ({ label: c.label, value: c.key }))" placeholder="Trier par..." />
-      <n-button v-on:click="toggleSortOrder">
+      <n-button :color="'white'" :text-color="'grey'" :bordered="true" v-on:click="toggleSortOrder">
         {{ sortOrder === 'asc' ? '⬆️ Asc' : '⬇️ Desc' }}
       </n-button>
     </n-flex>
@@ -22,13 +22,13 @@
       <div @click="() => {
         router.push({
           name: 'sub problems',
-          params: { data: row.id_disease }
+          params: { data: 'Hello' }
         });
       }" class="table-row" v-for="(row, index) in data" :key="index">
         <!-- Desktop layout -->
         <template v-if="!isMobile">
           <div class="row-cell" v-for="col in columns" :key="col.key">
-            <n-badge v-if="col.key == 'disease_name_FR'" :value="row.disease_name_FR" type="info" class="bubble" />
+            <n-badge v-if="col.key == 'sub_disease_name_FR'" :value="row.sub_disease_name_FR" type="info" class="bubble" />
             <template v-else> ? </template>
           </div>
         </template>
@@ -37,12 +37,14 @@
         <template v-else>
           <n-card class="mobile-card" :title="row[primaryKey]">
             <div class="mobile-line" v-for="col in columns" :key="col.key">
-              <strong>{{ col.label }}:</strong>
-              <template v-if="col.key == 'disease_name_FR'">
-                <!-- <strong>{{ col.label }}:</strong> -->
-                <span>{{ row[col.key] }}</span>
+
+              <template v-if="col.key == 'sub_disease_name_FR'">
+                <!-- <span>{{ row[col.key] }}</span> -->
               </template>
-              <template v-else>?</template>
+              <template v-else>
+                <strong>{{ col.label }}:</strong>
+                ?
+              </template>
             </div>
           </n-card>
         </template>
@@ -55,8 +57,8 @@
 <script setup lang="ts">
   import { ref, onMounted, onUnmounted } from 'vue'
   import { NFlex, NBadge, NSelect, NButton } from 'naive-ui'
-  import type Problem from '@/domain/entities/Problem'
   import router from '@/router'
+import type SubProblem from '@/domain/entities/SubProblem'
 
   interface Column {
     key: string
@@ -65,7 +67,7 @@
 
   interface Props {
     columns: Column[]
-    data: Problem[] | undefined
+    data: SubProblem[] | undefined
     primaryKey?: string
   }
 
@@ -120,12 +122,14 @@
   // })
 </script>
 
-<style scoped>
+<style lang='scss' scoped>
+@use '@/assets/variables' as *;
   .responsive-table {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    margin-top:100px;
   }
 
   .table-header {
@@ -165,12 +169,31 @@
   .select-container {
     margin: 16px 0;
     display: flex;
+    justify-content: center!important;
+    align-items: end;
+    background-color: $main_color;
     gap: 16px;
-    flex-direction: column;
+    width: 100%;
+    height:100px;
+    position:fixed;
+    z-index:500;
+    left:0;
+    top:100px;
   }
 
+  .sort-items{
+    position: relative;
+    display:flex;
+    justify-content: center;
+    width:80%;
+    height:fit-content;
+    background-color: white;
+    padding:10px;
+    box-shadow: 0 0 10px ;
+  }
   .nselect {
-    max-width: 25%;
+    max-width: 150px;
+
   }
 
   /* Mobile styles */

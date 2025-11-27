@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
     import { onMounted, ref, type Ref, inject, watch } from 'vue'
-    import CustomTable from '../components/CustomTable.vue'
+    import CustomTable from '../components/ProblemTable.vue'
     import { ProblemService } from '@/domain/services/ProblemService'
     import type ProblemPayload from '@/domain/entities/ProblemPayload';
     import type Problem from '@/domain/entities/Problem';
@@ -70,3 +70,13 @@
     //     { id: 6, name: 'Unnamed', comments: 2, alerts: 4, avatarAlerts: 5 },
     // ])
 </script>
+
+<style scoped>
+  .table-footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 16px 0;
+    padding-bottom: 64px;
+  }
+</style>
