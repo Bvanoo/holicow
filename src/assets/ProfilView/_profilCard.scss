@@ -1,5 +1,5 @@
 @use '../variables' as *;
-.n-card {
+.n-card.profilCard {
   display: flex;
   width: 90%;
   max-width: $desktop;
@@ -10,6 +10,7 @@
 }
 
 .profilCard {
+  display: flex;
   &__infos {
     width: 100%;
     display: flex;
@@ -58,6 +59,10 @@
     &__header {
       text-align: center;
       margin-bottom: 24px;
+      h1 {
+        font-weight: 900;
+        @include textGradiant($main_color_dark, $main_color);
+      }
     }
 
     &__body {
@@ -108,6 +113,23 @@
       margin-top: 16px;
       display: flex;
       justify-content: center;
+      gap: 16px;
+      &-button {
+        border: 0px !important;
+
+        @include button();
+      }
+    }
+  }
+
+  &__button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    &-modifyProfil {
+      @include button();
+      border: 0px !important;
     }
   }
 }
