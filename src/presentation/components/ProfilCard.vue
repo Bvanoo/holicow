@@ -114,11 +114,11 @@
           </div>
           <div class="profilCard__infos-card">
             <h3>bio</h3>
-            <span>{{ ProfilUpdateValues!.bio }}</span>
+            <span>{{ getBoolFrom(ProfilUpdateValues!.bio) ? "oui" : "non" }}</span>
           </div>
           <div class="profilCard__infos-card">
             <h3>robot</h3>
-            <span>{{ ProfilUpdateValues!.robot }}</span>
+            <span>{{ getBoolFrom(ProfilUpdateValues!.robot) ? "oui" : "non" }}</span>
           </div>
         </div>
       </div>
@@ -127,11 +127,11 @@
         <div class="profilCard__alerts-cards">
           <div class="profilCard__alerts__alert-card">
             <h3>mail</h3>
-            <span>{{ ProfilUpdateValues!.mail_notif }}</span>
+            <span>{{ getBoolFrom(ProfilUpdateValues!.mail_notif) ? "oui" : "non" }}</span>
           </div>
           <div class="profilCard__alerts__alert-card">
             <h3>phone</h3>
-            <span>{{ ProfilUpdateValues!.phone_notif }}</span>
+            <span>{{ getBoolFrom(ProfilUpdateValues!.phone_notif) ? "oui" : "non" }}</span>
           </div>
         </div>
       </div>
@@ -212,9 +212,9 @@
           <n-button class="test" v-if="isModify" quaternary @click.prevent="toggleModifyInputs">Annuler</n-button>
           <n-button type="primary" class="" @click.prevent="updateProfil"> Valider </n-button>
         </footer>
+
       </n-form>
     </template>
-
     <n-button v-if="!isModify" class="profilView__userCard__buttons" strong round type="success"
       @click.prevent="toggleModifyInputs">Modifier mon profil</n-button>
   </n-card>
