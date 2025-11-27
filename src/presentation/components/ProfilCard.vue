@@ -209,14 +209,17 @@
 
         <!-- Pied de carte : boutons -->
         <footer class="profilCard__modify__footer">
-          <n-button class="test" v-if="isModify" quaternary @click.prevent="toggleModifyInputs">Annuler</n-button>
-          <n-button type="primary" class="" @click.prevent="updateProfil"> Valider </n-button>
+          <n-button v-if="isModify" quaternary @click.prevent="toggleModifyInputs">Annuler</n-button>
+          <n-button class="profilCard__modify__footer-button" type="primary" @click.prevent="updateProfil"> Valider
+          </n-button>
         </footer>
 
       </n-form>
     </template>
-    <n-button v-if="!isModify" class="profilView__userCard__buttons" strong round type="success"
-      @click.prevent="toggleModifyInputs">Modifier mon profil</n-button>
+    <div class="profilCard__button">
+      <n-button v-if="!isModify" class="profilCard__button-modifyProfil" strong type="success"
+        @click.prevent="toggleModifyInputs">Modifier mon profil</n-button>
+    </div>
   </n-card>
   <!--Fin profil card-->
 </template>

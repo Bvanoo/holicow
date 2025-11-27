@@ -14,9 +14,10 @@
         Nous espérons vous revoir bientôt!
         <div>
             <p>Vous pourrez modifier ces informations ultérieurement en cliquant sur votre profil.</p>
-            <n-flex justify="center">
+            <n-flex class="firstConnexion__card__btn" justify="center">
                 <n-button quaternary @click.prevent="emit('quitApp', true)">Retour WALLeSmart</n-button>
-                <n-button type="primary" @click.prevent="emit('cancelQuitApp', true)">Se connecter</n-button>
+                <n-button class="firstConnexion__card__btn--validate" type="primary"
+                    @click.prevent="emit('cancelQuitApp', true)">Se connecter</n-button>
             </n-flex>
         </div>
     </n-card>

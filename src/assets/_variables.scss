@@ -28,3 +28,11 @@ $shadow_0_5: hsla(0, 0%, 0%, 0.5);
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
+@mixin button() {
+  border: 0px !important;
+
+  background-color: $main_color;
+  &:hover {
+    background-color: $main_color_dark !important;
+  }
+}
