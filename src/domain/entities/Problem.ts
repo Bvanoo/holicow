@@ -1,10 +1,12 @@
-import type SubProblem from "./SubProblem"
+import type SubProblem from './SubProblem'
 
 export default interface Problem {
-  id: string | number,
-  name: string,
-  commentsNumber: number,
-  alertsNumber: number,
-  alertsByAvatar: number
-  subProblems?: Array<SubProblem>
+  id_disease: number
+  disease_name_FR: string
+  disease_name_DE?: string
+  disease_name_EN?: string
+  disease_name_NL?: string
+  est_healing_time?: number
+  status_disease?: boolean
+  sub_diseases?: Array<SubProblem>
 }

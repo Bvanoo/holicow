@@ -11,10 +11,12 @@ body {
 }
 .main {
   display: flex;
+  width: 100%;
   justify-content: center;
   height: 100dvh;
 }
 
 .routerView {
   margin-top: 130px;
+  width: 100%;
 }

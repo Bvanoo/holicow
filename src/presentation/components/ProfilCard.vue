@@ -146,62 +146,65 @@
 
         <!-- Contenu principal : infos + alertes -->
         <main class="profilCard__modify__body">
+          <h3 class="">Vos informations d'exploitation</h3>
           <!-- infos exploitation -->
           <section class="profilCard__modify__body-infos">
-            <h3 class="">Vos informations d'exploitation</h3>
 
-            <!-- Région -->
-            <n-form-item label="Région">
-              <n-select class="" :options="optionsRegion" v-model:value="ProfilUpdateValues!.region"
-                placeholder="Choisir" />
-            </n-form-item>
+            <div class="profilCard__modify__body-infos-region">
+              <!-- Région -->
+              <n-form-item label="Région">
+                <n-select class="" :options="optionsRegion" v-model:value="ProfilUpdateValues!.region"
+                  placeholder="Choisir" />
+              </n-form-item>
+            </div>
 
-            <!-- Bio -->
-            <n-form-item label="Bio">
-              <n-radio-group v-model:value="ProfilUpdateValues!.bio" name="bio-group" class="">
-                <n-radio-button value="true">Oui</n-radio-button>
-                <n-radio-button value="false">Non</n-radio-button>
-              </n-radio-group>
-            </n-form-item>
-
-            <!-- Robots -->
-            <n-form-item label="Robots">
-              <n-radio-group v-model:value="ProfilUpdateValues!.robot" name="robot-group" class="">
-                <n-radio-button value="true">Oui</n-radio-button>
-                <n-radio-button value="false">Non</n-radio-button>
-              </n-radio-group>
-            </n-form-item>
-
-            <n-form-item label="Mail" path="adr_mail">
-              <n-input type="text" v-model:value="ProfilUpdateValues!.adr_mail" />
-            </n-form-item>
-            <n-form-item label="Phone" path="phone">
-              <n-input placeholder="Basic Input" v-model:value="ProfilUpdateValues!.phone" />
-            </n-form-item>
-          </section>
-
-          <!-- Alertes -->
-          <section class=" ">
-            <h3 class="">Alertes maladie</h3>
-
-            <div class="">
-              <div class="">
-                <span class="">Email</span>
-                <n-radio-group class="" v-model:value="ProfilUpdateValues!.mail_notif" name="mail_notif">
+            <div class="profilCard__modify__body-infos-bool">
+              <!-- Bio -->
+              <n-form-item label="Bio">
+                <n-radio-group v-model:value="ProfilUpdateValues!.bio" name="bio-group" class="">
                   <n-radio-button value="true">Oui</n-radio-button>
                   <n-radio-button value="false">Non</n-radio-button>
                 </n-radio-group>
-              </div>
+              </n-form-item>
 
-              <div class="">
-                <span class="">Téléphone</span>
-                <n-radio-group v-model:value="ProfilUpdateValues!.phone_notif" name="phone_notif" class="">
+              <!-- Robots -->
+              <n-form-item label="Robots">
+                <n-radio-group v-model:value="ProfilUpdateValues!.robot" name="robot-group" class="">
                   <n-radio-button value="true">Oui</n-radio-button>
                   <n-radio-button value="false">Non</n-radio-button>
                 </n-radio-group>
-              </div>
+              </n-form-item>
+            </div>
+            <div class="profilCard__modify__body-infos-user">
+              <n-form-item label="Mail" path="adr_mail">
+                <n-input type="text" v-model:value="ProfilUpdateValues!.adr_mail" />
+              </n-form-item>
+              <n-form-item label="Phone" path="phone">
+                <n-input placeholder="Basic Input" v-model:value="ProfilUpdateValues!.phone" />
+              </n-form-item>
             </div>
           </section>
+          <h3 class="">Alertes maladie</h3>
+
+          <!-- Alertes -->
+          <div class="profilCard__modify__body-alerts">
+
+            <div class="profilCard__modify__body-alert">
+              <span class="">Email</span>
+              <n-radio-group class="" v-model:value="ProfilUpdateValues!.mail_notif" name="mail_notif">
+                <n-radio-button value="true">Oui</n-radio-button>
+                <n-radio-button value="false">Non</n-radio-button>
+              </n-radio-group>
+            </div>
+
+            <div class="profilCard__modify__body-alert">
+              <span class="">Téléphone</span>
+              <n-radio-group v-model:value="ProfilUpdateValues!.phone_notif" name="phone_notif" class="">
+                <n-radio-button value="true">Oui</n-radio-button>
+                <n-radio-button value="false">Non</n-radio-button>
+              </n-radio-group>
+            </div>
+          </div>
         </main>
 
         <!-- Pied de carte : boutons -->

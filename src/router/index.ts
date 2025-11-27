@@ -45,6 +45,11 @@ const router = createRouter({
       path: '/notAllowed',
       component: NotAllowed,
     },
+    {
+      path: '/subdeseases/:data',
+      name: 'sub problems',
+      component: () => import('@/presentation/views/SubProblemsView.vue'),
+    },
     //Capture de toutes les routes non définies
     {
       path: '/:catchAll(.*)',

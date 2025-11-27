@@ -1,11 +1,12 @@
 <template>
     <!-- <ChatBubble /> -->
     <section style="padding: 16px">
-        <CustomTable :columns="columns" :data="rows" primary-key="disease_name_FR">
-            <!-- <template #footer>
+        <!-- <CustomTable :columns="columns" :data="rows" primary-key="sub_disease_name_FR">
+
+        </CustomTable> -->
+        <!-- <template #footer>
         <n-button type="primary">Action footer</n-button>
       </template> -->
-        </CustomTable>
         <div class="table-footer">
             <n-pagination v-model:page="currentPage" :page-size="pageSize" :item-count="totalItems" simple />
             <slot name="footer"></slot>
@@ -20,7 +21,6 @@
     import type ProblemPayload from '@/domain/entities/ProblemPayload';
     import type Problem from '@/domain/entities/Problem';
     const results = ref<ProblemPayload | void>();
-
     const currentPage = ref<number>(1)
     const pageSize = ref<number>(3)
     const rows = ref<Problem[] | undefined>()
@@ -30,7 +30,7 @@
     const problemService = inject<ProblemService>("problemService");
 
     onMounted(async () => {
-        results.value = await problemService?.getAllProblems(currentPage.value, pageSize.value, "", "")
+        // results.value = await problemService?.getAllProblems(currentPage.value, pageSize.value, "", "")
         console.log(results)
 
         columns.value = [
@@ -40,9 +40,9 @@
             { key: 'avatarAlerts', label: 'Alertes/Avatar' },
         ]
 
-        pageSize.value = Math.ceil(results.value!.total / results.value!.totalPages)
-        rows.value = results.value!.data
-        totalItems.value = results.value!.total;
+        // pageSize.value = Math.ceil(results.value!.total / results.value!.totalPages)
+        // rows.value = results.value!.data
+        // totalItems.value = results.value!.total;
 
     })
 

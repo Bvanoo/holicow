@@ -2,7 +2,7 @@
     import { type FormInst, NSelect, NForm, NButton, NRadioGroup, NRadioButton, NFormItem, NInput, type FormItemRule } from 'naive-ui';
     import { ref } from 'vue';
     import { useUserStore } from '@/stores/User';
-    import type IUserProfile from '../../entities/IUserProfile';
+    import type IUserProfile from '@/domain/entities/IUserProfile';
     //Emits
     const emit = defineEmits<{
         (event: 'updateUserChoices', value: IUserProfile): void,

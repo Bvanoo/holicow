@@ -2,18 +2,18 @@
 .n-card {
   display: flex;
   width: 90%;
-  max-width: $tablet;
+  max-width: $desktop;
 }
 .n-image {
   display: flex;
   justify-self: center;
 }
 .n-card__content {
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  border-radius: 16px;
-  align-items: center;
+  // display: flex;
+  // width: 100%;
+  // flex-direction: column;
+  // border-radius: 16px;
+  // align-items: center;
 }
 .profilCard {
   &__infos {
@@ -66,6 +66,43 @@
     }
 
     &__body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      &-infos {
+        display: flex;
+        align-items: start;
+        justify-content: center;
+        flex-flow: row wrap;
+        gap: 16px;
+        width: 100%;
+        &-region {
+          width: 100%;
+          max-width: 300px;
+        }
+        &-bool {
+          display: flex;
+          flex-flow: row wrap;
+          gap: 8px;
+          width: fit-content;
+        }
+        &-user {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          flex-flow: row wrap;
+          gap: 8px;
+        }
+      }
+      &-alerts {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        flex-flow: row wrap;
+        background-color: red;
+      }
+      &-alert {
+      }
     }
 
     &__footer {

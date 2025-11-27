@@ -1,14 +1,18 @@
 // src/api/infrastructure/repositories/UserRepositoryHttp.ts
-import type Problem from "@/domain/entities/Problem";
-import type { IProblemRepository } from "../../domain/repositories/IProblemRepository";
-
+import type { IProblemRepository } from '../../domain/repositories/ISubProblemRepository'
+import type ProblemPayload from '@/domain/entities/ProblemPayload'
 
 export class ProblemRepositoryHttp implements IProblemRepository {
-  constructor(
-    private http: { get: (url: string) => Promise<any> }
-  ) {}
+  constructor(private http: { get: (url: string) => Promise<ProblemPayload> }) {}
 
-  async getAll(): Promise<Problem[]> {
-    return await this.http.get("/api/....?");
+  async getAll(
+    page: number,
+    limit: number,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    sortedBy: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    sortedOrder: string,
+  ): Promise<ProblemPayload> {
+    return await this.http.get(`http://localhost:3000/disease?page=${page}&limit=${limit}`)
   }
 }
