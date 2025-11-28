@@ -7,10 +7,12 @@
 </script>
 
 <template>
-    <div class="tesImage">
+    <!-- <div class="tesImage">
         <img class="logo" src="/logos/Herbagere.png">
         <img class="stars" src="/logos/star4.png">
-    </div>
+    </div> -->
+    <div class="text-3xl font-bold underline">HomeView</div>
+
 </template>
 
 <style lang="scss" scoped>

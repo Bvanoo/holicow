@@ -76,7 +76,7 @@
   const primaryKey = props.primaryKey ?? props.columns[0]?.key ?? 'id'
   const isMobile = ref(false)
   const checkIsMobile = () => {
-    isMobile.value = window.innerWidth < 768
+    isMobile.value = window.innerWidth <= 768
   }
 
   onMounted(() => {
@@ -132,6 +132,9 @@
     flex-direction: column;
     gap: 1rem;
     margin-top: 100px;
+    background-color: $white !important;
+    padding: 12px;
+    border-radius: 12px;
   }
 
   .table-header {
@@ -150,16 +153,22 @@
   .table-body {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 6px;
   }
 
   .table-row {
     display: flex;
     flex-direction: row;
     gap: 1rem;
-    /* box-shadow:
-    0 4px 8px 0 rgba(0, 0, 0, 0.2),
-    0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+    cursor: pointer;
+    padding: 12px;
+    border-radius: 6px;
+    transition: all .3s ease-out;
+
+    &:hover {
+      box-shadow: 0 1px 6px $shadow_0_7;
+      transform: translateY(-3px);
+    }
   }
 
   .row-cell {
@@ -188,6 +197,7 @@
     display: flex;
     justify-content: center;
     width: 80%;
+    max-width: 350px;
     height: fit-content;
     background-color: $white;
     border-radius: 12px;
@@ -196,14 +206,25 @@
   }
 
   .nselect {
-    max-width: 150px;
+    max-width: 140px;
 
   }
 
   /* Mobile styles */
   @media (max-width: 768px) {
+    .responsive-table {
+      background-color: transparent !important;
+
+    }
+
     .table-row {
       flex-direction: column;
+      padding: 0;
+
+      &:hover {
+        box-shadow: none;
+
+      }
     }
 
     .mobile-card {

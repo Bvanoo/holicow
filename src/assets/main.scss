@@ -4,7 +4,9 @@
 @use 'navbar';
 @use 'ProfilView/profilView';
 @use 'ProfilView/profilCard';
-
+html {
+  height: 100%;
+}
 body {
   background-color: $main_color;
   height: 100%;
@@ -13,10 +15,14 @@ body {
   display: flex;
   width: 100%;
   justify-content: center;
-  height: 100dvh;
+  height: 100%;
 }
 
 .routerView {
   margin-top: 130px;
+  padding-bottom: 20px;
   width: 100%;
+}
+#app {
+  height: 100%;
 }

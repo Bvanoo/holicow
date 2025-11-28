@@ -34,6 +34,7 @@
                 :logoSrc="logoHolicow" :logoSrcUE="logoHolicowUE" />
               <div class="main">
                 <router-view class="routerView" />
+
               </div>
             </n-dialog-provider>
           </n-modal-provider>

@@ -21,9 +21,14 @@ const router = createRouter({
       component: FirstConnexion,
     },
     {
-      name: 'maladies',
-      path: '/maladies',
+      name: 'problemes',
+      path: '/problemes',
       component: DiseasesView,
+    },
+    {
+      path: '/sousproblemes/:data',
+      name: 'sub problems',
+      component: () => import('@/presentation/views/SubProblemsView.vue'),
     },
     {
       name: 'commentaires',
@@ -45,11 +50,7 @@ const router = createRouter({
       path: '/notAllowed',
       component: NotAllowed,
     },
-    {
-      path: '/subdeseases/:data',
-      name: 'sub problems',
-      component: () => import('@/presentation/views/SubProblemsView.vue'),
-    },
+
     //Capture de toutes les routes non définies
     {
       path: '/:catchAll(.*)',

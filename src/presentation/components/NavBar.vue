@@ -19,7 +19,7 @@
 
     const tabs: Tab[] = [
         { key: '', label: 'Home' },
-        { key: 'maladies', label: 'Maladies' },
+        { key: 'problemes', label: 'Problèmes' },
         { key: 'commentaires', label: 'Commentaires' },
         { key: 'alertes', label: 'Alertes' },
         { key: 'profile', label: 'Profile' },
@@ -66,7 +66,7 @@
         <div class="navbar-inner">
             <div class="left">
                 <img v-if="logoSrc" :src="logoSrc" alt="logo" class="logo" />
-                <img v-if="logoSrcUE" :src="logoSrcUE" alt="logo" class="logo UE" />
+                <!-- <img v-if="logoSrcUE" :src="logoSrcUE" alt="logo" class="logo UE" /> -->
                 <slot name="logo" v-else>
                     <div class="logo-placeholder">LOGO</div>
                 </slot>
@@ -80,8 +80,8 @@
             </div>
 
             <div class="right">
-                <n-button class="menu-button" v-if="mobile" @click="showDrawer = true" type="primary" ghost>
-                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden>
+                <n-button class="menu-button" v-if="mobile" @click="showDrawer = true" secondary>
+                    <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden>
                         <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" />
                     </svg>

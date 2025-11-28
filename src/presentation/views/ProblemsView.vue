@@ -40,7 +40,11 @@
             { key: 'avatarAlerts', label: 'Alertes/Avatar' },
         ]
 
-        pageSize.value = Math.ceil(results.value!.total / results.value!.totalPages)
+        pageSize.value = Math.ceil(results.value!.total / results.value!.totalPages) + 1
+        console.log("results.value!.total", results.value!.total);
+        console.log("results.value!.totalPages", results.value!.totalPages);
+        console.log(" p,ageSize.value", pageSize.value);
+
         rows.value = results.value!.data
         totalItems.value = results.value!.total;
 
@@ -72,11 +76,11 @@
 </script>
 
 <style scoped>
-  .table-footer {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin: 16px 0;
-    padding-bottom: 64px;
-  }
+    .table-footer {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin: 16px 0;
+        padding-bottom: 12px;
+    }
 </style>
