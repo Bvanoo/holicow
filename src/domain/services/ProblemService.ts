@@ -1,4 +1,4 @@
-import type SolutionsList from '../entities/SolutionsList'
+import type Solution from '../entities/Solution'
 import type SubProblem from '../entities/SubProblem'
 import { showSimpleErrorBox } from '../exception/utils'
 import type { ProblemRepositoryHttp } from '@/dal/repositories/ProblemRepositoryHttp'
@@ -17,9 +17,9 @@ export class ProblemService {
       .getAllSubProblemByProblemId(id, 1, 1, '', '')
       .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
   }
-  async getSolutionsListBySubProblemId(idSubProblem: number): Promise<SolutionsList[] | void> {
+  async getSolutionsArrayBySubProblemId(idSubProblem: number): Promise<Solution[] | void> {
     return await this.repo
-      .getSolutionsListBySubProblemId(idSubProblem, 1, 1, '', '')
+      .getSolutionsArrayBySubProblemId(idSubProblem, 1, 1, '', '')
       .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
   }
 }

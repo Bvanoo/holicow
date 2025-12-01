@@ -1,7 +1,7 @@
 <template>
   <!-- <ChatBubble /> -->
   <section style="padding: 16px">
-    <SolutionTable :columns="columns" :data="rows" primary-key="sub_disease_name_FR">
+    <SolutionTable :columns="columns" :data="rows" primary-key="solution_description_FR">
     </SolutionTable>
 
     <div class="table-footer">
@@ -16,11 +16,11 @@
   import { ProblemService } from '@/domain/services/ProblemService'
   import { useRoute } from 'vue-router'
   import SolutionTable from '../components/SolutionTable.vue'
-  import type SolutionsList from '@/domain/entities/SolutionsList'
-  const results = ref<SolutionsList[] | void>()
+  import type Solution from '@/domain/entities/Solution'
+  const results = ref<Solution[] | void>()
   const currentPage = ref<number>(1)
   const pageSize = ref<number>(3)
-  const rows = ref<SolutionsList[] | undefined>()
+  const rows = ref<Solution[] | undefined>()
   const totalItems = ref<number>()
 
   const columns: Ref<{ key: string; label: string }[]> = ref([])
@@ -29,13 +29,13 @@
 
   onMounted(async () => {
     columns.value = [
-      { key: 'description', label: 'Nom' },
+      { key: 'solution_description_FR', label: 'Nom' },
       { key: 'globalRating', label: 'Note' },
       { key: 'comments', label: 'Commentaires' },
       { key: 'alerts', label: 'Alertes' },
       { key: 'avatarAlerts', label: 'Alertes/Avatar' },
     ]
-    results.value = await problemService?.getSolutionsListBySubProblemId(Number(route.params.data))
+    results.value = await problemService?.getSolutionsArrayBySubProblemId(Number(route.params.data))
 
     // pageSize.value = Math.ceil(results.value!.total / results.value!.totalPages)
     rows.value = results.value!

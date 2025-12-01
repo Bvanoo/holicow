@@ -17,10 +17,11 @@
   import { useRoute } from 'vue-router'
   import SubProblemTable from '../components/SubProblemTable.vue'
   import type SubProblem from '@/domain/entities/SubProblem'
-  const results = ref<SubProblem[] | void>()
+  import type Solution from '@/domain/entities/Solution'
+  const results = ref<Solution[] | void>()
   const currentPage = ref<number>(1)
   const pageSize = ref<number>(3)
-  const rows = ref<SubProblem[] | undefined>()
+  const rows = ref<Solution[] | undefined>()
   const totalItems = ref<number>()
 
   const columns: Ref<{ key: string; label: string }[]> = ref([])
@@ -35,7 +36,7 @@
       { key: 'alerts', label: 'Alertes' },
       { key: 'avatarAlerts', label: 'Alertes/Avatar' },
     ]
-    results.value = await problemService?.getSubProblemByProblemId(Number(route.params.data))
+    results.value = await problemService?.getSolutionsArrayBySubProblemId(Number(route.params.data))
 
     // pageSize.value = Math.ceil(results.value!.total / results.value!.totalPages)
     rows.value = results.value!

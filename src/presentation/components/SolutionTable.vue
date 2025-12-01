@@ -28,7 +28,8 @@
         <!-- Desktop layout -->
         <template v-if="!isMobile">
           <div class="row-cell" v-for="col in columns" :key="col.key">
-            <n-badge v-if="col.key == 'sub_disease_name_FR'" :value="row.description" type="info" class="bubble" />
+            <n-badge v-if="col.key == 'solution_description_FR'" :value="row.solution_description_FR" type="info"
+              class="bubble" />
             <template v-else> ? </template>
           </div>
         </template>
@@ -38,7 +39,7 @@
           <n-card class="mobile-card" :title="Object.keys(row).find(el => el === primaryKey)">
             <div class="mobile-line" v-for="col in columns" :key="col.key">
 
-              <template v-if="col.key == 'sub_disease_name_FR'">
+              <template v-if="col.key == 'solution_description_FR'">
                 <!-- <span>{{ row[col.key] }}</span> -->
               </template>
               <template v-else>
@@ -58,7 +59,7 @@
   import { ref, onMounted, onUnmounted } from 'vue'
   import { NFlex, NBadge, NSelect, NButton } from 'naive-ui'
   import router from '@/router'
-  import type SolutionsList from '@/domain/entities/SolutionsList'
+  import type Solution from '@/domain/entities/Solution'
 
   interface Column {
     key: string
@@ -67,7 +68,7 @@
 
   interface Props {
     columns: Column[]
-    data: SolutionsList[] | undefined
+    data: Solution[] | undefined
     primaryKey?: string
   }
 
