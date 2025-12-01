@@ -1,8 +1,8 @@
 <template>
   <!-- <ChatBubble /> -->
   <section style="padding: 16px">
-    <SubProblemTable :columns="columns" :data="rows" primary-key="sub_disease_name_FR">
-    </SubProblemTable>
+    <SolutionTable :columns="columns" :data="rows" primary-key="sub_disease_name_FR">
+    </SolutionTable>
 
     <div class="table-footer">
       <n-pagination v-model:page="currentPage" :page-size="pageSize" :item-count="totalItems" simple />
@@ -15,12 +15,12 @@
   import { onMounted, ref, type Ref, inject, watch } from 'vue'
   import { ProblemService } from '@/domain/services/ProblemService'
   import { useRoute } from 'vue-router'
-  import SubProblemTable from '../components/SubProblemTable.vue'
-  import type SubProblem from '@/domain/entities/SubProblem'
-  const results = ref<SubProblem[] | void>()
+  import SolutionTable from '../components/SolutionTable.vue'
+  import type SolutionsList from '@/domain/entities/SolutionsList'
+  const results = ref<SolutionsList[] | void>()
   const currentPage = ref<number>(1)
   const pageSize = ref<number>(3)
-  const rows = ref<SubProblem[] | undefined>()
+  const rows = ref<SolutionsList[] | undefined>()
   const totalItems = ref<number>()
 
   const columns: Ref<{ key: string; label: string }[]> = ref([])
@@ -29,12 +29,13 @@
 
   onMounted(async () => {
     columns.value = [
-      { key: 'sub_disease_name_FR', label: 'Nom' },
+      { key: 'description', label: 'Nom' },
+      { key: 'globalRating', label: 'Note' },
       { key: 'comments', label: 'Commentaires' },
       { key: 'alerts', label: 'Alertes' },
       { key: 'avatarAlerts', label: 'Alertes/Avatar' },
     ]
-    results.value = await problemService?.getSubProblemByProblemId(Number(route.params.data))
+    results.value = await problemService?.getSolutionsListBySubProblemId(Number(route.params.data))
 
     // pageSize.value = Math.ceil(results.value!.total / results.value!.totalPages)
     rows.value = results.value!

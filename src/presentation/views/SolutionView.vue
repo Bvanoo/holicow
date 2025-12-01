@@ -29,7 +29,8 @@
 
   onMounted(async () => {
     columns.value = [
-      { key: 'sub_disease_name_FR', label: 'Nom' },
+      { key: 'description', label: 'Nom' },
+      { key: 'globalRating', label: 'Note' },
       { key: 'comments', label: 'Commentaires' },
       { key: 'alerts', label: 'Alertes' },
       { key: 'avatarAlerts', label: 'Alertes/Avatar' },

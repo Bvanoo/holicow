@@ -28,8 +28,7 @@
         <!-- Desktop layout -->
         <template v-if="!isMobile">
           <div class="row-cell" v-for="col in columns" :key="col.key">
-            <n-badge v-if="col.key == 'sub_disease_name_FR'" :value="row.sub_disease_name_FR" type="info"
-              class="bubble" />
+            <n-badge v-if="col.key == 'sub_disease_name_FR'" :value="row.description" type="info" class="bubble" />
             <template v-else> ? </template>
           </div>
         </template>
@@ -59,7 +58,7 @@
   import { ref, onMounted, onUnmounted } from 'vue'
   import { NFlex, NBadge, NSelect, NButton } from 'naive-ui'
   import router from '@/router'
-  import type SubProblem from '@/domain/entities/SubProblem'
+  import type SolutionsList from '@/domain/entities/SolutionsList'
 
   interface Column {
     key: string
@@ -68,7 +67,7 @@
 
   interface Props {
     columns: Column[]
-    data: SubProblem[] | undefined
+    data: SolutionsList[] | undefined
     primaryKey?: string
   }
 

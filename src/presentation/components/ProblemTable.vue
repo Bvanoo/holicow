@@ -35,7 +35,7 @@
 
         <!-- Mobile card layout -->
         <template v-else>
-          <n-card class="mobile-card" :title="row[primaryKey]">
+          <n-card class="mobile-card" :title="Object.keys(row).find(el => el === primaryKey)">
             <div class="mobile-line" v-for="col in columns" :key="col.key">
 
               <template v-if="col.key == 'disease_name_FR'">
