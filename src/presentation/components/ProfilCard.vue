@@ -102,23 +102,23 @@
         <div class="profilCard__infos-cards">
           <div class="profilCard__infos-card">
             <h3>email</h3>
-            <span>{{ ProfilUpdateValues!.adr_mail }}</span>
+            <span>{{ ProfilUpdateValues?.adr_mail }}</span>
           </div>
           <div class="profilCard__infos-card">
             <h3>mobile</h3>
-            <span>{{ ProfilUpdateValues!.phone }}</span>
+            <span>{{ ProfilUpdateValues?.phone }}</span>
           </div>
           <div class="profilCard__infos-card">
             <h3>region</h3>
-            <span>{{ ProfilUpdateValues!.region }}</span>
+            <span>{{ ProfilUpdateValues?.region }}</span>
           </div>
           <div class="profilCard__infos-card">
             <h3>bio</h3>
-            <span>{{ getBoolFrom(ProfilUpdateValues!.bio) ? "oui" : "non" }}</span>
+            <span>{{ getBoolFrom(ProfilUpdateValues?.bio) ? "oui" : "non" }}</span>
           </div>
           <div class="profilCard__infos-card">
             <h3>robot</h3>
-            <span>{{ getBoolFrom(ProfilUpdateValues!.robot) ? "oui" : "non" }}</span>
+            <span>{{ getBoolFrom(ProfilUpdateValues?.robot) ? "oui" : "non" }}</span>
           </div>
         </div>
       </div>
@@ -127,11 +127,11 @@
         <div class="profilCard__alerts-cards">
           <div class="profilCard__alerts__alert-card">
             <h3>mail</h3>
-            <span>{{ getBoolFrom(ProfilUpdateValues!.mail_notif) ? "oui" : "non" }}</span>
+            <span>{{ getBoolFrom(ProfilUpdateValues?.mail_notif) ? "oui" : "non" }}</span>
           </div>
           <div class="profilCard__alerts__alert-card">
             <h3>phone</h3>
-            <span>{{ getBoolFrom(ProfilUpdateValues!.phone_notif) ? "oui" : "non" }}</span>
+            <span>{{ getBoolFrom(ProfilUpdateValues?.phone_notif) ? "oui" : "non" }}</span>
           </div>
         </div>
       </div>
