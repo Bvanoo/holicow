@@ -4,6 +4,10 @@ import type { SolutionRepositoryHttp } from '@/dal/repositories/SolutionReposito
 export class SolutionService {
   constructor(private repo: SolutionRepositoryHttp) {}
 
+  async getAllSolution(page: number, limit: number) {
+    return await this.repo.getAllSolution(page, limit)
+  }
+
   async getSolutionsBySubProblemId(
     idSubProblem: number,
     page: number,

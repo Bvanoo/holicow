@@ -7,6 +7,7 @@ import NotAllowed from '@/presentation/views/NotAllowed.vue'
 import ProfileView from '@/presentation/views/ProfilView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/stores/User'
+import SolutionsListView from '@/presentation/views/SolutionsListView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,6 +31,11 @@ const router = createRouter({
       path: '/sousproblemes/:data',
       name: 'sub problems',
       component: () => import('@/presentation/views/SubProblemsView.vue'),
+    },
+    {
+      name: 'Solutions',
+      path: '/solutions',
+      component: SolutionsListView,
     },
     {
       name: 'commentaires',

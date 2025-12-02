@@ -10,7 +10,6 @@ export class ProblemRepositoryHttp implements IProblemRepository {
     private http: {
       get: (url: string) => Promise<ProblemPayload>
       getChildren: (url: string) => Promise<SubProblem[]>
-      getSolutionsArray: (url: string) => Promise<Solution[]>
     },
   ) {}
 

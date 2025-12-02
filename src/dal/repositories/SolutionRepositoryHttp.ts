@@ -7,8 +7,14 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
   constructor(
     private http: {
       getSolutionsBySubProblemId: (url: string) => Promise<SolutionPayload>
+      getAllSolution: (url: string) => Promise<SolutionPayload>
     },
   ) {}
+  async getAllSolution(page: number, limit: number): Promise<SolutionPayload> {
+    return await this.http.getAllSolution(
+      `http://localhost:3000/solution?page=${page}&limit=${limit}`,
+    )
+  }
 
   async getSolutionsBySubProblemId(
     idSubProblem: number,
