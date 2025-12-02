@@ -84,6 +84,7 @@
                     robot: getBoolFrom(UserUpdateValues?.robot),
                     mail_notif: getBoolFrom(UserUpdateValues?.mail_notif),
                     phone_notif: getBoolFrom(UserUpdateValues?.phone_notif),
+                    avatar_picture: UserUpdateValues?.avatar_picture as string
                 }
 
                 console.log("profileTmp")
@@ -102,100 +103,102 @@
 </script>
 
 <template>
-    <n-form class="firstConnexion__card" ref="UserUpdateRef" inline :label-width="18" :model="UserUpdateValues!"
-        :rules="rules">
-        <!-- En‑tête de la carte -->
-        <header class="firstConnexion__card__header">
-            <h2 class="firstConnexion__card__title">
-                Première connexion
-            </h2>
-            <p class="firstConnexion__card__subtitle">
-                Quelques questions pour personnaliser votre expérience Holicow.
-            </p>
-        </header>
+    <transition name="fade-slide" tag="n-form" appear>
+        <n-form class="firstConnexion__card" ref="UserUpdateRef" inline :label-width="18" :model="UserUpdateValues!"
+            :rules="rules">
+            <!-- En‑tête de la carte -->
+            <header class="firstConnexion__card__header">
+                <h2 class="firstConnexion__card__title">
+                    Première connexion
+                </h2>
+                <p class="firstConnexion__card__subtitle">
+                    Quelques questions pour personnaliser votre expérience Holicow.
+                </p>
+            </header>
 
-        <!-- Contenu principal : infos + alertes -->
-        <div class="firstConnexion__card__body">
-            <!-- infos exploitation -->
-            <section class="firstConnexion__card__section firstConnexion__card__section--infos">
-                <h3 class="firstConnexion__card__section-title">
-                    Vos informations d'exploitation
-                </h3>
+            <!-- Contenu principal : infos + alertes -->
+            <div class="firstConnexion__card__body">
+                <!-- infos exploitation -->
+                <section class="firstConnexion__card__section firstConnexion__card__section--infos">
+                    <h3 class="firstConnexion__card__section-title">
+                        Vos informations d'exploitation
+                    </h3>
 
-                <div class="firstConnexion__card__flex">
-                    <!-- Région -->
-                    <n-form-item label="Région" path="region">
-                        <n-select class="firstConnexion__region" :options="optionsRegion"
-                            v-model:value="UserUpdateValues!.region" placeholder="Choisir" />
-                    </n-form-item>
+                    <div class="firstConnexion__card__flex">
+                        <!-- Région -->
+                        <n-form-item label="Région" path="region">
+                            <n-select class="firstConnexion__region" :options="optionsRegion"
+                                v-model:value="UserUpdateValues!.region" placeholder="Choisir" />
+                        </n-form-item>
 
-                    <!-- Bio -->
-                    <n-form-item label="Bio" path="bio">
-                        <n-radio-group v-model:value="UserUpdateValues!.bio" name="bio-group"
-                            class="firstConnexion__radio-group">
-                            <n-radio-button value="true">Oui</n-radio-button>
-                            <n-radio-button value="false">Non</n-radio-button>
-                        </n-radio-group>
-                    </n-form-item>
+                        <!-- Bio -->
+                        <n-form-item label="Bio" path="bio">
+                            <n-radio-group v-model:value="UserUpdateValues!.bio" name="bio-group"
+                                class="firstConnexion__radio-group">
+                                <n-radio-button value="true">Oui</n-radio-button>
+                                <n-radio-button value="false">Non</n-radio-button>
+                            </n-radio-group>
+                        </n-form-item>
 
-                    <!-- Robots -->
-                    <n-form-item label="Robots" path="robot">
-                        <n-radio-group v-model:value="UserUpdateValues!.robot" name="robot-group"
-                            class="firstConnexion__radio-group">
-                            <n-radio-button value="true">Oui</n-radio-button>
-                            <n-radio-button value="false">Non</n-radio-button>
-                        </n-radio-group>
-                    </n-form-item>
-                </div>
-            </section>
-
-            <!-- Alertes -->
-            <section class="firstConnexion__card__section firstConnexion__card__section--alerts">
-                <h3 class="firstConnexion__card__section-title">
-                    Alertes maladie
-                </h3>
-
-                <div class="firstConnexion__card__alerts-list">
-                    <!-- Alertes email -->
-                    <div class="firstConnexion__card__alert-item">
-                        <span class="firstConnexion__card__alert-label">Email</span>
-                        <n-radio-group v-model:value="UserUpdateValues!.mail_notif" name="mail_notif"
-                            class="firstConnexion__radio-group">
-                            <n-radio-button value="true">Oui</n-radio-button>
-                            <n-radio-button value="false">Non</n-radio-button>
-                        </n-radio-group>
-                        <n-form-item v-if="getBoolFrom(UserUpdateValues?.mail_notif)" label="Mail" path="adr_mail">
-                            <n-input type="text" v-model:value="UserUpdateValues!.adr_mail" />
+                        <!-- Robots -->
+                        <n-form-item label="Robots" path="robot">
+                            <n-radio-group v-model:value="UserUpdateValues!.robot" name="robot-group"
+                                class="firstConnexion__radio-group">
+                                <n-radio-button value="true">Oui</n-radio-button>
+                                <n-radio-button value="false">Non</n-radio-button>
+                            </n-radio-group>
                         </n-form-item>
                     </div>
+                </section>
 
-                    <!-- Alertes téléphone -->
-                    <div class="firstConnexion__card__alert-item">
-                        <span class="firstConnexion__card__alert-label">Téléphone</span>
-                        <n-radio-group v-model:value="UserUpdateValues!.phone_notif" name="phone_notif"
-                            class="firstConnexion__radio-group">
-                            <n-radio-button value="true">Oui</n-radio-button>
-                            <n-radio-button value="false">Non</n-radio-button>
-                        </n-radio-group>
-                        <n-form-item v-if="getBoolFrom(UserUpdateValues?.phone_notif)" label="Phone" path="phone">
-                            <n-input placeholder="phone" v-model:value="UserUpdateValues!.phone" />
-                        </n-form-item>
+                <!-- Alertes -->
+                <section class="firstConnexion__card__section firstConnexion__card__section--alerts">
+                    <h3 class="firstConnexion__card__section-title">
+                        Alertes maladie
+                    </h3>
+
+                    <div class="firstConnexion__card__alerts-list">
+                        <!-- Alertes email -->
+                        <div class="firstConnexion__card__alert-item">
+                            <span class="firstConnexion__card__alert-label">Email</span>
+                            <n-radio-group v-model:value="UserUpdateValues!.mail_notif" name="mail_notif"
+                                class="firstConnexion__radio-group">
+                                <n-radio-button value="true">Oui</n-radio-button>
+                                <n-radio-button value="false">Non</n-radio-button>
+                            </n-radio-group>
+                            <n-form-item v-if="getBoolFrom(UserUpdateValues?.mail_notif)" label="Mail" path="adr_mail">
+                                <n-input type="text" v-model:value="UserUpdateValues!.adr_mail" />
+                            </n-form-item>
+                        </div>
+
+                        <!-- Alertes téléphone -->
+                        <div class="firstConnexion__card__alert-item">
+                            <span class="firstConnexion__card__alert-label">Téléphone</span>
+                            <n-radio-group v-model:value="UserUpdateValues!.phone_notif" name="phone_notif"
+                                class="firstConnexion__radio-group">
+                                <n-radio-button value="true">Oui</n-radio-button>
+                                <n-radio-button value="false">Non</n-radio-button>
+                            </n-radio-group>
+                            <n-form-item v-if="getBoolFrom(UserUpdateValues?.phone_notif)" label="Phone" path="phone">
+                                <n-input placeholder="phone" v-model:value="UserUpdateValues!.phone" />
+                            </n-form-item>
+                        </div>
+
                     </div>
+                </section>
+            </div>
 
-                </div>
-            </section>
-        </div>
-
-        <!-- Pied de carte : boutons -->
-        <footer class="firstConnexion__card__footer">
-            <n-button secondary class="firstConnexion__card__btn firstConnexion__card__btn--cancel"
-                @click.prevent="emit('quitLogin', true)">
-                Quitter
-            </n-button>
-            <n-button type="primary" color="black" class="firstConnexion__card__btn firstConnexion__card__btn--validate"
-                @click.prevent="updateProfil">
-                Valider
-            </n-button>
-        </footer>
-    </n-form>
+            <!-- Pied de carte : boutons -->
+            <footer class="firstConnexion__card__footer">
+                <n-button secondary class="firstConnexion__card__btn firstConnexion__card__btn--cancel"
+                    @click.prevent="emit('quitLogin', true)">
+                    Quitter
+                </n-button>
+                <n-button type="primary" color="black"
+                    class="firstConnexion__card__btn firstConnexion__card__btn--validate" @click.prevent="updateProfil">
+                    Valider
+                </n-button>
+            </footer>
+        </n-form>
+    </transition>
 </template>

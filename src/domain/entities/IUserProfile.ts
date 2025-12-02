@@ -6,4 +6,5 @@ export default interface IUserProfile {
   adr_mail?: string
   phone_notif: boolean
   phone?: string
+  avatar_picture: string
 }

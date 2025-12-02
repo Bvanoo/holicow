@@ -6,6 +6,7 @@ import HomeView from '@/presentation/views/HomeView.vue'
 import NotAllowed from '@/presentation/views/NotAllowed.vue'
 import ProfileView from '@/presentation/views/ProfilView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from '@/stores/User'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -58,5 +59,20 @@ const router = createRouter({
     },
   ],
 })
+//Avant chaque changement de route
+router.beforeEach(async (to /*, from*/) => {
+  const userStore = useUserStore()
+  //START Bloquage des routes si on est un nouveau profil
 
+  //On récupère le profil s'il n'est pas récupéré
+  if (!userStore.isHydrate) {
+    await userStore.hydrateApp()
+  }
+
+  if (userStore.isNewProfil && to.name !== 'First Connexion') {
+    /* console.log('userStore.isNewProfil', userStore.isNewProfil)*/
+    return '/firstConnexion'
+  }
+  //END Bloquage des routes si on est un nouveau profil
+})
 export default router

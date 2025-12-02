@@ -18,7 +18,7 @@ app.use(naive)
 //=====Hydrate=====
 const userStore = useUserStore()
 
-userStore.hydrateApp()
+await userStore.hydrateApp()
 
 // console.log('usersService.getFirstLogin("101")', userStore.getCurrentUser)
 

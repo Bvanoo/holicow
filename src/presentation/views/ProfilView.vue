@@ -2,10 +2,8 @@
   import { NFlex } from 'naive-ui'
   import ProfilCard from '../components/ProfilCard.vue'
   import { useUserStore } from '@/stores/User'
-  // import type User from '../entities/user'
 
   const usersStore = useUserStore()
-  usersStore.checkIfNewUser();
 
 </script>
 

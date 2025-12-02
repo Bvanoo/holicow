@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-    import { NEl, NButton, NFlex } from 'naive-ui'
+    import { NFlex } from 'naive-ui'
     import { onMounted, ref } from 'vue'
     import FirstConnexionCard from '@/presentation/components/FirstConnexion/FirstConnexionCard.vue'
     import CancelConnexionCard from '@/presentation/components/FirstConnexion/CancelConnexionCard.vue'
@@ -17,14 +17,6 @@
     const userProfile = ref<UserProfile | void>()
     //End Variables click
 
-    //Functions click
-    const goToProfil = () => {
-        router.push('/profile')
-    }
-
-    const cancelLogin = () => {
-        isCancelLogin.value = true
-    }
     const quitApp = () => {
         isCancelLogin.value = true
     }

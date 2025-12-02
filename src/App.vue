@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
   import NavBar from './presentation/components/NavBar.vue';
-  import { NConfigProvider, NLoadingBarProvider, NMessageProvider, NNotificationProvider, NModalProvider, NDialogProvider, NFlex, darkTheme } from 'naive-ui';
+  import { NConfigProvider, NLoadingBarProvider, NMessageProvider, NNotificationProvider, NModalProvider, NDialogProvider, darkTheme } from 'naive-ui';
   import { ref } from 'vue'
   import router from './router/index'
   import { useUserStore } from './stores/User';
@@ -30,7 +30,7 @@
         <n-notification-provider>
           <n-modal-provider>
             <n-dialog-provider>
-              <NavBar v-if="!usersStore.checkIfNewUser()" v-model:active="activeTab" @update:active="onMenuItemClick"
+              <NavBar v-if="!usersStore.isNewProfil" v-model:active="activeTab" @update:active="onMenuItemClick"
                 :logoSrc="logoHolicow" :logoSrcUE="logoHolicowUE" />
               <div class="main">
                 <router-view class="routerView" />

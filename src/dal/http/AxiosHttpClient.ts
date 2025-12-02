@@ -14,4 +14,8 @@ export class AxiosHttpClient {
     const response = await axios.get(url)
     return response.data
   }
+  async getAllAlertsByUserId(url: string) {
+    const response = await axios.get(url)
+    return response.data
+  }
 }
