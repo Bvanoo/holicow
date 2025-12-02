@@ -1,5 +1,11 @@
-import type Solution from '../entities/Solution'
+import type SolutionPayload from '../entities/SolutionPayload'
 
 export interface ISolutionRepository {
-  getAll(): Promise<Solution[]>
+  getSolutionsBySubProblemId(
+    idSubProblem: number,
+    page: number,
+    limit: number,
+    sortedBy: string,
+    sortedOrder: string,
+  ): Promise<SolutionPayload>
 }

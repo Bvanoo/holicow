@@ -10,7 +10,7 @@ export class AxiosHttpClient {
     const response = await axios.get(url)
     return response.data
   }
-  async getSolutionsArray(url: string) {
+  async getSolutionsBySubProblemId(url: string) {
     const response = await axios.get(url)
     return response.data
   }

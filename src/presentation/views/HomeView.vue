@@ -1,14 +1,17 @@
 <script lang="ts" setup>
     import { AlertsService } from '@/domain/services/AlertsService';
-    import { useUserStore } from '@/stores/User';
-    import { inject } from 'vue';
+    import { inject, onMounted } from 'vue';
 
-    const alertsService = inject<AlertsService>("alertService");
-    console.log("alerts", await alertsService?.getAllAlertsByUserId("FARM001", "fr", 1, 3))
+    onMounted(async () => {
+        const alertsService = inject<AlertsService>("alertsService");
+        const alerts = await alertsService?.getAllAlertsByUserId("FARM001", "fr", 1, 3)
+        console.log("alerts", alerts)
+    })
 
 </script>
 
 <template>
+
     <!-- <div class="tesImage">
         <img class="logo" src="/logos/Herbagere.png">
         <img class="stars" src="/logos/star4.png">

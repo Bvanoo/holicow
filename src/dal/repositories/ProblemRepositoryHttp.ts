@@ -1,4 +1,5 @@
-// src/api/infrastructure/repositories/UserRepositoryHttp.ts
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import type IProblemRepository from '../../domain/repositories/IProblemRepository'
 import type SubProblem from '@/domain/entities/SubProblem'
 import type ProblemPayload from '@/domain/entities/ProblemPayload'
@@ -16,9 +17,7 @@ export class ProblemRepositoryHttp implements IProblemRepository {
   async getAll(
     page: number,
     limit: number,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     sortedBy: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     sortedOrder: string,
   ): Promise<ProblemPayload> {
     return await this.http.get(`http://localhost:3000/disease?page=${page}&limit=${limit}`)
@@ -26,13 +25,9 @@ export class ProblemRepositoryHttp implements IProblemRepository {
 
   async getAllSubProblemByProblemId(
     id: number,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     page: number,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     limit: number,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     sortedBy: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     sortedOrder: string,
   ): Promise<SubProblem[]> {
     return await this.http.getChildren(`http://localhost:3000/disease/${id}`)
@@ -40,13 +35,9 @@ export class ProblemRepositoryHttp implements IProblemRepository {
 
   async getSolutionsArrayBySubProblemId(
     idSubProblem: number,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     page: number,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     limit: number,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     sortedBy: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     sortedOrder: string,
   ): Promise<Solution[]> {
     return await this.http.getSolutionsArray(`routeSolutionsList${idSubProblem}`)
