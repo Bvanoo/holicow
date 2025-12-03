@@ -1,0 +1,36 @@
+@use '_variables' as *;
+
+.filter {
+  width: 100%;
+  z-index: 500;
+  border-radius: 6px;
+  box-shadow: 0 0 5px;
+
+  &__order {
+    display: flex;
+    column-gap: 12px;
+
+    &-select {
+    }
+  }
+  &-button {
+    width: 100%;
+    background-color: $main_color;
+    color: white !important;
+    font-weight: 600;
+    &:hover {
+      background-color: $main_color_dark !important;
+    }
+    &:active {
+      background-color: $main_color_lighter !important;
+    }
+  }
+}
+
+@media (min-width: $mobile) {
+  .filter {
+    margin-left: 0px;
+    width: fit-content;
+    max-width: calc($mobile/1.5);
+  }
+}

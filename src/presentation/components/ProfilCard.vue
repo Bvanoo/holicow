@@ -53,8 +53,8 @@
     isModify.value = !isModify.value
   }
 
-  const updateProfil = () => {
-    ProfilUpdateRef.value?.validate((errors) => {
+  const updateProfil = async () => {
+    ProfilUpdateRef.value?.validate(async (errors) => {
       if (!errors) {
         toggleModifyInputs()
 
@@ -62,7 +62,7 @@
 
         //Naive-UI ne permet pas d'utiliser des booleans dans des radio-button, on peut juste comparer si la chaine renvoyé par le rabio button est === "true" pour avoir un état boolean
         const profileTmp = {
-          profilId: userStore.currentUserId,
+          profilId: userStore.currentUserId as string,
           adr_mail: ProfilUpdateValues?.adr_mail,
           phone: ProfilUpdateValues?.phone?.replace(/[\/\.]/g, ''),
           region: ProfilUpdateValues!.region,
@@ -70,13 +70,21 @@
           robot: getBoolFrom(ProfilUpdateValues?.robot),
           mail_notif: getBoolFrom(ProfilUpdateValues?.mail_notif),
           phone_notif: getBoolFrom(ProfilUpdateValues?.phone_notif),
-          avatar_picture: ProfilUpdateValues?.avatar_picture as string
+          avatar_picture: ProfilUpdateValues?.avatar_picture as string,
+          lastname: ProfilUpdateValues?.lastname as string,
+          firstname: ProfilUpdateValues?.firstname as string,
+          country: ProfilUpdateValues?.country as string,
+          user_status: true,
+          type: ProfilUpdateValues?.type as string
+
         }
 
         const usersServices = new UsersServices()
         console.log('profileTmp.profilId', profileTmp.profilId)
         usersServices.updateUserProfile(profileTmp.profilId as string, profileTmp)
-        userStore.currentProfile = profileTmp
+        const newProfile = await usersServices.getProfile(profileTmp.profilId)
+
+        userStore.currentProfile = newProfile
       } else {
         console.error(errors)
         // message.error('Invalid')

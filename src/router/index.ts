@@ -26,11 +26,11 @@ const router = createRouter({
       path: '/problemes',
       component: DiseasesView,
     },
-    {
-      path: '/sousproblemes/:data',
-      name: 'sub problems',
-      component: () => import('@/presentation/views/SubProblemsView.vue'),
-    },
+    // {
+    //   path: '/sousproblemes/:data',
+    //   name: 'sub problems',
+    //   component: () => import('@/presentation/views/SubProblemsView.vue'),
+    // },
     {
       name: 'commentaires',
       path: '/commentaires',

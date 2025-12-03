@@ -77,14 +77,21 @@
                 //Obligé de refaire un objet car les n-inputs de naive Ui ne peuvent pas renvoyer de false ou true 
                 // (c'est utilisé pour les rules)
                 const profileTmp: IUserProfile = {
+                    profilId: userStore.currentUserId as string,
                     adr_mail: UserUpdateValues?.adr_mail,
-                    phone: UserUpdateValues?.phone?.replace(/[\/\.]/g, ""),
+                    phone: UserUpdateValues?.phone?.replace(/[\/\.]/g, ''),
                     region: UserUpdateValues!.region,
                     bio: getBoolFrom(UserUpdateValues?.bio),
                     robot: getBoolFrom(UserUpdateValues?.robot),
                     mail_notif: getBoolFrom(UserUpdateValues?.mail_notif),
                     phone_notif: getBoolFrom(UserUpdateValues?.phone_notif),
-                    avatar_picture: UserUpdateValues?.avatar_picture as string
+                    avatar_picture: UserUpdateValues?.avatar_picture as string,
+                    lastname: UserUpdateValues?.lastname as string,
+                    firstname: UserUpdateValues?.firstname as string,
+                    country: UserUpdateValues?.country as string,
+                    user_status: true,
+                    type: UserUpdateValues?.type as string
+
                 }
 
                 console.log("profileTmp")

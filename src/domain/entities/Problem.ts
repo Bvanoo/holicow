@@ -1,6 +1,6 @@
 import type SubProblem from './SubProblem'
 
-export default interface Problem {
+export default interface Problem extends Record<string, unknown> {
   id_disease: number
   disease_name_FR: string
   disease_name_DE?: string

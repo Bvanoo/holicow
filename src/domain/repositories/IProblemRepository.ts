@@ -2,7 +2,6 @@ import type ProblemPayload from '../entities/ProblemPayload'
 import type SubProblem from '../entities/SubProblem'
 
 export default interface IProblemRepository {
-
   getAll(
     page: number,
     limit: number,
