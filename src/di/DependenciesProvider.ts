@@ -4,6 +4,8 @@ import { AxiosHttpClient } from '../dal/http/AxiosHttpClient'
 import type { App } from 'vue'
 import { AlertsRepositoryHttp } from '@/dal/repositories/AlertsRepositoryHttp'
 import { AlertsService } from '@/domain/services/AlertsService'
+import { SolutionRepositoryHttp } from '@/dal/repositories/SolutionRepositoryHttp'
+import { SolutionService } from '@/domain/services/SolutionService'
 
 export function registerDependencies(app: App) {
   const http = new AxiosHttpClient()
@@ -14,7 +16,11 @@ export function registerDependencies(app: App) {
   const alertsRepositoryHttp = new AlertsRepositoryHttp(http)
   const alertsService = new AlertsService(alertsRepositoryHttp)
 
+  const solutionRepositoryHttp = new SolutionRepositoryHttp(http)
+  const solutionService = new SolutionService(solutionRepositoryHttp)
+
   // provide global
   app.provide('problemService', problemService)
   app.provide('alertsService', alertsService)
+  app.provide('solutionService', solutionService)
 }
