@@ -5,9 +5,15 @@ import type { ProblemRepositoryHttp } from '@/dal/repositories/ProblemRepository
 export class ProblemService {
   constructor(private repo: ProblemRepositoryHttp) {}
 
-  async getAllProblems(page: number, limit: number, sortedBy: string, sortedOrder: string) {
+  async getAllProblems(
+    id: string,
+    page: number,
+    limit: number,
+    sortedBy: string,
+    sortedOrder: string,
+  ) {
     return await this.repo
-      .getAll(Math.max(page, 1), Math.max(limit, 1), sortedBy || '', sortedOrder || '')
+      .getAll(id, Math.max(page, 1), Math.max(limit, 1), sortedBy || '', sortedOrder || '')
       .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
   }
 

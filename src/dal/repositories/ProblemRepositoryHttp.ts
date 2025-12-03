@@ -14,12 +14,13 @@ export class ProblemRepositoryHttp implements IProblemRepository {
   ) {}
 
   async getAll(
+    id: string,
     page: number,
     limit: number,
     sortedBy: string,
     sortedOrder: string,
   ): Promise<ProblemPayload> {
-    return await this.http.get(`http://localhost:3000/disease?page=${page}&limit=${limit}`)
+    return await this.http.get(`http://localhost:3000/disease/stats/farmer/${id}`)
   }
 
   async getAllSubProblemByProblemId(

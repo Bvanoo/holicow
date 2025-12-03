@@ -69,29 +69,31 @@
     const problemService = inject<ProblemService>("problemService");
 
     columns.value = [
-        { key: 'disease_name_FR', label: 'Nom', icon: ProblemIcon },
-        { key: 'comments', label: 'Commentaires', icon: CommentIcon },
-        { key: 'alerts', label: 'Alertes', icon: AlertsIcon },
-        { key: 'avatarAlerts', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
+        { key: 'diseaseName', label: 'Nom', icon: ProblemIcon },
+        { key: 'commentCount', label: 'Commentaires', icon: CommentIcon },
+        { key: 'farmerAlertCount', label: 'Alertes', icon: AlertsIcon },
+        { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
     ]
     onMounted(async () => {
-        results.value = await problemService?.getAllProblems(currentPage.value, pageSize.value, "", "")
+        results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
         console.log(results)
+        rows.value = results.value!.diseases
+        //A modifier dès que l'api est mise à jour (pagination)
+        // if (results.value!.total) {
+        //     pageSize.value = Math.ceil(results.value!.total / results.value!.totalPages)
 
-        pageSize.value = Math.ceil(results.value!.total / results.value!.totalPages)
-        console.log("results.value!.total", results.value!.total);
-        console.log("results.value!.totalPages", results.value!.totalPages);
-        console.log(" p,ageSize.value", pageSize.value);
+        //     console.log("results.value!.total", results.value!.total);
+        //     console.log("results.value!.totalPages", results.value!.totalPages);
+        //     console.log(" p,ageSize.value", pageSize.value);
 
-        rows.value = results.value!.data
-        totalItems.value = results.value!.total;
-
+        //     totalItems.value = results.value!.total;
+        // }
     })
 
     watch(currentPage, async () => {
         // if (sortKey.value) sortOrder.value = 'asc'
-        results.value = await problemService?.getAllProblems(currentPage.value, pageSize.value, "", "")
-        rows.value = results.value!.data;
+        results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+        rows.value = results.value!.diseases;
     })
 
     const filterResult = ref<Record<string, unknown>>();

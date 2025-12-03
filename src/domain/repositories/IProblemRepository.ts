@@ -3,6 +3,7 @@ import type SubProblem from '../entities/SubProblem'
 
 export default interface IProblemRepository {
   getAll(
+    id: string,
     page: number,
     limit: number,
     sortedBy: string,
