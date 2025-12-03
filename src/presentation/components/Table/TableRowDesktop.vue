@@ -11,11 +11,11 @@
 
     <div v-if="isAuthorized" class="desktop-admin">
       <n-button circle color="green" @click="emit('edit', row)">
-        <!-- <n-icon :component="UpdateIcon" /> -->
+        <n-icon :component="UpdateIcon" />
       </n-button>
 
       <n-button circle color="red" @click="emit('delete', row)">
-        <!-- <n-icon :component="DeleteIcon" /> -->
+        <n-icon :component="DeleteIcon" />
       </n-button>
     </div>
   </div>
@@ -23,8 +23,8 @@
 
 <script setup lang="ts" generic="T extends object">
   import { NButton, NIcon } from 'naive-ui'
-  // import UpdateIcon from '../icons/UpdateIcon.vue'
-  // import DeleteIcon from '../icons/DeleteIcon.vue'
+  import UpdateIcon from '../icons/UpdateIcon.vue'
+  import DeleteIcon from '../icons/DeleteIcon.vue'
   import type { ColumnDefinition } from '@/presentation/components/Table/TableTypes'
 
   defineProps<{

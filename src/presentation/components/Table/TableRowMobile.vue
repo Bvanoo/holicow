@@ -24,17 +24,17 @@
     <div class="mobile-card-footer">
       <section class="mobile-card-footer-user">
         <n-button secondary type="info" @click="emit('edit', row)">
-          <!-- <n-icon :component="UpdateIcon" /> -->
+          <n-icon :component="UpdateIcon" />
           voir solution(s)
         </n-button>
       </section>
       <section v-if="isAuthorized" class="mobile-card-footer-crud">
         <n-button class="crud-button" circle type="primary" @click="emit('edit', row)">
-          <!-- <n-icon :component="UpdateIcon" /> -->
+          <n-icon :component="UpdateIcon" />
         </n-button>
 
         <n-button class="crud-button" circle color="red" @click="emit('delete', row)">
-          <!-- <n-icon :component="DeleteIcon" /> -->
+          <n-icon :component="DeleteIcon" />
         </n-button>
       </section>
     </div>
@@ -44,8 +44,8 @@
 <script setup lang="ts" generic="T extends object">
 
   import { NButton, NIcon } from 'naive-ui'
-  // import UpdateIcon from '../icons/UpdateIcon.vue'
-  // import DeleteIcon from '../icons/DeleteIcon.vue'
+  import UpdateIcon from '../icons/UpdateIcon.vue'
+  import DeleteIcon from '../icons/DeleteIcon.vue'
   import type { ColumnDefinition } from '@/presentation/components/Table/TableTypes'
 
   defineProps<{

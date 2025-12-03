@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 
-    import { onMounted, ref, type Ref, inject, watch } from 'vue'
+    import { onMounted, ref, type Ref, inject, watch, type Component } from 'vue'
     import { ProblemService } from '@/domain/services/ProblemService'
     import type ProblemPayload from '@/domain/entities/ProblemPayload';
     import type Problem from '@/domain/entities/Problem';
@@ -51,6 +51,10 @@
     import FilterOrderSwitchComponent from '../components/Filter/FilterOrderSwitchComponent.vue';
     import TableContainer from '../components/Table/TableContainer.vue';
     import { useUserStore } from '@/stores/User';
+    import ProblemIcon from '../components/icons/ProblemIcon.vue';
+    import CommentIcon from '../components/icons/CommentIcon.vue';
+    import AlertsIcon from '../components/icons/AlertsIcon.vue';
+    import AlertAvatarIcon from '../components/icons/AlertAvatarIcon.vue';
 
     const userStore = useUserStore();
 
@@ -61,13 +65,14 @@
     const rows = ref<Problem[]>()
     const totalItems = ref<number>();
 
-    const columns: Ref<{ key: string; label: string }[]> = ref([])
+    const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])
     const problemService = inject<ProblemService>("problemService");
+
     columns.value = [
-        { key: 'disease_name_FR', label: 'Nom' },
-        { key: 'comments', label: 'Commentaires' },
-        { key: 'alerts', label: 'Alertes' },
-        { key: 'avatarAlerts', label: 'Alertes/Avatar' },
+        { key: 'disease_name_FR', label: 'Nom', icon: ProblemIcon },
+        { key: 'comments', label: 'Commentaires', icon: CommentIcon },
+        { key: 'alerts', label: 'Alertes', icon: AlertsIcon },
+        { key: 'avatarAlerts', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
     ]
     onMounted(async () => {
         results.value = await problemService?.getAllProblems(currentPage.value, pageSize.value, "", "")
