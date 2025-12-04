@@ -4,8 +4,8 @@ import type SubProblem from '../entities/SubProblem'
 import type Problem from '../entities/Problem'
 
 export default interface IProblemRepository {
-
   getAll(
+    id: string,
     page: number,
     limit: number,
     sortedBy: string,

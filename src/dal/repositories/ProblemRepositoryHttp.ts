@@ -15,12 +15,13 @@ export class ProblemRepositoryHttp implements IProblemRepository {
   ) {}
 
   async getAll(
+    id: string,
     page: number,
     limit: number,
     sortedBy: string,
     sortedOrder: string,
   ): Promise<ProblemPayload> {
-    return await this.http.get(`http://localhost:3000/disease?page=${page}&limit=${limit}`)
+    return await this.http.get(`http://localhost:3000/disease/stats/farmer/${id}`)
   }
 
   async getAllSubProblemByProblemId(
@@ -32,6 +33,7 @@ export class ProblemRepositoryHttp implements IProblemRepository {
   ): Promise<SubProblem[]> {
     return await this.http.getChildren(`http://localhost:3000/disease/${id}`)
   }
+
 
   async getSolutionsArrayBySubProblemId(
     idSubProblem: number,
@@ -46,4 +48,5 @@ export class ProblemRepositoryHttp implements IProblemRepository {
   async getProblemById(id: number) {
     return await this.http.get<ProblemPayload<Problem>>(`http://localhost:3000/disease/${id}`)
   }
+
 }
