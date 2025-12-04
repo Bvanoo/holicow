@@ -9,7 +9,7 @@
                         { label: 'Nom', value: 'disease_name_FR' },
                         { label: 'Alertes', value: 'alerts' },
                         { label: 'Commentaires', value: 'comments' },
-                        { label: 'Alertes/Avatar', value: 'avatarAlerts' }
+                        { label: 'Alertes/Avatar', value: 'avatarAlerts' },
                     ]"></FilterSelectComponent>
                     <!-- Composant 2 -->
                     <FilterOrderSwitchComponent fieldName="order"></FilterOrderSwitchComponent>
@@ -22,9 +22,9 @@
             </FilterPanel>
         </Transition>
         {{ filterResult }}
-        <TableContainer :columns="columns" :data="(rows as Problem[])"
+        <TableContainer :columns="columns" :data="(rows as SubProblem[])"
             :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
-            :titleKey="'disease_name_FR'" @action="ButtonAction">
+            :titleKey="'sub_disease_name_FR'" @action="ButtonAction">
         </TableContainer>
 
         <!-- <ProblemTable :columns="columns" :data="rows" primary-key="disease_name_FR"> -->
@@ -41,10 +41,8 @@
 
 <script setup lang="ts">
 
-    import { onMounted, ref, type Ref, inject, watch, type Component } from 'vue'
-    import { ProblemService } from '@/domain/services/ProblemService'
-    import type ProblemPayload from '@/domain/entities/ProblemPayload';
-    import type Problem from '@/domain/entities/Problem';
+    import { onMounted, ref, type Ref, inject, watch, type Component } from 'vue';
+    import { ProblemService } from '@/domain/services/ProblemService';
     import FilterPanel from '../components/Filter/FilterPanel.vue';
     import FilterSelectComponent from '../components/Filter/FilterSelectComponent.vue';
     import FilterOrderSwitchComponent from '../components/Filter/FilterOrderSwitchComponent.vue';
@@ -54,70 +52,63 @@
     import CommentIcon from '../components/icons/CommentIcon.vue';
     import AlertsIcon from '../components/icons/AlertsIcon.vue';
     import AlertAvatarIcon from '../components/icons/AlertAvatarIcon.vue';
-    import router from '@/router/index';
+    import type SubProblem from '@/domain/entities/SubProblem';
+    import { useRoute } from 'vue-router';
+    // import type SubProblemPayload from '@/domain/entities/SubProblemPayload';
 
     const userStore = useUserStore();
 
-    const results = ref<ProblemPayload | void>();
+    const results = ref<SubProblem[] | void>();
 
     const currentPage = ref<number>(1)
-    const pageCount = ref<number>(0)
     const pageSize = ref<number>(3)
-    const rows = ref<Problem[]>()
+    const rows = ref<SubProblem[]>()
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const totalItems = ref<number>();
+    const pageCount = ref<number>(0)
 
     const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])
     const problemService = inject<ProblemService>("problemService");
-
+    const route = useRoute();
+    const paramsRoute = route.params.data as string
     columns.value = [
-        { key: 'disease_name_FR', label: 'Nom', icon: ProblemIcon },
+        { key: 'sub_disease_name_FR', label: 'Nom', icon: ProblemIcon },
         { key: 'commentCount', label: 'Commentaires', icon: CommentIcon },
         { key: 'farmerAlertCount', label: 'Alertes', icon: AlertsIcon },
         { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
-        { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
     ]
     onMounted(async () => {
-        //‼️‼️Quand on est à la page 2 et qu'on retourne à la page 1, on a un 4e problème (alors que la limite est à 3)‼️‼️
-        results.value = await problemService?.getAllProblems(currentPage.value, pageSize.value, "", "")
+        results.value = await problemService?.getSubProblemByProblemId(paramsRoute, currentPage.value, pageSize.value, "", "")
         console.log(results)
-        rows.value = results.value!.data
-        // A modifier dès que l'api est mise à jour (pagination)
-        totalItems.value = results.value?.total
-        pageSize.value = results.value!.totalPages
-        if (totalItems.value)
-            pageCount.value = Math.ceil(totalItems.value / pageSize.value)
-        console.log("results.value!.totalDiseases", results.value!.total);
-        console.log("results.value!.totalPages", results.value!.totalPages);
-        console.log("pageSize.value", pageSize.value);
-        console.log("pageCount.value", pageCount.value);
+        rows.value = results.value as SubProblem[]
+        // // A modifier dès que l'api est mise à jour (pagination)
+        // totalItems.value = results.value?.totalDiseases
+        // pageSize.value = results.value!.totalPages + 1
+        // if (totalItems.value)
+        //     pageCount.value = totalItems.value / pageSize.value
+        // console.log("results.value!.totalDiseases", results.value!.totalDiseases);
+        // console.log("results.value!.totalPages", results.value!.totalPages);
+        // console.log("pageSize.value", pageSize.value);
+        // console.log("pageCount.value", pageCount.value);
 
     })
 
     watch(currentPage, async () => {
         // if (sortKey.value) sortOrder.value = 'asc'
-        results.value = await problemService?.getAllProblems(currentPage.value, pageSize.value, "", "")
-        rows.value = results.value!.data;
+        results.value = await problemService?.getSubProblemByProblemId(userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+        if (results.value)
+            rows.value = results.value;
     })
 
     const filterResult = ref<Record<string, unknown>>();
 
-    function ButtonAction(row: Problem) {
-        if (row.sub_diseases.length > 0) {
-            router.push({
-                name: 'sub problems',
-                params: { data: row.id_disease }
-            });
-        } else {
-            //vers solution
-        }
+    function ButtonAction(row: SubProblem) {
+        console.log(row)
     }
 
-    function onActionDefined(row: Problem) {
-        if (row.sub_diseases.length > 0) {
-            return 'voir les sous-problèmes'
-        } else {
-            return 'voir les solutions'
-        }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    function onActionDefined(row: SubProblem) {
+        return 'Voir les solutions'
     }
 
     function handleSubmitFilter(payload: Record<string, unknown>) {

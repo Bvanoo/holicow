@@ -1,5 +1,9 @@
 import axios from 'axios'
 
+export enum UpdateVerb {
+  put,
+  patch,
+}
 export class AxiosHttpClient {
   async get(url: string) {
     const response = await axios.get(url)
@@ -8,6 +12,20 @@ export class AxiosHttpClient {
 
   async getChildren(url: string) {
     const response = await axios.get(url)
+    return response.data
+  }
+  async update(url: string, object: Record<string, unknown>, updateVerb: UpdateVerb) {
+    let response = null
+
+    switch (updateVerb) {
+      case UpdateVerb.patch:
+        response = await axios.patch(url, object)
+        break
+
+      case UpdateVerb.put:
+        response = await axios.put(url, object)
+        break
+    }
     return response.data
   }
   async getAllSolution(url: string) {

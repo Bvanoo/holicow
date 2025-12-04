@@ -9,7 +9,7 @@ export class SolutionService {
   }
 
   async getSolutionsBySubProblemId(
-    idSubProblem: number,
+    idSubProblem: string,
     page: number,
     limit: number,
     sortedBy: string,

@@ -1,9 +1,9 @@
 import type ProblemPayload from '../entities/ProblemPayload'
 import type SubProblem from '../entities/SubProblem'
+// import type SubProblemPayload from '../entities/SubProblemPayload'
 
 export default interface IProblemRepository {
   getAll(
-    id: string,
     page: number,
     limit: number,
     sortedBy: string,
@@ -11,7 +11,7 @@ export default interface IProblemRepository {
   ): Promise<ProblemPayload>
 
   getAllSubProblemByProblemId(
-    id: number,
+    id: string,
     page: number,
     limit: number,
     sortedBy: string,

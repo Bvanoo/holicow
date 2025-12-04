@@ -4,6 +4,8 @@ import type IProblemRepository from '../../domain/repositories/IProblemRepositor
 import type SubProblem from '@/domain/entities/SubProblem'
 import type ProblemPayload from '@/domain/entities/ProblemPayload'
 import type Solution from '@/domain/entities/Solution'
+import type SubProblemPayload from '@/domain/entities/SubProblemPayload'
+import type Problem from '@/domain/entities/Problem'
 
 export class ProblemRepositoryHttp implements IProblemRepository {
   constructor(
@@ -14,17 +16,16 @@ export class ProblemRepositoryHttp implements IProblemRepository {
   ) {}
 
   async getAll(
-    id: string,
     page: number,
     limit: number,
     sortedBy: string,
     sortedOrder: string,
   ): Promise<ProblemPayload> {
-    return await this.http.get(`http://localhost:3000/disease/stats/farmer/${id}`)
+    return await this.http.get(`http://localhost:3000/disease?page=${page}&limit=${limit}`)
   }
 
   async getAllSubProblemByProblemId(
-    id: number,
+    id: string,
     page: number,
     limit: number,
     sortedBy: string,

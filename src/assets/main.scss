@@ -13,18 +13,24 @@ body {
   background-color: $main_color;
   height: 100%;
 }
+.mainApp {
+}
 .main {
   display: flex;
-  width: 100%;
-  justify-content: center;
   height: 100%;
+  width: 100%;
 }
 
 .routerView {
   margin-top: 130px;
   padding-bottom: 20px;
+  height: 100%;
   width: 100%;
+  height: fit-content;
 }
 #app {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }

@@ -2,7 +2,8 @@
 
 .navbar {
   width: 100%;
-  background: linear-gradient(135deg, $white, $main_color 30%);
+  // background: linear-gradient(135deg, $white, $main_color 30%);
+  background-color: $white;
   box-shadow: 0 0 16px $shadow_0_3;
   padding: 8px 16px;
   position: fixed;

@@ -23,9 +23,10 @@
 
     <div class="mobile-card-footer">
       <section class="mobile-card-footer-user">
-        <n-button secondary type="info" @click="emit('edit', row)">
-          <n-icon :component="UpdateIcon" />
-          voir solution(s)
+        <n-button secondary type="info" @click="emit('action', row)">
+          <!-- <n-icon :component="UpdateIcon" /> -->
+          <!-- voir solution(s) -->
+          {{ props.actionLabel }}
         </n-button>
       </section>
       <section v-if="isAuthorized" class="mobile-card-footer-crud">
@@ -48,16 +49,18 @@
   import DeleteIcon from '../icons/DeleteIcon.vue'
   import type { ColumnDefinition } from '@/presentation/components/Table/TableTypes'
 
-  defineProps<{
+  const props = defineProps<{
     row: T
     columns: ColumnDefinition<T>[]
     isAuthorized: boolean
-    titleKey: string
+    titleKey: string,
+    actionLabel: string
   }>()
 
   const emit = defineEmits<{
     (e: 'edit', row: T): void
     (e: 'delete', row: T): void
+    (e: 'action', row: T): void
   }>()
 </script>
 

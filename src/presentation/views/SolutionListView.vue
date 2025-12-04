@@ -22,9 +22,9 @@
             </FilterPanel>
         </Transition>
         {{ filterResult }}
-        <TableContainer :columns="columns" :data="(rows as Problem[])"
+        <TableContainer :columns="columns" :data="(rows as Solution[])"
             :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
-            :titleKey="'disease_name_FR'" @action="ButtonAction">
+            :titleKey="'diseaseName'" @action="ButtonAction">
         </TableContainer>
 
         <!-- <ProblemTable :columns="columns" :data="rows" primary-key="disease_name_FR"> -->
@@ -42,9 +42,7 @@
 <script setup lang="ts">
 
     import { onMounted, ref, type Ref, inject, watch, type Component } from 'vue'
-    import { ProblemService } from '@/domain/services/ProblemService'
-    import type ProblemPayload from '@/domain/entities/ProblemPayload';
-    import type Problem from '@/domain/entities/Problem';
+    import type SolutionPayload from '@/domain/entities/SolutionPayload';
     import FilterPanel from '../components/Filter/FilterPanel.vue';
     import FilterSelectComponent from '../components/Filter/FilterSelectComponent.vue';
     import FilterOrderSwitchComponent from '../components/Filter/FilterOrderSwitchComponent.vue';
@@ -55,37 +53,39 @@
     import AlertsIcon from '../components/icons/AlertsIcon.vue';
     import AlertAvatarIcon from '../components/icons/AlertAvatarIcon.vue';
     import router from '@/router/index';
+    import type Solution from '@/domain/entities/Solution';
+    import type { SolutionService } from '@/domain/services/SolutionService';
 
     const userStore = useUserStore();
 
-    const results = ref<ProblemPayload | void>();
+    const results = ref<SolutionPayload | void>();
 
     const currentPage = ref<number>(1)
-    const pageCount = ref<number>(0)
     const pageSize = ref<number>(3)
-    const rows = ref<Problem[]>()
+    const rows = ref<Solution[]>()
     const totalItems = ref<number>();
+    const pageCount = ref<number>(0)
 
     const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])
-    const problemService = inject<ProblemService>("problemService");
+    const solutionService = inject<SolutionService>("solutionService");
 
     columns.value = [
-        { key: 'disease_name_FR', label: 'Nom', icon: ProblemIcon },
+        { key: 'globalRating', label: 'Global rating', icon: ProblemIcon },
+        { key: 'name', label: 'Nom', icon: ProblemIcon },
+        { key: 'solution_description_FR', label: 'Description', icon: ProblemIcon },
         { key: 'commentCount', label: 'Commentaires', icon: CommentIcon },
         { key: 'farmerAlertCount', label: 'Alertes', icon: AlertsIcon },
         { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
-        { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
     ]
     onMounted(async () => {
-        //‼️‼️Quand on est à la page 2 et qu'on retourne à la page 1, on a un 4e problème (alors que la limite est à 3)‼️‼️
-        results.value = await problemService?.getAllProblems(currentPage.value, pageSize.value, "", "")
+        results.value = await solutionService?.getSolutionsBySubProblemId(userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
         console.log(results)
         rows.value = results.value!.data
         // A modifier dès que l'api est mise à jour (pagination)
         totalItems.value = results.value?.total
-        pageSize.value = results.value!.totalPages
+        pageSize.value = results.value!.totalPages + 1
         if (totalItems.value)
-            pageCount.value = Math.ceil(totalItems.value / pageSize.value)
+            pageCount.value = totalItems.value / pageSize.value
         console.log("results.value!.totalDiseases", results.value!.total);
         console.log("results.value!.totalPages", results.value!.totalPages);
         console.log("pageSize.value", pageSize.value);
@@ -95,29 +95,26 @@
 
     watch(currentPage, async () => {
         // if (sortKey.value) sortOrder.value = 'asc'
-        results.value = await problemService?.getAllProblems(currentPage.value, pageSize.value, "", "")
+        results.value = await solutionService?.getSolutionsBySubProblemId(userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+
         rows.value = results.value!.data;
     })
 
     const filterResult = ref<Record<string, unknown>>();
 
-    function ButtonAction(row: Problem) {
-        if (row.sub_diseases.length > 0) {
+    function ButtonAction(row: Solution) {
+        if (row.SubDiseaseExisting) {
             router.push({
                 name: 'sub problems',
-                params: { data: row.id_disease }
+                params: { data: row.id_solution }
             });
         } else {
             //vers solution
         }
     }
 
-    function onActionDefined(row: Problem) {
-        if (row.sub_diseases.length > 0) {
-            return 'voir les sous-problèmes'
-        } else {
-            return 'voir les solutions'
-        }
+    function onActionDefined(row: Solution) {
+        return 'voir les solutions'
     }
 
     function handleSubmitFilter(payload: Record<string, unknown>) {

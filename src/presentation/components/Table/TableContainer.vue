@@ -14,8 +14,10 @@
     <TransitionGroup name="fade-slide" tag="div" appear class="table-body">
       <RowContainer v-for="(row, rIndex) in sortedData" :key="(row.id as string) ?? rIndex" class="row-wrapper"
         :style="{ transitionDelay: rIndex * 0.07 + 's' }">
+        <!-- {{ onRowCreated(props.) }} -->
         <component :is="isMobile ? TableRowMobile : TableRowDesktop" :columns="columns" :row="row"
-          :titleKey="'disease_name_FR'" :is-authorized="isAuthorized" @edit="openEdit" @delete="openDelete">
+          :actionLabel="actionLabel(row)" @action="handleAction" :titleKey="titleKey" :is-authorized="isAuthorized"
+          @edit="openEdit" @delete="openDelete">
           <!-- Forward all column slots -->
           <!-- <template v-for="col in columns" #[col.key]="slotProps">
             <slot :name="col.key" v-bind="slotProps" />
@@ -44,6 +46,8 @@
     columns: ColumnDefinition<T>[]
     data: T[]
     isAuthorized?: boolean
+    actionLabel: (row: T) => string
+    titleKey: string
   }>()
 
   const isAuthorized = computed(() => props.isAuthorized ?? false)
@@ -58,6 +62,12 @@
     updateModalVisible.value = true
   }
 
+  const emit = defineEmits<{
+    (e: 'edit', row: T): void
+    (e: 'delete', row: T): void
+    (e: 'action', data: T): void
+  }>()
+
   function openDelete(row: T) {
     console.log('Delete', row)
   }
@@ -65,11 +75,17 @@
   function handleUpdateSubmit(data: unknown) {
     console.log('Form submitted', data)
     // Emit vers le page qui est la page (eventception)
+    emit("edit", data as T)
   }
 
   function handleDeleteSubmit(data: unknown) {
     console.log('Form submitted', data)
     // Emit vers le page qui est la page (eventception => eventbus)
+    emit("delete", data as T)
+  }
+
+  function handleAction(row: T) {
+    emit("action", row)
   }
 
   /* Mobile detection */

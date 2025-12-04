@@ -14,17 +14,22 @@ export const useUserStore = defineStore('userStore', {
   }),
   getters: {
     getCurrentUser: (state) => state.currentProfile,
+    getCurrentUserPicture: (state) => state.currentProfile?.avatar_picture,
   },
   actions: {
-    updateCurrentUser(newUser: IUserProfile | void) {
+    setCurrentUser(newUser: IUserProfile | void) {
       this.currentProfile = newUser
     },
 
-    updateProfile() {
-      if (this.currentProfile && this.currentUserId) {
+    async updateProfile(currentProfile: IUserProfile) {
+      if (currentProfile && currentProfile.profilId) {
         const userServices = new UsersServices()
         //Problème ici car je dois transformer la string "true" en boolean value
-        userServices.updateUserProfile(this.currentUserId, this.currentProfile)
+        const newProfile = await userServices.updateUserProfile(
+          currentProfile.profilId,
+          currentProfile,
+        )
+        this.setCurrentUser(newProfile)
         this.isNewProfil = false
       }
     },
@@ -34,6 +39,7 @@ export const useUserStore = defineStore('userStore', {
 
       const usersServices = new UsersServices()
       // const userIdWALLeSmart: string = 'ADMIN001'
+      // const userIdWALLeSmart: string = '579b043d-0971-494f-ab71-02e841e87dbe'
       const userIdWALLeSmart: string = '3cc7e361-c7f3-45c8-9097-979ddcb709f4'
 
       //1) récupérer l'utilisateur en DB

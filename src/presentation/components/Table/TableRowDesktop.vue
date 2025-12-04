@@ -8,7 +8,13 @@
         </template>
       </slot>
     </div>
-
+    <section class="mobile-card-footer-user">
+      <n-button secondary type="info" @click="emit('action', row)">
+        <!-- <n-icon :component="UpdateIcon" /> -->
+        <!-- voir solution(s) -->
+        {{ props.actionLabel }}
+      </n-button>
+    </section>
     <div v-if="isAuthorized" class="desktop-admin">
       <n-button circle color="green" @click="emit('edit', row)">
         <n-icon :component="UpdateIcon" />
@@ -27,16 +33,18 @@
   import DeleteIcon from '../icons/DeleteIcon.vue'
   import type { ColumnDefinition } from '@/presentation/components/Table/TableTypes'
 
-  defineProps<{
+  const props = defineProps<{
     row: T
     columns: ColumnDefinition<T>[]
     isAuthorized: boolean
+    actionLabel: string
     titleKey: string
   }>()
 
   const emit = defineEmits<{
     (e: 'edit', row: T): void
     (e: 'delete', row: T): void
+    (e: 'action', row: T): void
   }>()
 </script>
 

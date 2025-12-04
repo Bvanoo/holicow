@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import type IUserProfile from '@/domain/entities/IUserProfile'
+  import type updateProfile from '@/domain/entities/updateProfile';
   import UsersServices from '@/domain/services/UserServices'
   import { useUserStore } from '@/stores/User'
   import { type FormInst, type FormItemRule, NSelect, NForm, NButton, NRadioGroup, NRadioButton, NFormItem, NInput } from 'naive-ui';
@@ -10,24 +11,22 @@
 
   const isModify = ref(false)
 
-  const userProfile: IUserProfile | void = userStore.currentProfile
-
   const ProfilUpdateRef = ref<FormInst | null>(null)
-  const ProfilUpdateValues = userProfile
+  const ProfilUpdateValues = userStore.currentProfile
 
   const optionsRegion = [
     {
       label: 'Herbagère',
-      value: 'Herbagère',
+      value: 'herbagere',
     },
     {
       label: 'Hautes Ardennes',
-      value: 'Hautes Ardennes',
+      value: 'haute-ardennes',
     },
     {
       label: 'Autres provinces',
-      value: 'Autres provinces',
-    },
+      value: 'autres',
+    }
   ]
   const rules = {
     phone: {
@@ -58,33 +57,32 @@
       if (!errors) {
         toggleModifyInputs()
 
-        console.log('userUpdate', ProfilUpdateValues)
+        // console.log('userUpdate', ProfilUpdateValues)
 
         //Naive-UI ne permet pas d'utiliser des booleans dans des radio-button, on peut juste comparer si la chaine renvoyé par le rabio button est === "true" pour avoir un état boolean
-        const profileTmp = {
-          profilId: userStore.currentUserId as string,
-          adr_mail: ProfilUpdateValues?.adr_mail,
-          phone: ProfilUpdateValues?.phone?.replace(/[\/\.]/g, ''),
-          region: ProfilUpdateValues!.region,
+        const profileTmp: updateProfile = {
+          // profilId: userStore.currentUserId as string,
+          adr_mail: ProfilUpdateValues?.adr_mail as string,
+          phone: ProfilUpdateValues?.phone?.replace(/[\/\.]/g, '') as string,
+          region: ProfilUpdateValues?.region as string,
           bio: getBoolFrom(ProfilUpdateValues?.bio),
           robot: getBoolFrom(ProfilUpdateValues?.robot),
           mail_notif: getBoolFrom(ProfilUpdateValues?.mail_notif),
           phone_notif: getBoolFrom(ProfilUpdateValues?.phone_notif),
-          avatar_picture: ProfilUpdateValues?.avatar_picture as string,
-          lastname: ProfilUpdateValues?.lastname as string,
-          firstname: ProfilUpdateValues?.firstname as string,
-          country: ProfilUpdateValues?.country as string,
-          user_status: true,
-          type: ProfilUpdateValues?.type as string
+          // avatar_picture: userStore.currentProfile?.avatar_picture as string,
+          // lastname: ProfilUpdateValues?.lastname as string,
+          // firstname: ProfilUpdateValues?.firstname as string,
+          // country: ProfilUpdateValues?.country as string,
+          // user_status: true,
+          // type: ProfilUpdateValues?.type as string
 
         }
 
         const usersServices = new UsersServices()
-        console.log('profileTmp.profilId', profileTmp.profilId)
-        usersServices.updateUserProfile(profileTmp.profilId as string, profileTmp)
-        const newProfile = await usersServices.getProfile(profileTmp.profilId)
+        console.log('profileTmp', profileTmp)
+        const newProfile = await usersServices.updateUserProfile(userStore.currentUserId as string, profileTmp)
 
-        userStore.currentProfile = newProfile
+        userStore.setCurrentUser(newProfile)
       } else {
         console.error(errors)
         // message.error('Invalid')
@@ -106,31 +104,31 @@
     <n-card v-if="userStore?.getCurrentUser !== null" class="profilCard" hoverable>
 
       <template v-if="!isModify">
-        <n-image :src="ProfilUpdateValues?.avatar_picture ?? '/images/profil_placeholder.png'" preview-disabled
-          alt="Profil logo"></n-image>
+        <n-image :src="'http://www.' + userStore.currentProfile?.avatar_picture" preview-disabled alt="Profil logo"
+          class="profilCard__avatar"></n-image>
         <div class="profilCard__infos">
           <h2 class="profilCard__infos-title">Vos informations</h2>
 
           <div class="profilCard__infos-cards">
             <div class="profilCard__infos-card">
               <h3>email</h3>
-              <span>{{ ProfilUpdateValues?.adr_mail }}</span>
+              <span>{{ userStore.currentProfile?.adr_mail }}</span>
             </div>
             <div class="profilCard__infos-card">
               <h3>mobile</h3>
-              <span>{{ ProfilUpdateValues?.phone }}</span>
+              <span>{{ userStore.currentProfile?.phone }}</span>
             </div>
             <div class="profilCard__infos-card">
               <h3>region</h3>
-              <span>{{ ProfilUpdateValues?.region }}</span>
+              <span>{{ userStore.currentProfile?.region }}</span>
             </div>
             <div class="profilCard__infos-card">
               <h3>bio</h3>
-              <span>{{ getBoolFrom(ProfilUpdateValues?.bio) ? "oui" : "non" }}</span>
+              <span>{{ getBoolFrom(userStore.currentProfile?.bio) ? "oui" : "non" }}</span>
             </div>
             <div class="profilCard__infos-card">
               <h3>robot</h3>
-              <span>{{ getBoolFrom(ProfilUpdateValues?.robot) ? "oui" : "non" }}</span>
+              <span>{{ getBoolFrom(userStore.currentProfile?.robot) ? "oui" : "non" }}</span>
             </div>
           </div>
         </div>
@@ -139,12 +137,12 @@
           <div class="profilCard__alerts-cards">
             <div class="profilCard__alerts__alert-card">
               <h3>mail</h3>
-              <span>{{ getBoolFrom(ProfilUpdateValues?.mail_notif) ? "oui" : "non" }}</span>
+              <span>{{ getBoolFrom(userStore.currentProfile?.mail_notif) ? "oui" : "non" }}</span>
             </div>
-            <div class="profilCard__alerts__alert-card">
+            <!-- <div class="profilCard__alerts__alert-card">
               <h3>phone</h3>
               <span>{{ getBoolFrom(ProfilUpdateValues?.phone_notif) ? "oui" : "non" }}</span>
-            </div>
+            </div> -->
           </div>
         </div>
       </template>
@@ -209,13 +207,13 @@
                 </n-radio-group>
               </div>
 
-              <div class="profilCard__modify__body-alert">
+              <!-- <div class="profilCard__modify__body-alert">
                 <span class="">Téléphone</span>
                 <n-radio-group v-model:value="ProfilUpdateValues!.phone_notif" name="phone_notif" class="">
                   <n-radio-button value="true">Oui</n-radio-button>
                   <n-radio-button value="false">Non</n-radio-button>
                 </n-radio-group>
-              </div>
+              </div> -->
             </div>
           </main>
 

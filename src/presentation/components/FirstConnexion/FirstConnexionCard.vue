@@ -13,15 +13,15 @@
     const optionsRegion = [
         {
             label: 'Herbagère',
-            value: 'Herbagère',
+            value: 'herbagere',
         },
         {
             label: 'Hautes Ardennes',
-            value: 'Hautes Ardennes',
+            value: 'haute-ardennes',
         },
         {
             label: 'Autres provinces',
-            value: 'Autres provinces',
+            value: 'autres',
         }
     ]
 
@@ -178,7 +178,7 @@
                             </n-form-item>
                         </div>
 
-                        <!-- Alertes téléphone -->
+                        <!-- Alertes téléphone
                         <div class="firstConnexion__card__alert-item">
                             <span class="firstConnexion__card__alert-label">Téléphone</span>
                             <n-radio-group v-model:value="UserUpdateValues!.phone_notif" name="phone_notif"
@@ -189,7 +189,7 @@
                             <n-form-item v-if="getBoolFrom(UserUpdateValues?.phone_notif)" label="Phone" path="phone">
                                 <n-input placeholder="phone" v-model:value="UserUpdateValues!.phone" />
                             </n-form-item>
-                        </div>
+                        </div> -->
 
                     </div>
                 </section>

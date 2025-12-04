@@ -7,6 +7,8 @@ import NotAllowed from '@/presentation/views/NotAllowed.vue'
 import ProfileView from '@/presentation/views/ProfilView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/stores/User'
+import SolutionView from '@/presentation/views/SolutionView.vue'
+import SolutionListView from '@/presentation/views/SolutionListView.vue'
 // import SolutionsListView from '@/presentation/views/SolutionsListView.vue'
 
 const router = createRouter({
@@ -27,16 +29,21 @@ const router = createRouter({
       path: '/problemes',
       component: DiseasesView,
     },
-    // {
-    //   path: '/sousproblemes/:data',
-    //   name: 'sub problems',
-    //   component: () => import('@/presentation/views/SubProblemsView.vue'),
-    // },
-    // {
-    //   name: 'Solutions',
-    //   path: '/solutions',
-    //   component: SolutionsListView,
-    // },
+    {
+      path: '/sousproblemes/:data',
+      name: 'sub problems',
+      component: () => import('@/presentation/views/SubProblemsView.vue'),
+    },
+    {
+      name: 'Solutions',
+      path: '/solutions',
+      component: SolutionView,
+    },
+    {
+      name: 'Solutions List',
+      path: '/solutionsList',
+      component: SolutionListView,
+    },
     {
       name: 'commentaires',
       path: '/commentaires',
@@ -70,8 +77,8 @@ router.beforeEach(async (to /*, from*/) => {
   const userStore = useUserStore()
   //START Bloquage des routes si on est un nouveau profil
 
-  //On récupère le profil s'il n'est pas récupéré
-  if (!userStore.isHydrate) {
+  // On récupère le profil s'il n'est pas récupéré
+  if (userStore.isHydrate === false) {
     await userStore.hydrateApp()
   }
 
