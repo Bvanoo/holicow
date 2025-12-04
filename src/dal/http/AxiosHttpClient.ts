@@ -22,4 +22,8 @@ export class AxiosHttpClient {
     const response = await axios.get(url)
     return response.data
   }
+  async getProblemById(url: string){
+    const reponse = await axios.get(url)
+    return reponse.data
+  }
 }

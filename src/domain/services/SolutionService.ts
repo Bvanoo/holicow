@@ -19,4 +19,5 @@ export class SolutionService {
       .getSolutionsBySubProblemId(idSubProblem, page, limit, sortedBy, sortedOrder)
       .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
   }
+  
 }

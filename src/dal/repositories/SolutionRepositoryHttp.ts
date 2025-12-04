@@ -2,6 +2,8 @@
 
 import type { ISolutionRepository } from '@/domain/repositories/ISolutionRepository'
 import type SolutionPayload from '@/domain/entities/SolutionPayload'
+import type ProblemPayload from '@/domain/entities/ProblemPayload'
+import type Problem from '@/domain/entities/Problem'
 
 export class SolutionRepositoryHttp implements ISolutionRepository {
   constructor(
@@ -15,6 +17,7 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
       `http://localhost:3000/solution?page=${page}&limit=${limit}`,
     )
   }
+ 
 
   async getSolutionsBySubProblemId(
     idSubProblem: number,

@@ -4,6 +4,7 @@ import type IProblemRepository from '../../domain/repositories/IProblemRepositor
 import type SubProblem from '@/domain/entities/SubProblem'
 import type ProblemPayload from '@/domain/entities/ProblemPayload'
 import type Solution from '@/domain/entities/Solution'
+import type Problem from '@/domain/entities/Problem'
 
 export class ProblemRepositoryHttp implements IProblemRepository {
   constructor(
@@ -40,5 +41,9 @@ export class ProblemRepositoryHttp implements IProblemRepository {
     sortedOrder: string,
   ): Promise<Solution[]> {
     return await this.http.getSolutionsArray(`routeSolutionsList${idSubProblem}`)
+  }
+
+  async getProblemById(id: number) {
+    return await this.http.get<ProblemPayload<Problem>>(`http://localhost:3000/disease/${id}`)
   }
 }

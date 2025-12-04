@@ -1,3 +1,5 @@
+import type Problem from '../entities/Problem'
+import type ProblemPayload from '../entities/ProblemPayload'
 import type Solution from '../entities/Solution'
 import type SubProblem from '../entities/SubProblem'
 import { showSimpleErrorBox } from '../exception/utils'
@@ -22,4 +24,8 @@ export class ProblemService {
       .getSolutionsArrayBySubProblemId(idSubProblem, 1, 1, '', '')
       .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
   }
+  async getProblemById(id: number): Promise<ProblemPayload<Problem> | void>{
+    return await this.repo
+    .getProblemById(id)
+    .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))  }
 }
