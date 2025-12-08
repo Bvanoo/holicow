@@ -83,24 +83,24 @@
     onMounted(async () => {
         results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
         console.log(results)
-        rows.value = results.value
+        rows.value = results.value as Solution[]
         // A modifier dès que l'api est mise à jour (pagination)
-        totalItems.value = results.value?.total
-        pageSize.value = results.value!.totalPages + 1
-        if (totalItems.value)
-            pageCount.value = totalItems.value / pageSize.value
-        console.log("results.value!.totalDiseases", results.value!.total);
-        console.log("results.value!.totalPages", results.value!.totalPages);
-        console.log("pageSize.value", pageSize.value);
-        console.log("pageCount.value", pageCount.value);
+        // totalItems.value = results.value?.
+        //     pageSize.value = results.value!.totalPages + 1
+        // if (totalItems.value)
+        //     pageCount.value = totalItems.value / pageSize.value
+        // console.log("results.value!.totalDiseases", results.value!.total);
+        // console.log("results.value!.totalPages", results.value!.totalPages);
+        // console.log("pageSize.value", pageSize.value);
+        // console.log("pageCount.value", pageCount.value);
 
     })
 
     watch(currentPage, async () => {
         // if (sortKey.value) sortOrder.value = 'asc'
-        results.value = await solutionService?.getSolutionsBySubProblemId(userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+        results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
 
-        rows.value = results.value!.data;
+        rows.value = results.value as Solution[];
     })
 
     const filterResult = ref<Record<string, unknown>>();
