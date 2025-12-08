@@ -79,6 +79,7 @@
         { key: 'commentCount', label: 'Commentaires', icon: CommentIcon },
         { key: 'farmerAlertCount', label: 'Alertes', icon: AlertsIcon },
         { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
+        { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
     ]
     onMounted(async () => {
         results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
@@ -108,7 +109,7 @@
     function ButtonAction(row: Solution) {
         if (row.SubDiseaseExisting) {
             router.push({
-                name: 'sub problems',
+                name: 'solution',
                 params: { data: row.id_solution }
             });
         } else {
@@ -117,7 +118,7 @@
     }
 
     function onActionDefined(row: Solution) {
-        return 'voir les solutions'
+        return 'voir la solution'
     }
 
     function handleSubmitFilter(payload: Record<string, unknown>) {

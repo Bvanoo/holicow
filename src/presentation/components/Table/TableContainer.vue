@@ -139,7 +139,7 @@
   /* --- HEADER (centré) --- */
   .table-header {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     background: #f3f3f3;
     padding: 12px;
     font-weight: 600;
