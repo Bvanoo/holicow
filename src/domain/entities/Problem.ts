@@ -4,5 +4,4 @@ export default interface Problem extends Record<string, unknown> {
   commentCount?: number
   farmerAlertCount?: number
   similarAvatarAlertCount?: number
-
 }

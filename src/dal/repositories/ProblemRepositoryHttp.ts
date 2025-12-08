@@ -3,14 +3,16 @@
 import type IProblemRepository from '../../domain/repositories/IProblemRepository'
 import type SubProblem from '@/domain/entities/SubProblem'
 import type ProblemPayload from '@/domain/entities/ProblemPayload'
-import type Solution from '@/domain/entities/Solution'
-import type Problem from '@/domain/entities/Problem'
+import type UpdateProblem from '@/domain/entities/updateProblem'
+import type UpdateStatusProblem from '@/domain/entities/updateStatusProblem'
 
 export class ProblemRepositoryHttp implements IProblemRepository {
   constructor(
     private http: {
       get: (url: string) => Promise<ProblemPayload>
       getChildren: (url: string) => Promise<SubProblem[]>
+      update: (url: string, updateProblem: UpdateProblem) => Promise<UpdateProblem>
+      toggleProblemStatut: (url: string) => Promise<UpdateStatusProblem>
     },
   ) {}
 
@@ -34,19 +36,22 @@ export class ProblemRepositoryHttp implements IProblemRepository {
     return await this.http.getChildren(`http://localhost:3000/disease/${id}`)
   }
 
-
-  async getSolutionsArrayBySubProblemId(
-    idSubProblem: number,
-    page: number,
-    limit: number,
-    sortedBy: string,
-    sortedOrder: string,
-  ): Promise<Solution[]> {
-    return await this.http.getSolutionsArray(`routeSolutionsList${idSubProblem}`)
+  async getProblemById(id: number): Promise<ProblemPayload> {
+    const url = `http://localhost:3000/disease/${id}`
+    return await this.http.get(url)
   }
 
-  async getProblemById(id: number) {
-    return await this.http.get<ProblemPayload<Problem>>(`http://localhost:3000/disease/${id}`)
+  async updateProblem(
+    role: string,
+    id: string,
+    updateProblem: UpdateProblem,
+  ): Promise<UpdateProblem> {
+    const url = `http://localhost:3000/disease/save/${role}/${id}`
+    return await this.http.update(url, updateProblem)
   }
 
+  async toggleProblemStatut(role: string, id: number): Promise<UpdateStatusProblem> {
+    const url = `http://localhost:3000/disease/status/${role}/${id}`
+    return await this.http.toggleProblemStatut(url)
+  }
 }

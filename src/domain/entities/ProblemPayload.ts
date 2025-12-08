@@ -1,7 +1,7 @@
 import type Problem from './Problem'
 
-export default interface ProblemPayload<P = Problem[]>{
-  data: P
+export default interface ProblemPayload{
+  diseases: Problem[]
   total?: number
   page?: number
   totalPages?: number

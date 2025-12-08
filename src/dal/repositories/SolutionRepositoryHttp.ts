@@ -4,6 +4,7 @@ import type { ISolutionRepository } from '@/domain/repositories/ISolutionReposit
 import type SolutionPayload from '@/domain/entities/SolutionPayload'
 import type ProblemPayload from '@/domain/entities/ProblemPayload'
 import type Problem from '@/domain/entities/Problem'
+import type Solution from '@/domain/entities/Solution'
 
 export class SolutionRepositoryHttp implements ISolutionRepository {
   constructor(
@@ -29,4 +30,5 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
     console.log('')
     return await this.http.getSolutionsBySubProblemId(`routeSolutionsList${idSubProblem}`)
   }
+   
 }

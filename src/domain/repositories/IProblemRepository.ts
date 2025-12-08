@@ -1,8 +1,6 @@
-import type { promises } from 'dns'
 import type ProblemPayload from '../entities/ProblemPayload'
 import type SubProblem from '../entities/SubProblem'
-import type Problem from '../entities/Problem'
-
+import type UpdateProblem from '../entities/updateProblem'
 export default interface IProblemRepository {
   getAll(
     id: string,
@@ -12,9 +10,7 @@ export default interface IProblemRepository {
     sortedOrder: string,
   ): Promise<ProblemPayload>
 
-  getProblemById(
-    id:number
-  ):Promise<ProblemPayload<Problem>>
+  getProblemById(id: number): Promise<ProblemPayload>
 
   getAllSubProblemByProblemId(
     id: number,
@@ -23,4 +19,5 @@ export default interface IProblemRepository {
     sortedBy: string,
     sortedOrder: string,
   ): Promise<SubProblem[]>
+  updateProblem(role: string, id: string, updateProblem: UpdateProblem): Promise<UpdateProblem>
 }
