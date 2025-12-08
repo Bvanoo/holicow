@@ -3,10 +3,9 @@
 import type IProblemRepository from '../../domain/repositories/IProblemRepository'
 import type SubProblem from '@/domain/entities/SubProblem'
 import type ProblemPayload from '@/domain/entities/ProblemPayload'
-import type Solution from '@/domain/entities/Solution'
-import type SubProblemPayload from '@/domain/entities/SubProblemPayload'
 import type Problem from '@/domain/entities/Problem'
 import type CreateProblem from '@/domain/entities/createProblem'
+import type UpdateProblem from '@/domain/entities/updateProblem'
 
 export class ProblemRepositoryHttp implements IProblemRepository {
   constructor(
@@ -14,10 +13,11 @@ export class ProblemRepositoryHttp implements IProblemRepository {
       get: (url: string) => Promise<ProblemPayload>
       getChildren: (url: string) => Promise<SubProblemPayload>
       create: (url: string, object: Record<string, unknown>) => Promise<Problem>
+      update: (url: string, updateProblem: UpdateProblem) => Promise<UpdateProblem>
     },
   ) {}
 
-  async getAll(
+  async getAllFarmer(
     id: string,
     page: number,
     limit: number,
@@ -53,5 +53,20 @@ export class ProblemRepositoryHttp implements IProblemRepository {
     return await this.http.getChildren(
       `http://localhost:3000/subDisease/stats/farmer/${idProfile}?page=${page}&limit=${limit}&diseaseId=${idProblem}`,
     )
+  async getProblemById(id: number): Promise<ProblemPayload> {
+    const url = `http://localhost:3000/disease/${id}`
+    return await this.http.get(url)
+  }
+  async updateProblem(
+    role: string,
+    id: string,
+    updateProblem: UpdateProblem,
+  ): Promise<UpdateProblem> {
+    const url = `http://localhost:3000/disease/save/${role}/${id}`
+    return await this.http.update(url, updateProblem)
+  }
+
+  async createProblem(role: string, object: CreateProblem): Promise<Problem> {
+    return await this.http.create(`http://localhost:3000/disease/create?role=${role}`, object)
   }
 }
