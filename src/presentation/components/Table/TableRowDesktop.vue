@@ -2,19 +2,24 @@
   <div class="row-desktop">
     <div v-for="col in columns" :key="String(col.key)" class="desktop-cell">
       <slot :name="col.key" :row="row" :value="row[col.key]">
-        <template v-if="col.key != titleKey">{{ row[col.key] }}</template>
+
+        <template v-if="col.key != titleKey && col.key !== 'actions'">
+          {{ row[col.key] }}</template>
+        <template v-else-if="col.key === 'actions'">
+          <section class="mobile-card-footer-user">
+            <n-button secondary type="info" @click="emit('action', row)">
+              <!-- <n-icon :component="UpdateIcon" /> -->
+              <!-- voir solution(s) -->
+              {{ props.actionLabel }}
+            </n-button>
+          </section>
+        </template>
         <template v-else>
           <span class="titleKey">{{ row[col.key] }}</span>
         </template>
       </slot>
     </div>
-    <section class="mobile-card-footer-user">
-      <n-button secondary type="info" @click="emit('action', row)">
-        <!-- <n-icon :component="UpdateIcon" /> -->
-        <!-- voir solution(s) -->
-        {{ props.actionLabel }}
-      </n-button>
-    </section>
+
     <!-- <div class="desktop-admin"> -->
     <div v-if="isAuthorized" class="desktop-admin">
       <n-button circle color="green" @click="emit('edit', row)">
@@ -52,7 +57,7 @@
 <style scoped>
   .row-desktop {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     gap: 12px;
     padding: 8px;
   }

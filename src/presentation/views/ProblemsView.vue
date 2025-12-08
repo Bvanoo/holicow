@@ -97,7 +97,11 @@
     ]
     onMounted(async () => {
         //‼️‼️Quand on est à la page 2 et qu'on retourne à la page 1, on a un 4e problème (alors que la limite est à 3)‼️‼️
-        results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+        if (userStore?.currentProfile?.role === "Administrator")
+            results.value = await problemService?.getAllProblemsAdmin(currentPage.value, pageSize.value, "", "")
+        else
+            results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+
         console.log(results)
         rows.value = results.value!.diseases
         // A modifier dès que l'api est mise à jour (pagination)
@@ -128,6 +132,7 @@
                 params: { data: row.diseaseId }
             });
         } else {
+            userStore.isProblemViewAction = true;
             router.push({
                 name: 'solutionsList',
                 params: { data: row.diseaseId }

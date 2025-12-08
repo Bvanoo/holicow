@@ -139,14 +139,14 @@
   /* --- HEADER (centré) --- */
   .table-header {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     background: #f3f3f3;
     padding: 12px;
     font-weight: 600;
     color: #444;
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 200;
   }
 
   .header-cell {

@@ -24,7 +24,7 @@
         {{ filterResult }}
         <TableContainer :columns="columns" :data="(rows as SubProblem[])"
             :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
-            :titleKey="'sub_disease_name_FR'" @action="ButtonAction">
+            :titleKey="'subDiseaseName'" @action="ButtonAction">
         </TableContainer>
 
         <!-- <ProblemTable :columns="columns" :data="rows" primary-key="disease_name_FR"> -->
@@ -54,11 +54,12 @@
     import AlertAvatarIcon from '../components/icons/AlertAvatarIcon.vue';
     import type SubProblem from '@/domain/entities/SubProblem';
     import { useRoute } from 'vue-router';
+    import type SubProblemPayload from '@/domain/entities/SubProblemPayload';
     // import type SubProblemPayload from '@/domain/entities/SubProblemPayload';
 
     const userStore = useUserStore();
 
-    const results = ref<SubProblem[] | void>();
+    const results = ref<SubProblemPayload | void>();
 
     const currentPage = ref<number>(1)
     const pageSize = ref<number>(3)
@@ -70,17 +71,18 @@
     const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])
     const problemService = inject<ProblemService>("problemService");
     const route = useRoute();
-    const paramsRoute = route.params.data as string
+    const idProblem = route.params.data as string
     columns.value = [
-        { key: 'sub_disease_name_FR', label: 'Nom', icon: ProblemIcon },
+        { key: 'subDiseaseName', label: 'Nom', icon: ProblemIcon },
         { key: 'commentCount', label: 'Commentaires', icon: CommentIcon },
         { key: 'farmerAlertCount', label: 'Alertes', icon: AlertsIcon },
         { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
+        { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
     ]
     onMounted(async () => {
-        results.value = await problemService?.getSubProblemByProblemId(paramsRoute, currentPage.value, pageSize.value, "", "")
+        results.value = await problemService?.getSubProblemByProblemId(userStore.currentProfile?.profilId as string, idProblem, currentPage.value, pageSize.value, "", "")
         console.log(results)
-        rows.value = results.value as SubProblem[]
+        rows.value = results.value?.subDiseases as SubProblem[]
         // // A modifier dès que l'api est mise à jour (pagination)
         // totalItems.value = results.value?.totalDiseases
         // pageSize.value = results.value!.totalPages + 1
@@ -95,7 +97,7 @@
 
     watch(currentPage, async () => {
         // if (sortKey.value) sortOrder.value = 'asc'
-        results.value = await problemService?.getSubProblemByProblemId(userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+        results.value = await problemService?.getSubProblemByProblemId(userStore.currentProfile?.profilId as string, idProblem, currentPage.value, pageSize.value, "", "")
         if (results.value)
             rows.value = results.value;
     })
