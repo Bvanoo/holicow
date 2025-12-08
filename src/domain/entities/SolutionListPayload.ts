@@ -1,7 +1,7 @@
 import type Solution from './Solution'
 import type Solve from './Solve'
 
-export default interface SolutionPayload {
+export default interface SolutionPayload extends Record<string, unknown> {
   data: Solution[]
   solves: Solve[]
   // data: Solution[]

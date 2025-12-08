@@ -42,6 +42,14 @@ export class AxiosHttpClient {
     const response = await axios.get(url)
     return response.data
   }
+  async getSolutionById(url: string) {
+    const response = await axios.get(url)
+    return response.data
+  }
+  async getAllSubProblemByProblemIdAdmin(url: string) {
+    const response = await axios.get(url)
+    return response.data
+  }
   async getAllAlertsByUserId(url: string) {
     const response = await axios.get(url)
     return response.data

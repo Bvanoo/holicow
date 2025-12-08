@@ -35,8 +35,8 @@ const router = createRouter({
       component: () => import('@/presentation/views/SubProblemsView.vue'),
     },
     {
-      name: 'solutions',
-      path: '/solutions/:data',
+      name: 'solution',
+      path: '/solution/:data',
       component: () => import('@/presentation/views/SolutionView.vue'),
     },
     {

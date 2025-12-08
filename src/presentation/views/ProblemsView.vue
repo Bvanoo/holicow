@@ -74,6 +74,7 @@
     import router from '@/router/index';
     import GenericFormModal from '../components/GenericFormModal.vue';
     import { createProblemFormAdapter } from '@/domain/form/problem/ProblemFormAdapter';
+    import type ProblemAdmin from '@/domain/entities/ProblemAdmin';
 
     const userStore = useUserStore();
 
@@ -81,63 +82,94 @@
 
     const currentPage = ref<number>(1)
     const pageCount = ref<number>(0)
-    const pageSize = ref<number>(3)
-    const rows = ref<Problem[]>()
+    const totalPages = ref<number>(3)
+    const rows = ref<Problem[] | ProblemAdmin[]>()
     const totalItems = ref<number>();
 
     const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])
     const problemService = inject<ProblemService>("problemService");
 
-    columns.value = [
-        { key: 'diseaseName', label: 'Nom', icon: ProblemIcon },
-        { key: 'commentCount', label: 'Commentaires', icon: CommentIcon },
-        { key: 'farmerAlertCount', label: 'Alertes', icon: AlertsIcon },
-        { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
-        { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
-    ]
     onMounted(async () => {
         //‼️‼️Quand on est à la page 2 et qu'on retourne à la page 1, on a un 4e problème (alors que la limite est à 3)‼️‼️
-        if (userStore?.currentProfile?.role === "Administrator")
-            results.value = await problemService?.getAllProblemsAdmin(currentPage.value, pageSize.value, "", "")
-        else
-            results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+        if (userStore?.currentProfile?.role === "Administrator") {
+            columns.value = [
+                { key: 'disease_name_FR', label: 'Nom', icon: ProblemIcon },
+                { key: 'status_disease', label: 'Status', icon: AlertAvatarIcon },
+                { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
+            ]
+            results.value = await problemService?.getAllProblemsAdmin(currentPage.value, totalPages.value, "", "")
+            rows.value = results.value!.data
+        }
+        else {
+            columns.value = [
+                { key: 'diseaseName', label: 'Nom', icon: ProblemIcon },
+                { key: 'commentCount', label: 'Commentaires', icon: CommentIcon },
+                { key: 'farmerAlertCount', label: 'Alertes', icon: AlertsIcon },
+                { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
+                { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
+            ]
+            results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, totalPages.value, "", "")
+            rows.value = results.value!.diseases
+        }
 
         console.log(results)
-        rows.value = results.value!.diseases
         // A modifier dès que l'api est mise à jour (pagination)
-        totalItems.value = results.value?.totalDiseases
-        pageSize.value = results.value!.totalPages
+        totalItems.value = results.value?.totalItems
+        totalPages.value = results.value!.totalPages
         if (totalItems.value)
-            pageCount.value = Math.ceil(totalItems.value / pageSize.value)
-        console.log("results.value!.totalDiseases", results.value!.totalDiseases);
+            pageCount.value = Math.ceil(totalItems.value / totalPages.value)
+        console.log("results.value!.totalDiseases", results.value!.totalItems);
         console.log("results.value!.totalPages", results.value!.totalPages);
-        console.log("pageSize.value", pageSize.value);
+        console.log("pageSize.value", totalPages.value);
         console.log("pageCount.value", pageCount.value);
 
     })
 
     watch(currentPage, async () => {
-        // if (sortKey.value) sortOrder.value = 'asc'
-        console.log("userStore.currentUserId", userStore.currentUserId)
-        results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
-        rows.value = results.value!.diseases;
+
+        if (userStore?.currentProfile?.role === "Administrator") {
+            results.value = await problemService?.getAllProblemsAdmin(currentPage.value, totalPages.value, "", "")
+            rows.value = results.value!.data
+        }
+        else {
+            results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, totalPages.value, "", "")
+            rows.value = results.value!.diseases
+        }
     })
 
     const filterResult = ref<Record<string, unknown>>();
 
-    function ButtonAction(row: Problem) {
-        if (row.SubDiseaseExisting) {
-            router.push({
-                name: 'sub problems',
-                params: { data: row.diseaseId }
-            });
+    function ButtonAction(row: Problem | ProblemAdmin) {
+        if (userStore.currentProfile?.role === "Administrator") {
+            if (row.SubDiseaseExisting) {
+                console.log(row.diseaseId)
+                router.push({
+                    name: 'sub problems',
+                    params: { data: (row as ProblemAdmin).id_disease }
+                });
+            } else {
+                userStore.isProblemViewAction = true;
+                router.push({
+                    name: 'solutionsList',
+                    params: { data: (row as ProblemAdmin).id_disease }
+                });
+                //vers solution
+            }
         } else {
-            userStore.isProblemViewAction = true;
-            router.push({
-                name: 'solutionsList',
-                params: { data: row.diseaseId }
-            });
-            //vers solution
+            if (row.SubDiseaseExisting) {
+                console.log(row.diseaseId)
+                router.push({
+                    name: 'sub problems',
+                    params: { data: (row as Problem).diseaseId }
+                });
+            } else {
+                userStore.isProblemViewAction = true;
+                router.push({
+                    name: 'solutionsList',
+                    params: { data: (row as Problem).diseaseId }
+                });
+                //vers solution
+            }
         }
     }
 

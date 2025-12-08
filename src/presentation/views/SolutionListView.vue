@@ -42,7 +42,6 @@
 <script setup lang="ts">
 
     import { onMounted, ref, type Ref, inject, watch, type Component } from 'vue'
-    import type SolutionPayload from '@/domain/entities/SolutionListPayload';
     import FilterPanel from '../components/Filter/FilterPanel.vue';
     import FilterSelectComponent from '../components/Filter/FilterSelectComponent.vue';
     import FilterOrderSwitchComponent from '../components/Filter/FilterOrderSwitchComponent.vue';
@@ -74,7 +73,6 @@
 
     columns.value = [
         { key: 'globalRating', label: 'Global rating', icon: ProblemIcon },
-        { key: 'name', label: 'Nom', icon: ProblemIcon },
         { key: 'solution_description_FR', label: 'Description', icon: ProblemIcon },
         { key: 'commentCount', label: 'Commentaires', icon: CommentIcon },
         { key: 'farmerAlertCount', label: 'Alertes', icon: AlertsIcon },
@@ -82,6 +80,7 @@
         { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
     ]
     onMounted(async () => {
+
         //Si on vient du problemView, alors on utilise la route pour avoir les solutions par rapport à un PROBLEME id
         if (userStore.isProblemViewAction)
             results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
@@ -113,14 +112,10 @@
     const filterResult = ref<Record<string, unknown>>();
 
     function ButtonAction(row: Solution) {
-        if (row.SubDiseaseExisting) {
-            router.push({
-                name: 'solution',
-                params: { data: row.id_solution }
-            });
-        } else {
-            //vers solution
-        }
+        router.push({
+            name: 'solution',
+            params: { data: row.id_solution }
+        });
     }
 
     function onActionDefined(row: Solution) {

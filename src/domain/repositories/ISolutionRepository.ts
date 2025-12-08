@@ -1,3 +1,4 @@
+import type Solution from '../entities/Solution'
 import type SolutionPayload from '../entities/SolutionListPayload'
 
 export interface ISolutionRepository {
@@ -11,5 +12,16 @@ export interface ISolutionRepository {
     limit: number,
     sortedBy: string,
     sortedOrder: string,
-  ): Promise<SolutionPayload>
+  ): Promise<Solution[]>
+  getSolutionsByProblemId(
+    idProblem: string,
+    lang: string,
+    role: string,
+    profilId: string,
+    page: number,
+    limit: number,
+    sortedBy: string,
+    sortedOrder: string,
+  ): Promise<Solution[]>
+  getSolutionById(id: string, lang: string): Promise<Solution>
 }

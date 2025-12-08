@@ -1,12 +1,17 @@
 import type Problem from './Problem'
+import type ProblemAdmin from './ProblemAdmin'
 
 export default interface ProblemPayload {
   diseases: Problem[]
-  totalComments: 1
-  totalAlerts: 0
-  totalSimilarAvatarAlerts: 0
-  totalDiseases: 6
-  totalPages: 3
+  //data pour l'admin car on nous renvoit pas le même dto entre farmer et admin
+  data?: ProblemAdmin[]
+  totalComments: number
+  totalAlerts: number
+  totalSimilarAvatarAlerts: number
+  totalItems: number
+  totalPages: number
+  //data pour l'admin car on nous renvoit pas le même dto entre farmer et admin
+  total?: number
 
   // diseases: Problem[]
   // total: number

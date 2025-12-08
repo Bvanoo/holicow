@@ -3,6 +3,7 @@ import type CreateProblem from '../entities/createProblem'
 import type Problem from '../entities/Problem'
 import type ProblemPayload from '../entities/ProblemPayload'
 import type SubProblem from '../entities/SubProblem'
+import type SubProblemAdmin from '../entities/SubProblemAdmin'
 import type SubProblemPayload from '../entities/SubProblemPayload'
 // import type SubProblemPayload from '../entities/SubProblemPayload'
 import { showSimpleErrorBox } from '../exception/utils'
@@ -43,6 +44,18 @@ export class ProblemService {
   ): Promise<SubProblemPayload | void> {
     return await this.repo
       .getAllSubProblemByProblemId(idProfile, idProblem, page, limit, '', '')
+      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+  }
+  async getSubProblemByProblemIdAdmin(
+    // idProfile: string,
+    idProblem: string,
+    // page: number,
+    // limit: number,
+    // sortedBy: string,
+    // sortedOrder: string,
+  ): Promise<SubProblemAdmin[] | void> {
+    return await this.repo
+      .getAllSubProblemByProblemIdAdmin(idProblem /*, page, limit, '', ''*/)
       .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
   }
 }

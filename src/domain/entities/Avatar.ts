@@ -1,5 +1,5 @@
-export default interface Avatar {
-    name: string,
-    image: string,
-    userTypePicture: string
+export default interface Avatar extends Record<string, unknown> {
+  name: string
+  image: string
+  userTypePicture: string
 }

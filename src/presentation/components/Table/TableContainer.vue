@@ -7,7 +7,7 @@
         <n-icon v-if="col.icon" :component="col.icon" class="header-icon" />
         {{ col.label }}
       </div>
-      <div v-if="isAuthorized" class="header-cell">Actions</div>
+      <div v-if="isAuthorized" class="header-cell">CRUD</div>
     </div>
 
     <!-- BODY -->
@@ -141,7 +141,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     background: #f3f3f3;
-    padding: 12px;
+    padding: 24px 20px;
     font-weight: 600;
     color: #444;
     position: sticky;

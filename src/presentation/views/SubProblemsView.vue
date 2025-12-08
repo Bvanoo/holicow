@@ -56,15 +56,16 @@
     import { useRoute } from 'vue-router';
     import router from '@/router/index';
     import type SubProblemPayload from '@/domain/entities/SubProblemPayload';
+    import type SubProblemAdmin from '@/domain/entities/SubProblemAdmin';
     // import type SubProblemPayload from '@/domain/entities/SubProblemPayload';
 
     const userStore = useUserStore();
 
-    const results = ref<SubProblemPayload | void>();
+    const results = ref<SubProblemPayload | SubProblemAdmin[] | void>();
 
     const currentPage = ref<number>(1)
     const pageSize = ref<number>(3)
-    const rows = ref<SubProblem[]>()
+    const rows = ref<SubProblem[] | SubProblemAdmin[] | void>()
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const totalItems = ref<number>();
     const pageCount = ref<number>(0)
@@ -81,9 +82,28 @@
         { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
     ]
     onMounted(async () => {
-        results.value = await problemService?.getSubProblemByProblemId(userStore.currentProfile?.profilId as string, idProblem, currentPage.value, pageSize.value, "", "")
-        console.log(results)
-        rows.value = results.value?.subDiseases as SubProblem[]
+        if (userStore?.currentProfile?.role === "Administrator") {
+            columns.value = [
+                { key: 'sub_disease_name_FR', label: 'Nom', icon: ProblemIcon },
+                { key: 'status_sub_disease', label: 'Status', icon: AlertAvatarIcon },
+                { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
+            ]
+            results.value = await problemService?.getSubProblemByProblemIdAdmin(idProblem/*, currentPage.value, pageSize.value, "", ""*/)
+
+            rows.value = results.value as SubProblemAdmin[]
+        }
+        else {
+            columns.value = [
+                { key: 'diseaseName', label: 'Nom', icon: ProblemIcon },
+                { key: 'commentCount', label: 'Commentaires', icon: CommentIcon },
+                { key: 'farmerAlertCount', label: 'Alertes', icon: AlertsIcon },
+                { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
+                { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
+            ]
+            results.value = await problemService?.getSubProblemByProblemId(userStore.currentProfile?.profilId as string, idProblem, currentPage.value, pageSize.value, "", "")
+            console.log(results)
+            rows.value = results.value?.subDiseases as SubProblem[]
+        }
         // // A modifier dès que l'api est mise à jour (pagination)
         // totalItems.value = results.value?.totalDiseases
         // pageSize.value = results.value!.totalPages + 1
@@ -97,20 +117,32 @@
     })
 
     watch(currentPage, async () => {
-        // if (sortKey.value) sortOrder.value = 'asc'
-        results.value = await problemService?.getSubProblemByProblemId(userStore.currentProfile?.profilId as string, idProblem, currentPage.value, pageSize.value, "", "")
-        // if (results.value)
-        rows.value = results.value?.subDiseases;
+        if (userStore?.currentProfile?.role === "Administrator") {
+            results.value = await problemService?.getSubProblemByProblemIdAdmin(idProblem/*, currentPage.value, pageSize.value, "", ""*/)
+            rows.value = results.value
+        }
+        else {
+            results.value = await problemService?.getSubProblemByProblemId(userStore.currentProfile?.profilId as string, idProblem, currentPage.value, pageSize.value, "", "")
+            rows.value = results.value!.subDiseases
+        }
     })
 
     const filterResult = ref<Record<string, unknown>>();
 
-    function ButtonAction(row: SubProblem) {
+    function ButtonAction(row: SubProblem | SubProblemAdmin) {
         userStore.isProblemViewAction = false;
-        router.push({
-            name: 'solutionsList',
-            params: { data: row.diseaseId }
-        });
+        if (userStore?.currentProfile?.role === "Administrator") {
+            router.push({
+                name: 'solutionsList',
+                params: { data: (row as SubProblemAdmin).id_sub_disease }
+            });
+        }
+        else {
+            router.push({
+                name: 'solutionsList',
+                params: { data: (row as SubProblem).diseaseId }
+            });
+        }
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

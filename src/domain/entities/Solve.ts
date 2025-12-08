@@ -1,9 +1,13 @@
-import type Problem from './Problem'
+import type Comment from './Comment'
 
-export default interface Solve {
+export default interface Solve extends Record<string, unknown> {
   id_solve: number
   status_solve: boolean
-  diseases?: Problem[]
+  solution?: unknown
+  commentaire?: Comment[]
+  // id_solve: number
+  // status_solve: boolean
+  // diseases?: Problem[]
 }
 /**
  * "id_solve": 1,

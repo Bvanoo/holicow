@@ -1,10 +1,19 @@
+import type FarmerStats from './FarmerStats'
+import type Solve from './Solve'
+
 export default interface Solution extends Record<string, unknown> {
-  id_solution: string
+  id_solution: number
+  content: string
   status_solution: boolean
-  solution_description_FR: string
-  solution_description_NL: string
-  solution_description_EN: string
-  solution_description_DE: string
+  solves: Solve[]
+  farmerStats: FarmerStats
+
+  // id_solution: string
+  // status_solution: boolean
+  // solution_description_FR: string
+  // solution_description_NL: string
+  // solution_description_EN: string
+  // solution_description_DE: string
   // id_solution: number | string
   // problemId: number | string
   // subProblemId: number | string

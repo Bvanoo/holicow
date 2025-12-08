@@ -9,7 +9,7 @@ export class SolutionService {
   }
 
   async getSolutionsBySubProblemId(
-    idSubProblem: string,
+    idProblem: string,
     lang: string,
     role: string,
     profilId: string,
@@ -20,7 +20,7 @@ export class SolutionService {
   ) {
     return await this.repo
       .getSolutionsBySubProblemId(
-        idSubProblem,
+        idProblem,
         lang,
         role,
         profilId,
@@ -43,6 +43,11 @@ export class SolutionService {
   ) {
     return await this.repo
       .getSolutionsByProblemId(idProblem, lang, role, profilId, page, limit, sortedBy, sortedOrder)
+      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+  }
+  async getSolutionById(idSolution: string, lang: string) {
+    return await this.repo
+      .getSolutionById(idSolution, lang)
       .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
   }
 }

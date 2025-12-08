@@ -7,12 +7,14 @@ import type Solution from '@/domain/entities/Solution'
 import type SubProblemPayload from '@/domain/entities/SubProblemPayload'
 import type Problem from '@/domain/entities/Problem'
 import type CreateProblem from '@/domain/entities/createProblem'
+import type SubProblemAdmin from '@/domain/entities/SubProblemAdmin'
 
 export class ProblemRepositoryHttp implements IProblemRepository {
   constructor(
     private http: {
       get: (url: string) => Promise<ProblemPayload>
       getChildren: (url: string) => Promise<SubProblemPayload>
+      getAllSubProblemByProblemIdAdmin: (url: string) => Promise<SubProblemAdmin[]>
       create: (url: string, object: Record<string, unknown>) => Promise<Problem>
     },
   ) {}
@@ -52,6 +54,18 @@ export class ProblemRepositoryHttp implements IProblemRepository {
   ): Promise<SubProblemPayload> {
     return await this.http.getChildren(
       `http://localhost:3000/subDisease/stats/farmer/${idProfile}?page=${page}&limit=${limit}&diseaseId=${idProblem}`,
+    )
+  }
+  async getAllSubProblemByProblemIdAdmin(
+    // idProfile: string,
+    idProblem: string,
+    // page: number,
+    // limit: number,
+    // sortedBy: string,
+    // sortedOrder: string,
+  ): Promise<SubProblemAdmin[]> {
+    return await this.http.getAllSubProblemByProblemIdAdmin(
+      `http://localhost:3000/disease/${idProblem}`,
     )
   }
 }

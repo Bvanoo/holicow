@@ -1,143 +1,161 @@
 <template>
   <div class="comment-wrapper">
-    <n-card class="comment-wrapper__comment">
+    <n-card
+      class="comment-wrapper__comment"
+      hoverable
+      @click="(e: Event) => console.log('some action')"
+    >
+      <!-- HEADER -->
+      <template #header>
+        <section class="comment-wrapper__comment__header">
+          <div class="comment-wrapper__comment__user-info">
+            <div class="comment-wrapper__comment__user-info__avatar">
+              <n-avatar :src="avatarPath" round size="medium" />
+              <div>{{ author }}</div>
+              <div class="date">{{ date }}</div>
+            </div>
 
-      <div class="comment-wrapper__comment__header">
-        <div class="comment-wrapper__comment__user-info">
-          <!-- <n-float-button :right="0" :top="0" shape="square"> </n-float-button> -->
-          <div style="display: flex; align-items: center">
-            <n-avatar round size="medium" style="margin-right: 16px">A</n-avatar>
-            <div class="date">{{ new Date().toLocaleDateString() }}</div>
+            <n-dropdown
+              placement="bottom-start"
+              trigger="click"
+              size="small"
+              :options="contentOptions"
+              @select="handleSelect"
+            >
+              <n-button quaternary circle>
+                <n-image :src="iconPath ?? '/more-vert.svg'" />
+              </n-button>
+            </n-dropdown>
           </div>
-          <!-- <button style="background-color: transparent; color: transparent">
-            <img src="/more-vert.svg" />
-          </button> -->
-          <!-- <n-button round> <img src="/more-vert.svg" /> </n-button> -->
-          <n-dropdown placement="bottom-start" trigger="click" size="small" :options="options" @select="handleSelect">
-            <n-button> <img src="/more-vert.svg" /> </n-button>
-          </n-dropdown>
-          <!-- <div class="meta"></div> -->
-        </div>
-      </div>
+        </section>
+      </template>
 
-      <div class="content">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </p>
-      </div>
+      <!-- BODY -->
+      <template #default>
+        <section class="body">
+          <p>{{ content }}</p>
+        </section>
+      </template>
 
+      <!-- FOOTER -->
+      <template #footer>
+        <section class="footer"></section>
+      </template>
     </n-card>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { NAvatar, NCard, NIcon, NButton, NDropdown } from 'naive-ui'
-  import { useMessage } from 'naive-ui'
+import { NAvatar, NCard, NButton, NDropdown, NImage } from 'naive-ui'
+import type { DropdownMixedOption } from 'naive-ui/es/dropdown/src/interface'
 
-  const options = [
-    {
-      label: 'Jay Gatsby',
-      key: 'jay gatsby',
-    },
-    {
-      label: 'Daisy Buchanan',
-      key: 'daisy buchanan',
-    },
-    {
-      type: 'divider',
-      key: 'd1',
-    },
-    {
-      label: 'Nick Carraway',
-      key: 'nick carraway',
-    },
-    {
-      label: 'Others',
-      key: 'others1',
-      children: [
-        {
-          label: 'Jordan Baker',
-          key: 'jordan baker',
-        },
-        {
-          label: 'Tom Buchanan',
-          key: 'tom buchanan',
-        },
-        {
-          label: 'Others',
-          key: 'others2',
-          children: [
-            {
-              label: 'Chicken',
-              key: 'chicken',
-            },
-            {
-              label: 'Beef',
-              key: 'beef',
-            },
-          ],
-        },
-      ],
-    },
-  ]
+// Entities
+export interface Props {
+  id: string
+  author?: string
+  content?: string
+  date?: string
+  avatarPath?: string
+  contentOptions?: DropdownMixedOption[]
+  iconPath: string
+}
 
-  const message = useMessage()
-  function handleSelect(key: string | number) {
-    message.info(String(key))
-  }
+withDefaults(defineProps<Props>(), {
+  date: new Date().toLocaleDateString(),
+  content:
+    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium natus deleniti ad nostrum, nesciunt consequuntur totam, est minus accusamus impedit, culpa esse aliquid error minima aut dolor tempora rem molestiae.',
+  contentOptions: () => [{ label: 'éditer', key: 'edit' }],
+  avatarPath: 'undefined',
+})
+
+const emit = defineEmits<{
+  (e: 'editChatBubbleContent', newContent: string): void
+}>()
+
+// Dropdown test mock
+// const options = [
+//   {
+//     label: 'Jay Gatsby',
+//     key: 'jay gatsby',
+//   },
+//   {
+//     label: 'Daisy Buchanan',
+//     key: 'daisy buchanan',
+//   },
+//   {
+//     type: 'divider',
+//     key: 'd1',
+//   },
+//   {
+//     label: 'Nick Carraway',
+//     key: 'nick carraway',
+//   },
+//   {
+//     label: 'Others',
+//     key: 'others1',
+//     children: [
+//       {
+//         label: 'Jordan Baker',
+//         key: 'jordan baker',
+//       },
+//       {
+//         label: 'Tom Buchanan',
+//         key: 'tom buchanan',
+//       },
+//       {
+//         label: 'Others',
+//         key: 'others2',
+//         children: [
+//           {
+//             label: 'Chicken',
+//             key: 'chicken',
+//           },
+//           {
+//             label: 'Beef',
+//             key: 'beef',
+//           },
+//         ],
+//       },
+//     ],
+//   },
+// ]
+
+function handleSelect(key: string) {
+  emit('editChatBubbleContent', key)
+}
 </script>
 
 <style lang="scss" scoped>
-  .comment-wrapper {
-    padding-top: 8px;
-    display: flex;
-    justify-content: flex-start;
+.comment-wrapper {
+  padding-top: 8px;
+  display: flex;
+  justify-content: flex-start;
 
-    &__comment {
-      max-width: 600px;
+  &__comment {
+    // max-width: 600px;
+    width: 100%;
+    border-radius: 16px;
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    &__user-info {
+      display: flex;
       width: 100%;
-      border-radius: 16px;
-
-      &__header {
+      justify-content: space-between;
+      align-items: center;
+      &__avatar {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 12px;
-      }
-
-      &__user-info {
-        display: flex;
+        justify-content: left;
+        gap: 16px;
         width: 100%;
-        justify-content: space-between;
-        align-items: center;
       }
     }
   }
-
-  // .header {
-  //   display: flex;
-  //   justify-content: space-between;
-  //   align-items: center;
-  //   margin-bottom: 12px;
-  // }
-
-  // .user-info {
-  //   display: flex;
-  //   width: 100%;
-  //   justify-content: space-between;
-  //   align-items: center;
-  //   /* gap: 12px; */
-  // }
-
-  // .meta {
-  //   display: flex;
-  //   flex-direction: column;
-  // }
-
-  // .name {
-  //   font-weight: 600;
-  //   font-size: 1rem;
-  // }
+}
 </style>
