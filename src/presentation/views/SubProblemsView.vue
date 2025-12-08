@@ -54,6 +54,7 @@
     import AlertAvatarIcon from '../components/icons/AlertAvatarIcon.vue';
     import type SubProblem from '@/domain/entities/SubProblem';
     import { useRoute } from 'vue-router';
+    import router from '@/router/index';
     import type SubProblemPayload from '@/domain/entities/SubProblemPayload';
     // import type SubProblemPayload from '@/domain/entities/SubProblemPayload';
 
@@ -98,14 +99,18 @@
     watch(currentPage, async () => {
         // if (sortKey.value) sortOrder.value = 'asc'
         results.value = await problemService?.getSubProblemByProblemId(userStore.currentProfile?.profilId as string, idProblem, currentPage.value, pageSize.value, "", "")
-        if (results.value)
-            rows.value = results.value;
+        // if (results.value)
+        rows.value = results.value?.subDiseases;
     })
 
     const filterResult = ref<Record<string, unknown>>();
 
     function ButtonAction(row: SubProblem) {
-        console.log(row)
+        userStore.isProblemViewAction = false;
+        router.push({
+            name: 'solutionsList',
+            params: { data: row.diseaseId }
+        });
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
