@@ -1,14 +1,17 @@
 import type Problem from './Problem'
 
 export default interface ProblemPayload {
-  data: Problem[]
-  total: number
-  page: number
-  totalPages: number
+  diseases: Problem[]
+  totalComments: 1
+  totalAlerts: 0
+  totalSimilarAvatarAlerts: 0
+  totalDiseases: 6
+  totalPages: 3
 
-  //   data: Problem[]
+  // diseases: Problem[]
   // total: number
   // page: number
+  // totalPages: number
   /**{
   "diseases": [
     {

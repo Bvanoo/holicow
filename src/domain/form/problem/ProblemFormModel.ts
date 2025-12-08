@@ -1,9 +1,9 @@
 export interface ProblemFormModel extends Record<string, unknown> {
-  name: string
-  description: string
+  disease_name_FR: string
+  est_healing_time: number
 }
 
 export const problemFormInitial: ProblemFormModel = {
-  name: '',
-  description: '',
+  disease_name_FR: '',
+  est_healing_time: 0,
 }

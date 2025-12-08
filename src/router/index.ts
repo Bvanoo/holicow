@@ -30,19 +30,19 @@ const router = createRouter({
       component: DiseasesView,
     },
     {
-      path: '/sousproblemes/:data',
       name: 'sub problems',
+      path: '/sousproblemes/:data',
       component: () => import('@/presentation/views/SubProblemsView.vue'),
     },
     {
-      name: 'Solutions',
-      path: '/solutions',
-      component: SolutionView,
+      name: 'solutions',
+      path: '/solutions/:data',
+      component: () => import('@/presentation/views/SolutionView.vue'),
     },
     {
-      name: 'Solutions List',
-      path: '/solutionsList',
-      component: SolutionListView,
+      name: 'solutionsList',
+      path: '/solutionsList/:data',
+      component: () => import('@/presentation/views/SolutionListView.vue'),
     },
     {
       name: 'commentaires',

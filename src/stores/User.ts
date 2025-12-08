@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import UsersServices from '@/domain/services/UserServices'
 import type IUserProfile from '@/domain/entities/IUserProfile'
-import type IFirstLogin from '@/domain/entities/IFirstLogin'
+import type IFirstLoginPayload from '@/domain/entities/IFirstLoginPayload'
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
@@ -13,7 +13,7 @@ export const useUserStore = defineStore('userStore', {
     isHydrate: ref<boolean>(false),
   }),
   getters: {
-    getCurrentUser: (state) => state.currentProfile,
+    getCurrentProfile: (state) => state.currentProfile,
     getCurrentUserPicture: (state) => state.currentProfile?.avatar_picture,
   },
   actions: {
@@ -43,20 +43,21 @@ export const useUserStore = defineStore('userStore', {
       const userIdWALLeSmart: string = '3cc7e361-c7f3-45c8-9097-979ddcb709f4'
 
       //1) récupérer l'utilisateur en DB
-      const user: IFirstLogin | void = await usersServices.getFirstLogin(userIdWALLeSmart)
+      const firstLoginPayload: IFirstLoginPayload | void =
+        await usersServices.getFirstLogin(userIdWALLeSmart)
 
       //2) vérifier que l'utilisateur à un profil
       let userProfile: IUserProfile | void = undefined
 
-      if (user) {
-        userProfile = await usersServices.getProfile(user?.profilId)
-        if (userProfile?.region === 'BE')
+      if (firstLoginPayload) {
+        userProfile = await usersServices.getProfile(firstLoginPayload?.user?.profilId)
+        if (userProfile?.region === '')
           this.isNewProfil = true //a changer quand back end a ajouter l'attribut a l'objet
         else this.isNewProfil = false
       }
 
       this.currentProfile = userProfile
-      this.currentUserId = user?.profilId
+      this.currentUserId = firstLoginPayload?.user?.profilId
       this.isHydrate = true
     },
   },

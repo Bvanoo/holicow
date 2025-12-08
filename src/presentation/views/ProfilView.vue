@@ -10,7 +10,7 @@
 <template>
   <n-flex vertical align="center" class="profilView">
     <!--Chargement ...-->
-    <n-flex v-if="usersStore?.getCurrentUser === null" vertical>
+    <n-flex v-if="usersStore?.getCurrentProfile === null" vertical>
       <n-spin size="large" />
       <p>Récupération du profil...</p>
     </n-flex>

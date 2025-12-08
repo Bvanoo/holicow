@@ -1,4 +1,4 @@
-import type SolutionPayload from '../entities/SolutionPayload'
+import type SolutionPayload from '../entities/SolutionListPayload'
 
 export interface ISolutionRepository {
   getAllSolution(page: number, limit: number): Promise<SolutionPayload>

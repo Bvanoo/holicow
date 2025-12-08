@@ -13,7 +13,6 @@
 
     const props = defineProps<{
         logoSrc?: string
-        logoSrcUE?: string
         profileSrc?: string
         modelValue?: string
     }>()
@@ -34,7 +33,6 @@
     const mobile = ref(false)
 
     const logoSrc = props.logoSrc ?? ''
-    const logoSrcUE = props.logoSrcUE ?? ''
     const profileSrc = props.profileSrc ?? ''
 
     function checkMobile() {

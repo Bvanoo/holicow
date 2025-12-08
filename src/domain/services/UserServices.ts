@@ -1,14 +1,14 @@
 import useUsersDAL from '@/dal/user'
 import { checkUndefinedAndNullValue, showSimpleErrorBox } from '@/domain/exception/utils'
 import { InvalidParameterException } from '@/domain/exception/InvalidParameterException'
-import type IFirstLogin from '@/domain/entities/IFirstLogin'
 import type IUserProfile from '@/domain/entities/IUserProfile'
 import type updateProfile from '../entities/updateProfile'
+import type IFirstLoginPayload from '../entities/IFirstLoginPayload'
 
 export default class UsersServices {
   private usersDAL = useUsersDAL()
 
-  public async getFirstLogin(profil_id: string): Promise<IFirstLogin | void> {
+  public async getFirstLogin(profil_id: string): Promise<IFirstLoginPayload | void> {
     return await this.usersDAL
       .getFirstLogin(profil_id)
       .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))

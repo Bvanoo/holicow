@@ -6,7 +6,7 @@
                 <div class="filter__order">
                     <!-- Composant 1 -->
                     <FilterSelectComponent class="filter__order-select" field-name="colonne" :options="[
-                        { label: 'Nom', value: 'disease_name_FR' },
+                        { label: 'Nom', value: 'diseaseName' },
                         { label: 'Alertes', value: 'alerts' },
                         { label: 'Commentaires', value: 'comments' },
                         { label: 'Alertes/Avatar', value: 'avatarAlerts' }
@@ -14,17 +14,34 @@
                     <!-- Composant 2 -->
                     <FilterOrderSwitchComponent fieldName="order"></FilterOrderSwitchComponent>
                 </div>
+                <!-- Ajouter un v-if et regarder si l'utilisateur est un "Administator" -->
                 <!-- <div class="filter__search">
                 <span>Rechercher :</span> 
             Composant 3
             <FilterInputComponent fieldName="test"></FilterInputComponent>
             </div> -->
             </FilterPanel>
+
         </Transition>
+
+        <section v-if="userStore.currentProfile?.role === 'Administrator'"
+            style="display: flex; justify-content: space-around">
+            <n-button type="primary" @click="openCreate"> Créer un problème </n-button>
+        </section>
+
+        <GenericFormModal v-model:show="showModal" :title="modalTitle" :adapter="problemAdapter" @submit="handleSubmit">
+            <n-form-item label="Nom du problème" path="name">
+                <n-input v-model:value="problemAdapter.form.value.disease_name_FR" />
+            </n-form-item>
+            <n-form-item label="Description" path="description">
+                <n-input v-model:value="problemAdapter.form.value.est_healing_time" />
+            </n-form-item>
+        </GenericFormModal>
+
         {{ filterResult }}
         <TableContainer :columns="columns" :data="(rows as Problem[])"
             :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
-            :titleKey="'disease_name_FR'" @action="ButtonAction">
+            :titleKey="'diseaseName'" @action="ButtonAction">
         </TableContainer>
 
         <!-- <ProblemTable :columns="columns" :data="rows" primary-key="disease_name_FR"> -->
@@ -41,7 +58,7 @@
 
 <script setup lang="ts">
 
-    import { onMounted, ref, type Ref, inject, watch, type Component } from 'vue'
+    import { onMounted, ref, type Ref, inject, watch, type Component, computed } from 'vue'
     import { ProblemService } from '@/domain/services/ProblemService'
     import type ProblemPayload from '@/domain/entities/ProblemPayload';
     import type Problem from '@/domain/entities/Problem';
@@ -55,6 +72,8 @@
     import AlertsIcon from '../components/icons/AlertsIcon.vue';
     import AlertAvatarIcon from '../components/icons/AlertAvatarIcon.vue';
     import router from '@/router/index';
+    import GenericFormModal from '../components/GenericFormModal.vue';
+    import { createProblemFormAdapter } from '@/domain/form/problem/ProblemFormAdapter';
 
     const userStore = useUserStore();
 
@@ -70,7 +89,7 @@
     const problemService = inject<ProblemService>("problemService");
 
     columns.value = [
-        { key: 'disease_name_FR', label: 'Nom', icon: ProblemIcon },
+        { key: 'diseaseName', label: 'Nom', icon: ProblemIcon },
         { key: 'commentCount', label: 'Commentaires', icon: CommentIcon },
         { key: 'farmerAlertCount', label: 'Alertes', icon: AlertsIcon },
         { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
@@ -78,15 +97,15 @@
     ]
     onMounted(async () => {
         //‼️‼️Quand on est à la page 2 et qu'on retourne à la page 1, on a un 4e problème (alors que la limite est à 3)‼️‼️
-        results.value = await problemService?.getAllProblems(currentPage.value, pageSize.value, "", "")
+        results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
         console.log(results)
-        rows.value = results.value!.data
+        rows.value = results.value!.diseases
         // A modifier dès que l'api est mise à jour (pagination)
-        totalItems.value = results.value?.total
+        totalItems.value = results.value?.totalDiseases
         pageSize.value = results.value!.totalPages
         if (totalItems.value)
             pageCount.value = Math.ceil(totalItems.value / pageSize.value)
-        console.log("results.value!.totalDiseases", results.value!.total);
+        console.log("results.value!.totalDiseases", results.value!.totalDiseases);
         console.log("results.value!.totalPages", results.value!.totalPages);
         console.log("pageSize.value", pageSize.value);
         console.log("pageCount.value", pageCount.value);
@@ -95,34 +114,74 @@
 
     watch(currentPage, async () => {
         // if (sortKey.value) sortOrder.value = 'asc'
-        results.value = await problemService?.getAllProblems(currentPage.value, pageSize.value, "", "")
-        rows.value = results.value!.data;
+        console.log("userStore.currentUserId", userStore.currentUserId)
+        results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+        rows.value = results.value!.diseases;
     })
 
     const filterResult = ref<Record<string, unknown>>();
 
     function ButtonAction(row: Problem) {
-        if (row.sub_diseases.length > 0) {
+        if (row.SubDiseaseExisting) {
             router.push({
                 name: 'sub problems',
-                params: { data: row.id_disease }
+                params: { data: row.diseaseId }
             });
         } else {
+            router.push({
+                name: 'solutionsList',
+                params: { data: row.diseaseId }
+            });
             //vers solution
         }
     }
 
     function onActionDefined(row: Problem) {
-        if (row.sub_diseases.length > 0) {
+        if (row.SubDiseaseExisting) {
             return 'voir les sous-problèmes'
         } else {
             return 'voir les solutions'
         }
     }
-
+    //===========================================
+    // filter 
+    //===========================================
     function handleSubmitFilter(payload: Record<string, unknown>) {
         filterResult.value = payload
         console.log(payload)
+    }
+
+    //===========================================
+    // modal Form (create, update, delete)
+    //===========================================
+
+    // Adapter instance
+    const problemAdapter = createProblemFormAdapter()
+
+    const showModal = ref(false)
+    const mode = ref<'create' | 'update'>('create')
+
+    // Dynamic Title
+    const modalTitle = computed(() =>
+        mode.value === 'create' ? 'Créer un problème' : 'Modifier le problème',
+    )
+    const openCreate = () => {
+        mode.value = 'create'
+
+        problemAdapter.reset()
+        showModal.value = true
+    }
+
+    async function handleSubmit() {
+        if (mode.value === 'create') {
+            const created = await problemAdapter.create()
+            console.log('Created :', created)
+        }
+
+        if (mode.value === 'update') {
+            const updated = await problemAdapter.update()
+            console.log('Updated :', updated)
+        }
     }
 
 </script>

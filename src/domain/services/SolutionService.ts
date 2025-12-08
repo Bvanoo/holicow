@@ -19,4 +19,18 @@ export class SolutionService {
       .getSolutionsBySubProblemId(idSubProblem, page, limit, sortedBy, sortedOrder)
       .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
   }
+  async getSolutionsByProblemId(
+    idProblem: string,
+    lang: string,
+    role: string,
+    profilId: string,
+    page: number,
+    limit: number,
+    sortedBy: string,
+    sortedOrder: string,
+  ) {
+    return await this.repo
+      .getSolutionsByProblemId(idProblem, lang, role, profilId, page, limit, sortedBy, sortedOrder)
+      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+  }
 }

@@ -42,7 +42,7 @@
 <script setup lang="ts">
 
     import { onMounted, ref, type Ref, inject, watch, type Component } from 'vue'
-    import type SolutionPayload from '@/domain/entities/SolutionPayload';
+    import type SolutionPayload from '@/domain/entities/SolutionListPayload';
     import FilterPanel from '../components/Filter/FilterPanel.vue';
     import FilterSelectComponent from '../components/Filter/FilterSelectComponent.vue';
     import FilterOrderSwitchComponent from '../components/Filter/FilterOrderSwitchComponent.vue';
@@ -55,10 +55,12 @@
     import router from '@/router/index';
     import type Solution from '@/domain/entities/Solution';
     import type { SolutionService } from '@/domain/services/SolutionService';
+    import { useRoute } from 'vue-router';
 
+    const route = useRoute();
     const userStore = useUserStore();
 
-    const results = ref<SolutionPayload | void>();
+    const results = ref<Solution[] | void>();
 
     const currentPage = ref<number>(1)
     const pageSize = ref<number>(3)
@@ -68,6 +70,7 @@
 
     const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])
     const solutionService = inject<SolutionService>("solutionService");
+    const idProblemSolution = route.params.data as string
 
     columns.value = [
         { key: 'globalRating', label: 'Global rating', icon: ProblemIcon },
@@ -78,9 +81,9 @@
         { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
     ]
     onMounted(async () => {
-        results.value = await solutionService?.getSolutionsBySubProblemId(userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+        results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
         console.log(results)
-        rows.value = results.value!.data
+        rows.value = results.value
         // A modifier dès que l'api est mise à jour (pagination)
         totalItems.value = results.value?.total
         pageSize.value = results.value!.totalPages + 1

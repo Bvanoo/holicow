@@ -15,6 +15,7 @@
         {{ props.actionLabel }}
       </n-button>
     </section>
+    <!-- <div class="desktop-admin"> -->
     <div v-if="isAuthorized" class="desktop-admin">
       <n-button circle color="green" @click="emit('edit', row)">
         <n-icon :component="UpdateIcon" />

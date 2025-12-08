@@ -26,6 +26,12 @@ export class AxiosHttpClient {
         response = await axios.put(url, object)
         break
     }
+    if (!response.data) throw new Error('Axios error : ' + updateVerb)
+    return response.data
+  }
+
+  async create(url: string, object: Record<string, unknown>) {
+    const response = await axios.post(url, object)
     return response.data
   }
   async getAllSolution(url: string) {
