@@ -1,5 +1,4 @@
 export default interface UpdateProblem extends Record<string, unknown> {
-  id_disease?: string
   disease_name_FR: string
   disease_name_DE: string
   disease_name_EN: string

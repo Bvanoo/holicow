@@ -46,4 +46,8 @@ export class AxiosHttpClient {
     const response = await axios.get(url)
     return response.data
   }
+  async toggleProblemStatut(url: string) {
+    const reponse = await axios.patch(url)
+    return reponse.data
+  }
 }

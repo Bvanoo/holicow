@@ -16,5 +16,5 @@ export default interface IProblemRepository {
 
   getProblemById(id: number): Promise<ProblemPayload>
 
-  updateProblem(role: string, id: string, updateProblem: UpdateProblem): Promise<UpdateProblem>
+  updateProblem(role: string, id: string, updateProblem: UpdateProblem): Promise<Problem>
 }
