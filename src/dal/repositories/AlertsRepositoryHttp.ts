@@ -16,8 +16,8 @@ export class AlertsRepositoryHttp implements IAlertsRepository {
     page: number,
   ): Promise<AlertPayload> {
     return this.http.getAllAlertsByUserId(
-      //   `http://localhost:3000/alert/AllAlerte/${userId}/${lang}?page=${page}&limit=${limit}`,
-      'http://localhost:3000/alert/AllAlerte/FARM001/fr?page=1&limit=2',
+      `http://localhost:3000/alert/AllAlerte/${userId}/${lang}?page=${page}&limit=${limit}`,
+      // 'http://localhost:3000/alert/AllAlerte/FARM001/fr?page=1&limit=2',
     )
   }
 }
