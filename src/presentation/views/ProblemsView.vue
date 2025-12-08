@@ -132,6 +132,7 @@
                 params: { data: row.diseaseId }
             });
         } else {
+            userStore.isProblemViewAction = true;
             router.push({
                 name: 'solutionsList',
                 params: { data: row.diseaseId }

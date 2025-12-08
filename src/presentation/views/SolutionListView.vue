@@ -82,7 +82,13 @@
         { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
     ]
     onMounted(async () => {
-        results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+        //Si on vient du problemView, alors on utilise la route pour avoir les solutions par rapport à un PROBLEME id
+        if (userStore.isProblemViewAction)
+            results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+        //Sinon on vient du subProblemView
+        else
+            results.value = await solutionService?.getSolutionsBySubProblemId(idProblemSolution, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+
         console.log(results)
         rows.value = results.value as Solution[]
         // A modifier dès que l'api est mise à jour (pagination)

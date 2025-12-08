@@ -146,7 +146,7 @@
     color: #444;
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 200;
   }
 
   .header-cell {

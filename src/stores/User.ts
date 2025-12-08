@@ -11,6 +11,7 @@ export const useUserStore = defineStore('userStore', {
     currentUserId: ref<string | void>(),
     isNewProfil: ref<boolean>(false),
     isHydrate: ref<boolean>(false),
+    isProblemViewAction: ref<boolean>(true),
   }),
   getters: {
     getCurrentProfile: (state) => state.currentProfile,

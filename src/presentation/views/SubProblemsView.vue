@@ -54,11 +54,12 @@
     import AlertAvatarIcon from '../components/icons/AlertAvatarIcon.vue';
     import type SubProblem from '@/domain/entities/SubProblem';
     import { useRoute } from 'vue-router';
+    import type SubProblemPayload from '@/domain/entities/SubProblemPayload';
     // import type SubProblemPayload from '@/domain/entities/SubProblemPayload';
 
     const userStore = useUserStore();
 
-    const results = ref<SubProblem[] | void>();
+    const results = ref<SubProblemPayload | void>();
 
     const currentPage = ref<number>(1)
     const pageSize = ref<number>(3)
