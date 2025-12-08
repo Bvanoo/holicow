@@ -1,10 +1,12 @@
 import axios from 'axios'
 import type IFirstLogin from '@/domain/entities/IFirstLogin'
 import type IUserProfile from '@/domain/entities/IUserProfile'
+import type updateProfile from '@/domain/entities/updateProfile'
+import type IFirstLoginPayload from '@/domain/entities/IFirstLoginPayload'
 const userUrlApi = 'http://localhost:3000'
 
 export default function useUsersDAL() {
-  const getFirstLogin = async (profil_id: string): Promise<IFirstLogin | void> => {
+  const getFirstLogin = async (profil_id: string): Promise<IFirstLoginPayload | void> => {
     return await axios
       .get(`${userUrlApi}/users/first-login`, {
         params: { profilId: profil_id },
@@ -20,7 +22,10 @@ export default function useUsersDAL() {
     })
   }
 
-  const updateUserProfile = async (profil_id: string, userProfile: IUserProfile): Promise<void> => {
+  const updateUserProfile = async (
+    profil_id: string,
+    userProfile: updateProfile,
+  ): Promise<void> => {
     return await axios
       .put(`${userUrlApi}/profile/update/${profil_id}`, userProfile)
       .then((resp) => {

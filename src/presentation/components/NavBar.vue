@@ -2,6 +2,9 @@
     import { ref, computed, onMounted, onUnmounted, defineProps, defineEmits } from 'vue'
     import router from '@/router'
     import { NAvatar, NDrawer, NButton } from 'naive-ui'
+    import { useUserStore } from '@/stores/User'
+
+    const userStore = useUserStore();
 
     interface Tab {
         key: string
@@ -10,7 +13,6 @@
 
     const props = defineProps<{
         logoSrc?: string
-        logoSrcUE?: string
         profileSrc?: string
         modelValue?: string
     }>()
@@ -31,7 +33,6 @@
     const mobile = ref(false)
 
     const logoSrc = props.logoSrc ?? ''
-    const logoSrcUE = props.logoSrcUE ?? ''
     const profileSrc = props.profileSrc ?? ''
 
     function checkMobile() {
@@ -66,7 +67,6 @@
         <div class="navbar-inner">
             <div class="left">
                 <img v-if="logoSrc" :src="logoSrc" alt="logo" class="logo" />
-                <!-- <img v-if="logoSrcUE" :src="logoSrcUE" alt="logo" class="logo UE" /> -->
                 <slot name="logo" v-else>
                     <div class="logo-placeholder">LOGO</div>
                 </slot>
@@ -99,8 +99,7 @@
                             </g>
                         </svg>
                     </div>
-
-                    <n-avatar :src="profileSrc" :size="56" round />
+                    <n-avatar :src="'http://' + userStore.currentProfile?.avatar_picture" :size="56" round />
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-    import { NEl, NButton, NFlex } from 'naive-ui'
+    import { NFlex } from 'naive-ui'
     import { onMounted, ref } from 'vue'
     import FirstConnexionCard from '@/presentation/components/FirstConnexion/FirstConnexionCard.vue'
     import CancelConnexionCard from '@/presentation/components/FirstConnexion/CancelConnexionCard.vue'
@@ -17,14 +17,6 @@
     const userProfile = ref<UserProfile | void>()
     //End Variables click
 
-    //Functions click
-    const goToProfil = () => {
-        router.push('/profile')
-    }
-
-    const cancelLogin = () => {
-        isCancelLogin.value = true
-    }
     const quitApp = () => {
         isCancelLogin.value = true
     }
@@ -35,10 +27,9 @@
         isCancelLogin.value = false
     }
 
-    const updateUserChoices = (value: UserProfile) => {
-        userStore.currentProfile = value
-        userStore.updateProfile();
-        console.log("userProfile.value", userProfile.value)
+    const updateUserChoices = async (newProfile: UserProfile) => {
+        await userStore.updateProfile(newProfile);
+        console.log("userProfile.value", userStore.getCurrentProfile)
         router.push("/")
     }
 
@@ -46,7 +37,7 @@
 </script>
 
 <template>
-    <n-flex vertical align="center" class="firstConnexion">
+    <n-flex vertical align="center" class="firstConnexion" v-if="userStore.getCurrentProfile">
 
         <!--First connexion-->
         <div class="firstConnexion__main" v-if="!isCancelLogin">

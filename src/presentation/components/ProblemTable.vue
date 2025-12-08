@@ -1,5 +1,5 @@
 <template>
-  <section class="select-container">
+  <!-- <section class="select-container">
     <n-flex justify="center" class="sort-items">
       <n-select class="nselect" v-model:value="sortKey"
         :options="columns.map((c) => ({ label: c.label, value: c.key }))" placeholder="Trier par..." />
@@ -7,7 +7,7 @@
         {{ sortOrder === 'asc' ? '⬆️ Asc' : '⬇️ Desc' }}
       </n-button>
     </n-flex>
-  </section>
+  </section> -->
 
   <div class="responsive-table">
     <!-- Header (hidden on mobile) -->
@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <!-- Body -->
+    Body
     <div class="table-body">
       <div @click="() => {
         router.push({
@@ -35,7 +35,7 @@
 
         <!-- Mobile card layout -->
         <template v-else>
-          <n-card class="mobile-card" :title="row[primaryKey]">
+          <n-card class="mobile-card" :title="Object.keys(row).find(el => el === primaryKey)">
             <div class="mobile-line" v-for="col in columns" :key="col.key">
 
               <template v-if="col.key == 'disease_name_FR'">
@@ -131,7 +131,6 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin-top: 100px;
     background-color: $white !important;
     padding: 12px;
     border-radius: 12px;
@@ -211,9 +210,10 @@
   }
 
   /* Mobile styles */
-  @media (max-width: 768px) {
+  @media (max-width: $mobile) {
     .responsive-table {
       background-color: transparent !important;
+      padding: 0px;
 
     }
 

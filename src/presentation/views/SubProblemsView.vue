@@ -1,82 +1,129 @@
 <template>
-  <!-- <ChatBubble /> -->
-  <section style="padding: 16px">
-    <SubProblemTable :columns="columns" :data="rows" primary-key="sub_disease_name_FR">
-    </SubProblemTable>
+    <!-- <ChatBubble /> -->
+    <section style="padding: 16px">
+        <Transition name="fade-slide" tag="FilterPanel" appear>
+            <FilterPanel title="Filtres" @submit="handleSubmitFilter" class="filter">
+                <div class="filter__order">
+                    <!-- Composant 1 -->
+                    <FilterSelectComponent class="filter__order-select" field-name="colonne" :options="[
+                        { label: 'Nom', value: 'disease_name_FR' },
+                        { label: 'Alertes', value: 'alerts' },
+                        { label: 'Commentaires', value: 'comments' },
+                        { label: 'Alertes/Avatar', value: 'avatarAlerts' },
+                    ]"></FilterSelectComponent>
+                    <!-- Composant 2 -->
+                    <FilterOrderSwitchComponent fieldName="order"></FilterOrderSwitchComponent>
+                </div>
+                <!-- <div class="filter__search">
+                <span>Rechercher :</span> 
+            Composant 3
+            <FilterInputComponent fieldName="test"></FilterInputComponent>
+            </div> -->
+            </FilterPanel>
+        </Transition>
+        {{ filterResult }}
+        <TableContainer :columns="columns" :data="(rows as SubProblem[])"
+            :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
+            :titleKey="'sub_disease_name_FR'" @action="ButtonAction">
+        </TableContainer>
 
-    <div class="table-footer">
-      <n-pagination
-        v-model:page="currentPage"
-        :page-size="pageSize"
-        :item-count="totalItems"
-        simple
-      />
-      <slot name="footer"></slot>
-    </div>
-  </section>
+        <!-- <ProblemTable :columns="columns" :data="rows" primary-key="disease_name_FR"> -->
+        <!-- <template #footer>
+        <n-button type="primary">Action footer</n-button>
+      </template> -->
+        <!-- </ProblemTable> -->
+        <div class="table-footer">
+            <n-pagination v-model:page="currentPage" :page-count="pageCount" simple />
+            <slot name="footer"></slot>
+        </div>
+    </section>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, type Ref, inject, watch } from 'vue'
-import { ProblemService } from '@/domain/services/ProblemService'
-import { useRoute } from 'vue-router'
-import SubProblemTable from '../components/SubProblemTable.vue'
-import type SubProblem from '@/domain/entities/SubProblem'
-const results = ref<SubProblem[] | void>()
-const currentPage = ref<number>(1)
-const pageSize = ref<number>(3)
-const rows = ref<SubProblem[] | undefined>()
-const totalItems = ref<number>()
 
-const columns: Ref<{ key: string; label: string }[]> = ref([])
-const problemService = inject<ProblemService>('problemService')
-const route = useRoute()
+    import { onMounted, ref, type Ref, inject, watch, type Component } from 'vue';
+    import { ProblemService } from '@/domain/services/ProblemService';
+    import FilterPanel from '../components/Filter/FilterPanel.vue';
+    import FilterSelectComponent from '../components/Filter/FilterSelectComponent.vue';
+    import FilterOrderSwitchComponent from '../components/Filter/FilterOrderSwitchComponent.vue';
+    import TableContainer from '../components/Table/TableContainer.vue';
+    import { useUserStore } from '@/stores/User';
+    import ProblemIcon from '../components/icons/ProblemIcon.vue';
+    import CommentIcon from '../components/icons/CommentIcon.vue';
+    import AlertsIcon from '../components/icons/AlertsIcon.vue';
+    import AlertAvatarIcon from '../components/icons/AlertAvatarIcon.vue';
+    import type SubProblem from '@/domain/entities/SubProblem';
+    import { useRoute } from 'vue-router';
+    // import type SubProblemPayload from '@/domain/entities/SubProblemPayload';
 
-onMounted(async () => {
-  columns.value = [
-    { key: 'sub_disease_name_FR', label: 'Nom' },
-    { key: 'comments', label: 'Commentaires' },
-    { key: 'alerts', label: 'Alertes' },
-    { key: 'avatarAlerts', label: 'Alertes/Avatar' },
-  ]
-  results.value = await problemService?.getSubProblemByProblemId(Number(route.params.data))
+    const userStore = useUserStore();
 
-  // pageSize.value = Math.ceil(results.value!.total / results.value!.totalPages)
-  rows.value = results.value!
-  // totalItems.value = results.value!.total;
-})
+    const results = ref<SubProblem[] | void>();
 
-watch(currentPage, async () => {
-  // if (sortKey.value) sortOrder.value = 'asc'
-  // results.value = await problemService?.getSubProblemByProblemId(Number(route.params.id_disease))
-  // rows.value = results.value!
-})
+    const currentPage = ref<number>(1)
+    const pageSize = ref<number>(3)
+    const rows = ref<SubProblem[]>()
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const totalItems = ref<number>();
+    const pageCount = ref<number>(0)
 
-// interface ProblemDTO {
-//     id: number
-//     name: string
-//     comments: number
-//     alerts: number
-//     avatarAlerts: number
-// }
+    const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])
+    const problemService = inject<ProblemService>("problemService");
+    const route = useRoute();
+    const paramsRoute = route.params.data as string
+    columns.value = [
+        { key: 'sub_disease_name_FR', label: 'Nom', icon: ProblemIcon },
+        { key: 'commentCount', label: 'Commentaires', icon: CommentIcon },
+        { key: 'farmerAlertCount', label: 'Alertes', icon: AlertsIcon },
+        { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
+    ]
+    onMounted(async () => {
+        results.value = await problemService?.getSubProblemByProblemId(paramsRoute, currentPage.value, pageSize.value, "", "")
+        console.log(results)
+        rows.value = results.value as SubProblem[]
+        // // A modifier dès que l'api est mise à jour (pagination)
+        // totalItems.value = results.value?.totalDiseases
+        // pageSize.value = results.value!.totalPages + 1
+        // if (totalItems.value)
+        //     pageCount.value = totalItems.value / pageSize.value
+        // console.log("results.value!.totalDiseases", results.value!.totalDiseases);
+        // console.log("results.value!.totalPages", results.value!.totalPages);
+        // console.log("pageSize.value", pageSize.value);
+        // console.log("pageCount.value", pageCount.value);
 
-// const rows = ref<ProblemDTO[]>([
-//     { id: 0, name: 'Mastite', comments: 1, alerts: 2, avatarAlerts: 12 },
-//     { id: 1, name: 'Cétose', comments: 0, alerts: 0, avatarAlerts: 3 },
-//     { id: 2, name: 'Médose', comments: 2, alerts: 8, avatarAlerts: 1 },
-//     { id: 3, name: 'Acidose', comments: 3, alerts: 4, avatarAlerts: 5 },
-//     { id: 4, name: 'Champignite', comments: 1, alerts: 4, avatarAlerts: 14 },
-//     { id: 5, name: 'rhume', comments: 14, alerts: 2, avatarAlerts: 9 },
-//     { id: 6, name: 'Unnamed', comments: 2, alerts: 4, avatarAlerts: 5 },
-// ])
+    })
+
+    watch(currentPage, async () => {
+        // if (sortKey.value) sortOrder.value = 'asc'
+        results.value = await problemService?.getSubProblemByProblemId(userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+        if (results.value)
+            rows.value = results.value;
+    })
+
+    const filterResult = ref<Record<string, unknown>>();
+
+    function ButtonAction(row: SubProblem) {
+        console.log(row)
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    function onActionDefined(row: SubProblem) {
+        return 'Voir les solutions'
+    }
+
+    function handleSubmitFilter(payload: Record<string, unknown>) {
+        filterResult.value = payload
+        console.log(payload)
+    }
+
 </script>
 
-<style scoped>
-  .table-footer {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin: 16px 0;
-    padding-bottom: 64px;
-  }
+<style lang="scss" scoped>
+    .table-footer {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin: 16px 0;
+        padding-bottom: 12px;
+    }
 </style>

@@ -13,13 +13,7 @@
             <img src="/more-vert.svg" />
           </button> -->
           <!-- <n-button round> <img src="/more-vert.svg" /> </n-button> -->
-          <n-dropdown
-            placement="bottom-start"
-            trigger="click"
-            size="small"
-            :options="options"
-            @select="handleSelect"
-          >
+          <n-dropdown placement="bottom-start" trigger="click" size="small" :options="options" @select="handleSelect">
             <n-button> <img src="/more-vert.svg" /> </n-button>
           </n-dropdown>
           <!-- <div class="meta"></div> -->
@@ -39,111 +33,111 @@
 </template>
 
 <script setup lang="ts">
-import { NAvatar, NCard, NIcon, NButton, NDropdown } from 'naive-ui'
-import { useMessage } from 'naive-ui'
+  import { NAvatar, NCard, NIcon, NButton, NDropdown } from 'naive-ui'
+  import { useMessage } from 'naive-ui'
 
-const options = [
-  {
-    label: 'Jay Gatsby',
-    key: 'jay gatsby',
-  },
-  {
-    label: 'Daisy Buchanan',
-    key: 'daisy buchanan',
-  },
-  {
-    type: 'divider',
-    key: 'd1',
-  },
-  {
-    label: 'Nick Carraway',
-    key: 'nick carraway',
-  },
-  {
-    label: 'Others',
-    key: 'others1',
-    children: [
-      {
-        label: 'Jordan Baker',
-        key: 'jordan baker',
-      },
-      {
-        label: 'Tom Buchanan',
-        key: 'tom buchanan',
-      },
-      {
-        label: 'Others',
-        key: 'others2',
-        children: [
-          {
-            label: 'Chicken',
-            key: 'chicken',
-          },
-          {
-            label: 'Beef',
-            key: 'beef',
-          },
-        ],
-      },
-    ],
-  },
-]
+  const options = [
+    {
+      label: 'Jay Gatsby',
+      key: 'jay gatsby',
+    },
+    {
+      label: 'Daisy Buchanan',
+      key: 'daisy buchanan',
+    },
+    {
+      type: 'divider',
+      key: 'd1',
+    },
+    {
+      label: 'Nick Carraway',
+      key: 'nick carraway',
+    },
+    {
+      label: 'Others',
+      key: 'others1',
+      children: [
+        {
+          label: 'Jordan Baker',
+          key: 'jordan baker',
+        },
+        {
+          label: 'Tom Buchanan',
+          key: 'tom buchanan',
+        },
+        {
+          label: 'Others',
+          key: 'others2',
+          children: [
+            {
+              label: 'Chicken',
+              key: 'chicken',
+            },
+            {
+              label: 'Beef',
+              key: 'beef',
+            },
+          ],
+        },
+      ],
+    },
+  ]
 
-const message = useMessage()
-function handleSelect(key: string | number) {
-  message.info(String(key))
-}
+  const message = useMessage()
+  function handleSelect(key: string | number) {
+    message.info(String(key))
+  }
 </script>
 
 <style lang="scss" scoped>
-.comment-wrapper {
-  padding-top: 8px;
-  display: flex;
-  justify-content: flex-start;
+  .comment-wrapper {
+    padding-top: 8px;
+    display: flex;
+    justify-content: flex-start;
 
-  &__comment {
-    max-width: 600px;
-    width: 100%;
-    border-radius: 16px;
-
-    &__header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    &__user-info {
-      display: flex;
+    &__comment {
+      max-width: 600px;
       width: 100%;
-      justify-content: space-between;
-      align-items: center;
+      border-radius: 16px;
+
+      &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      &__user-info {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+      }
     }
   }
-}
 
-// .header {
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   margin-bottom: 12px;
-// }
+  // .header {
+  //   display: flex;
+  //   justify-content: space-between;
+  //   align-items: center;
+  //   margin-bottom: 12px;
+  // }
 
-// .user-info {
-//   display: flex;
-//   width: 100%;
-//   justify-content: space-between;
-//   align-items: center;
-//   /* gap: 12px; */
-// }
+  // .user-info {
+  //   display: flex;
+  //   width: 100%;
+  //   justify-content: space-between;
+  //   align-items: center;
+  //   /* gap: 12px; */
+  // }
 
-// .meta {
-//   display: flex;
-//   flex-direction: column;
-// }
+  // .meta {
+  //   display: flex;
+  //   flex-direction: column;
+  // }
 
-// .name {
-//   font-weight: 600;
-//   font-size: 1rem;
-// }
+  // .name {
+  //   font-weight: 600;
+  //   font-size: 1rem;
+  // }
 </style>
