@@ -3,10 +3,30 @@ import { AlertsService } from '@/domain/services/AlertsService'
 import { inject, onMounted } from 'vue'
 
 onMounted(async () => {
-  const alertsService = inject<AlertsService>('alertsService')
-  const alerts = await alertsService?.getAllAlertsByUserId('FARM001', 'fr', 1, 3)
-  console.log('alerts', alerts)
+
+  //récuprer les alerts d'un farmer avec son id 
+  // const alertsService = inject<AlertsService>('alertsService')
+  // const alerts = await alertsService?.getAllAlertsByUserId('FARM001', 'fr', 1, 2)
+  // console.log('alerts', alerts)
+
+
+
+  //get tout les problemes
+
+  // const 
+
+
 })
+
+
+
+
+
+
+
+
+
+
 </script>
 
 <template>
