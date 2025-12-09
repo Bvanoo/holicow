@@ -16,7 +16,41 @@ export class  CommentService {
     return await this.repo.createComment(role, newComment);
   }
 
-  async getAllCommentById(id: number){
-
+  async getAllCommentById(
+    role : string,
+    id : string,
+    page : number,
+    limit : number,
+    sortedBy: string,
+    sortedOrder: string
+  ): Promise<CommentPayload> {
+    if(!role){
+      throw new Error("Vous n'avez entrez aucun rôle")
+    }
+    if(!id) {
+      throw new Error("Utilisateur inexistant")
+    }
+    return await this.repo.getAllComment(
+      role,
+      id,
+      Math.max(page, 1),
+      Math.max(limit, 4),
+      sortedBy || '',
+      sortedOrder || '')
   }
+  async getCommentByDisease(diseaseId: string, page: number, limit: number, sortedBy: string, sortedOrder: string) : Promise<CommentPayload> {
+    if(!diseaseId){
+      throw new Error ("Maladie inexistante")
+    }
+    else{
+      return await this.repo.getCommentByDisease(
+        diseaseId,
+        Math.max(page, 1),
+        Math.max(limit, 4),
+        sortedBy,
+        sortedOrder,
+      )
+    }
+  }
+
 }

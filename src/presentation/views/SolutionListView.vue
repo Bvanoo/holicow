@@ -82,9 +82,11 @@
     onMounted(async () => {
 
         //Si on vient du problemView, alors on utilise la route pour avoir les solutions par rapport à un PROBLEME id
-        if (userStore.isProblemViewAction)
+        if (userStore.isProblemViewAction) {
+
             results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
-        //Sinon on vient du subProblemView
+            //Sinon on vient du subProblemView
+        }
         else
             results.value = await solutionService?.getSolutionsBySubProblemId(idProblemSolution, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
 

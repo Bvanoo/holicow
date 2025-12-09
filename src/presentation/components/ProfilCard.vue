@@ -101,7 +101,7 @@
   <!--Profil Card-->
   <transition name="fade-slide" tag="n-card" appear>
 
-    <n-card v-if="userStore?.getCurrentProfile !== null" class="profilCard" hoverable>
+    <n-card v-if="userStore?.currentProfile !== null" class="profilCard" hoverable>
 
       <template v-if="!isModify">
         <n-image :src="'http://www.' + userStore.currentProfile?.avatar_picture" preview-disabled alt="Profil logo"

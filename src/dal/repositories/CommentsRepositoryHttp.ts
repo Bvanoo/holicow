@@ -21,7 +21,9 @@ export class CommentsRepositoryHttp implements ICommentRepository{
     return await this.http.get("http://localhost:3000")
   }
 
-  async getAllCommentByAdminVetCons(
+  async getAllComment(
+    role: string,
+    id: string,
     page: number,
     limit: number,
     sortedBy: string,
@@ -32,6 +34,12 @@ export class CommentsRepositoryHttp implements ICommentRepository{
   }
 
   async createComment(role : string, object: CreateComment): Promise<CommentPayload> {
+    //terminer de faire la requête HTTP
+    return await this.http.get("http://localhost:3000")
+  }
+
+  async getCommentByDisease(diseaseId: string, page: number, limit: number, sortedBy: string, sortedOrder: string): Promise<CommentPayload> {
+
     //terminer de faire la requête HTTP
     return await this.http.get("http://localhost:3000")
   }

@@ -28,8 +28,6 @@
 
     <!-- handleUpdateSubmit - handleDeleteSubmit -->
     <!-- Rebrancher un event en passant le payload à la page -->
-    <ModalForm v-model:show="updateModalVisible" title="Modifier" @submit="handleUpdateSubmit" />
-    <ModalForm v-model:show="deleteModalVisible" title="Supprimer" @submit="handleDeleteSubmit" />
   </div>
 </template>
 
@@ -60,6 +58,7 @@
   function openEdit(row: T) {
     selectedRow.value = row
     updateModalVisible.value = true
+    emit("edit", row as T)
   }
 
   const emit = defineEmits<{
@@ -75,7 +74,6 @@
   function handleUpdateSubmit(data: unknown) {
     console.log('Form submitted', data)
     // Emit vers le page qui est la page (eventception)
-    emit("edit", data as T)
   }
 
   function handleDeleteSubmit(data: unknown) {

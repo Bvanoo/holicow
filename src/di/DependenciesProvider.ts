@@ -6,8 +6,8 @@ import { AlertsRepositoryHttp } from '@/dal/repositories/AlertsRepositoryHttp'
 import { AlertsService } from '@/domain/services/AlertsService'
 import { SolutionRepositoryHttp } from '@/dal/repositories/SolutionRepositoryHttp'
 import { SolutionService } from '@/domain/services/SolutionService'
-// import { useDependenciesStore } from '@/stores/DependenciesStore'
-// import type { ClassDef } from './DependenciesManager'
+import { useDependenciesStore } from '@/stores/DependenciesStore'
+import type { ClassDef } from './DependenciesManager'
 
 // const dependenciesStore = useDependenciesStore()
 

@@ -12,7 +12,9 @@ export default interface ICommentRepository {
     sortedOrder: string,
   ): Promise<CommentPayload>
 
-  getAllCommentByAdminVetCons(
+  getAllComment(
+    role : string,
+    id: string,
     page: number,
     limit: number,
     sortedBy: string,
@@ -21,4 +23,11 @@ export default interface ICommentRepository {
 
   createComment(role : string, object: CreateComment): Promise<CommentPayload>
 
+  getCommentByDisease(
+    diseaseId : string,
+    page : number,
+    limit : number,
+    sortedBy: string,
+    sortedOrder: string,
+  ): Promise<CommentPayload>
 }

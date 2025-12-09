@@ -5,4 +5,5 @@ export const problemFormRules: FormRules = {
   est_healing_time: [
     { required: true, message: 'Le nombre de jour est obligatoire', trigger: 'blur' },
   ],
+  status_disease: [{ required: true, message: 'Activé ou désactivé', trigger: 'blur' }],
 }

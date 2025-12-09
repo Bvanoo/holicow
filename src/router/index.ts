@@ -9,6 +9,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/stores/User'
 import SolutionView from '@/presentation/views/SolutionView.vue'
 import SolutionListView from '@/presentation/views/SolutionListView.vue'
+import TestView from '@/presentation/views/TestView.vue'
 // import SolutionsListView from '@/presentation/views/SolutionsListView.vue'
 
 const router = createRouter({
@@ -28,6 +29,11 @@ const router = createRouter({
       name: 'problemes',
       path: '/problemes',
       component: DiseasesView,
+    },
+    {
+      name: 'test',
+      path: '/test',
+      component: TestView,
     },
     {
       name: 'sub problems',

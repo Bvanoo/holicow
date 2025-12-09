@@ -29,6 +29,7 @@ export function createFormAdapter<T extends Record<string, unknown>>(
 
   // UPDATE => (pre-filling)
   function load(data: T) {
+    console.log(data)
     form.value = { ...data }
   }
 

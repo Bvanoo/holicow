@@ -42,7 +42,7 @@
           <p>Prévention : Désinfection avant et après la traite (trempage ou pulvérisation)</p>
         </div>
         <div>
-          <ChatBubble />
+          <SimpleChatBubble />
         </div>
       </n-card>
     </transition-group>
@@ -70,6 +70,7 @@
   } from 'naive-ui'
   // Imports //
   import ChatBubble from './SimpleChatBubble.vue'
+  import type SimpleChatBubbleVue from './SimpleChatBubble.vue'
 
   // Item type //
   interface ListItem {

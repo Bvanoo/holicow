@@ -27,14 +27,18 @@
         <section v-if="userStore.currentProfile?.role === 'Administrator'"
             style="display: flex; justify-content: space-around">
             <n-button type="primary" @click="openCreate"> Créer un problème </n-button>
+
         </section>
 
         <GenericFormModal v-model:show="showModal" :title="modalTitle" :adapter="problemAdapter" @submit="handleSubmit">
-            <n-form-item label="Nom du problème" path="name">
+            <n-form-item label="Nom du problème" path="disease_name_FR">
                 <n-input v-model:value="problemAdapter.form.value.disease_name_FR" />
             </n-form-item>
-            <n-form-item label="Description" path="description">
+            <n-form-item label="Temps de guérison" path="est_healing_time">
                 <n-input v-model:value="problemAdapter.form.value.est_healing_time" />
+            </n-form-item>
+            <n-form-item label="Status" path="status_disease">
+                <n-select v-model:value="problemAdapter.form.value.status_disease" :options="statusOptions" />
             </n-form-item>
         </GenericFormModal>
 
@@ -75,10 +79,20 @@
     import GenericFormModal from '../components/GenericFormModal.vue';
     import { createProblemFormAdapter } from '@/domain/form/problem/ProblemFormAdapter';
     import type ProblemAdmin from '@/domain/entities/ProblemAdmin';
+    import type ModalFormVue from '../components/Table/ModalForm.vue';
+    import type { ProblemFormModel } from '@/domain/form/problem/ProblemFormModel';
 
     const userStore = useUserStore();
 
     const results = ref<ProblemPayload | void>();
+
+    const statusOptions = [{
+        label: 'Activer',
+        value: 'true'
+    }, {
+        label: 'Désactiver',
+        value: 'false'
+    }]
 
     const currentPage = ref<number>(1)
     const pageCount = ref<number>(0)
@@ -127,6 +141,7 @@
 
     watch(currentPage, async () => {
 
+        //Les objets que nous renvoit l'api ne sont pas les mêmes en fonction de l'admin ou du farmer
         if (userStore?.currentProfile?.role === "Administrator") {
             results.value = await problemService?.getAllProblemsAdmin(currentPage.value, totalPages.value, "", "")
             rows.value = results.value!.data
@@ -140,9 +155,10 @@
     const filterResult = ref<Record<string, unknown>>();
 
     function ButtonAction(row: Problem | ProblemAdmin) {
+        //Les objets que nous renvoit l'api ne sont pas les mêmes en fonction de l'admin ou du farmer
         if (userStore.currentProfile?.role === "Administrator") {
             if (row.SubDiseaseExisting) {
-                console.log(row.diseaseId)
+                console.log(row.id_disease)
                 router.push({
                     name: 'sub problems',
                     params: { data: (row as ProblemAdmin).id_disease }
@@ -209,10 +225,12 @@
         showModal.value = true
     }
 
-    const openUpdate = () => {
+    const openUpdate = (row: ProblemFormModel) => {
         mode.value = 'update'
+        console.log(row);
 
-        problemAdapter.reset()
+        problemAdapter.load(row)
+
         showModal.value = true
     }
     async function handleSubmit() {

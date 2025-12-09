@@ -29,7 +29,7 @@
 
     const updateUserChoices = async (newProfile: UserProfile) => {
         await userStore.updateProfile(newProfile);
-        console.log("userProfile.value", userStore.getCurrentProfile)
+        console.log("userProfile.value", userStore.currentProfile)
         router.push("/")
     }
 
@@ -37,7 +37,7 @@
 </script>
 
 <template>
-    <n-flex vertical align="center" class="firstConnexion" v-if="userStore.getCurrentProfile">
+    <n-flex vertical align="center" class="firstConnexion" v-if="userStore.currentProfile">
 
         <!--First connexion-->
         <div class="firstConnexion__main" v-if="!isCancelLogin">
