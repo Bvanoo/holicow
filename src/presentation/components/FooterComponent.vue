@@ -5,6 +5,6 @@
 </script>
 
 <template>
-    <img :src="props.logoInterreg" alt="logo" class="logo interreg" style="background-color: white; height:150px;" />
+    <img :src="props.logoInterreg" alt="logo" class="logo interreg" />
 
 </template>

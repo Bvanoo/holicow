@@ -6,8 +6,8 @@ import { AlertsRepositoryHttp } from '@/dal/repositories/AlertsRepositoryHttp'
 import { AlertsService } from '@/domain/services/AlertsService'
 import { SolutionRepositoryHttp } from '@/dal/repositories/SolutionRepositoryHttp'
 import { SolutionService } from '@/domain/services/SolutionService'
-import { useDependenciesStore } from '@/stores/DependenciesStore'
-import type { ClassDef } from './DependenciesManager'
+import { SubProblemRepositoryHttp } from '@/dal/repositories/SubProblemRepositoryHttp'
+import { SubProblemService } from '@/domain/services/SubProblemService'
 
 // const dependenciesStore = useDependenciesStore()
 
@@ -17,6 +17,9 @@ export function registerDependencies(app: App) {
   const propRepository = new ProblemRepositoryHttp(http)
   const problemService = new ProblemService(propRepository)
 
+  const subPropRepository = new SubProblemRepositoryHttp(http)
+  const subProblemService = new SubProblemService(subPropRepository)
+
   const alertsRepositoryHttp = new AlertsRepositoryHttp(http)
   const alertsService = new AlertsService(alertsRepositoryHttp)
 
@@ -25,6 +28,7 @@ export function registerDependencies(app: App) {
 
   // provide global
   app.provide('problemService', problemService)
+  app.provide('subProblemService', subProblemService)
   app.provide('alertsService', alertsService)
   app.provide('solutionService', solutionService)
   // dependenciesStore.dependenciesManager.addSingletonClass(ProblemService)

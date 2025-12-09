@@ -16,7 +16,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      name: `page d'accueil`,
+      name: ``,
       path: '/',
       component: HomeView,
     },
@@ -56,12 +56,12 @@ const router = createRouter({
       component: CommentsView,
     },
     {
-      name: 'Alertes',
+      name: 'alertes',
       path: '/alertes',
       component: AlertsView,
     },
     {
-      name: 'Profile',
+      name: 'profile',
       path: '/profile',
       component: ProfileView,
     },

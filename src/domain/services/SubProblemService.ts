@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import type { SubProblemRepositoryHttp } from '@/dal/repositories/SubProblemRepositoryHttp'
 import type CreateProblem from '../entities/createProblem'
 import type Problem from '../entities/Problem'
 import type ProblemPayload from '../entities/ProblemPayload'
@@ -9,31 +10,11 @@ import type UpdateProblemAdmin from '../entities/UpdateProblemAdmin'
 // import type SubProblemPayload from '../entities/SubProblemPayload'
 import { showSimpleErrorBox } from '../exception/utils'
 import type { ProblemRepositoryHttp } from '@/dal/repositories/ProblemRepositoryHttp'
+import type UpdateSubProblem from '../entities/updateSubProblem'
+import type UpdateSubProblemAdmin from '../entities/UpdateSubProblemAdmin'
 
-export class ProblemService {
-  constructor(private repo: ProblemRepositoryHttp) {}
-
-  async getAllProblems(
-    id: string,
-    page: number,
-    limit: number,
-    sortedBy: string,
-    sortedOrder: string,
-  ) {
-    return await this.repo
-      .getAll(id, Math.max(page, 1), Math.max(limit, 1), sortedBy || '', sortedOrder || '')
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
-  }
-  async getAllProblemsAdmin(page: number, limit: number, sortedBy: string, sortedOrder: string) {
-    return await this.repo
-      .getAllAdmin(Math.max(page, 1), Math.max(limit, 1), sortedBy || '', sortedOrder || '')
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
-  }
-  async createProblem(role: string, object: CreateProblem) {
-    return await this.repo
-      .createProblem(role, object)
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
-  }
+export class SubProblemService {
+  constructor(private repo: SubProblemRepositoryHttp) {}
 
   async getSubProblemByProblemId(
     idProfile: string,
@@ -44,7 +25,7 @@ export class ProblemService {
     sortedOrder: string,
   ): Promise<SubProblemPayload | void> {
     return await this.repo
-      .getAllSubProblemByProblemId(idProfile, idProblem, page, limit, '', '')
+      .getAllSubProblemByProblemId(idProfile, idProblem, page, limit)
       .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
   }
   async getSubProblemByProblemIdAdmin(
@@ -60,7 +41,7 @@ export class ProblemService {
       .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
   }
 
-  async updateProblem(role: string, id: string, updateProblem: UpdateProblemAdmin) {
-    return await this.repo.updateProblem(role, id, updateProblem)
+  async updateSubProblem(role: string, id: string, updateProblem: UpdateSubProblemAdmin) {
+    return await this.repo.updateSubProblem(role, id, updateProblem)
   }
 }

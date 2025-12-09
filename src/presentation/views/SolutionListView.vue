@@ -64,12 +64,14 @@
     const currentPage = ref<number>(1)
     const pageSize = ref<number>(3)
     const rows = ref<Solution[]>()
-    const totalItems = ref<number>();
+    // const totalItems = ref<number>();
     const pageCount = ref<number>(0)
 
     const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])
     const solutionService = inject<SolutionService>("solutionService");
-    const idProblemSolution = route.params.data as string
+    const splittedParams = (route.params.data as string).split("_")
+    console.log("splittedParams", splittedParams)
+    const idProblemSolution = splittedParams[0]
 
     columns.value = [
         { key: 'globalRating', label: 'Global rating', icon: ProblemIcon },

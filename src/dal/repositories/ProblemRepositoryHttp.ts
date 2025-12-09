@@ -8,14 +8,20 @@ import type SubProblemPayload from '@/domain/entities/SubProblemPayload'
 import type Problem from '@/domain/entities/Problem'
 import type CreateProblem from '@/domain/entities/createProblem'
 import type SubProblemAdmin from '@/domain/entities/SubProblemAdmin'
+import type UpdateProblemAdmin from '@/domain/entities/UpdateProblemAdmin'
+import type { UpdateVerb } from '../http/AxiosHttpClient'
 
 export class ProblemRepositoryHttp implements IProblemRepository {
   constructor(
     private http: {
       get: (url: string) => Promise<ProblemPayload>
       getChildren: (url: string) => Promise<SubProblemPayload>
-      getAllSubProblemByProblemIdAdmin: (url: string) => Promise<SubProblemAdmin[]>
       create: (url: string, object: Record<string, unknown>) => Promise<Problem>
+      update: (
+        url: string,
+        updateProblem: UpdateProblemAdmin,
+        uv: UpdateVerb,
+      ) => Promise<UpdateProblemAdmin>
     },
   ) {}
 
@@ -44,28 +50,12 @@ export class ProblemRepositoryHttp implements IProblemRepository {
     return await this.http.create(`http://localhost:3000/disease/create?role=${role}`, object)
   }
 
-  async getAllSubProblemByProblemId(
-    idProfile: string,
-    idProblem: string,
-    page: number,
-    limit: number,
-    sortedBy: string,
-    sortedOrder: string,
-  ): Promise<SubProblemPayload> {
-    return await this.http.getChildren(
-      `http://localhost:3000/subDisease/stats/farmer/${idProfile}?page=${page}&limit=${limit}&diseaseId=${idProblem}`,
-    )
-  }
-  async getAllSubProblemByProblemIdAdmin(
-    // idProfile: string,
-    idProblem: string,
-    // page: number,
-    // limit: number,
-    // sortedBy: string,
-    // sortedOrder: string,
-  ): Promise<SubProblemAdmin[]> {
-    return await this.http.getAllSubProblemByProblemIdAdmin(
-      `http://localhost:3000/disease/${idProblem}`,
-    )
+  async updateProblem(
+    role: string,
+    id: string,
+    updateProblem: UpdateProblemAdmin,
+  ): Promise<UpdateProblemAdmin> {
+    const url = `http://localhost:3000/disease/save/${role}/${id}`
+    return await this.http.update(url, updateProblem, 1 as UpdateVerb.patch)
   }
 }

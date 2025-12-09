@@ -27,7 +27,6 @@
         <section v-if="userStore.currentProfile?.role === 'Administrator'"
             style="display: flex; justify-content: space-around">
             <n-button type="primary" @click="openCreate"> Créer un problème </n-button>
-
         </section>
 
         <GenericFormModal v-model:show="showModal" :title="modalTitle" :adapter="problemAdapter" @submit="handleSubmit">
@@ -79,8 +78,8 @@
     import GenericFormModal from '../components/GenericFormModal.vue';
     import { createProblemFormAdapter } from '@/domain/form/problem/ProblemFormAdapter';
     import type ProblemAdmin from '@/domain/entities/ProblemAdmin';
-    import type ModalFormVue from '../components/Table/ModalForm.vue';
     import type { ProblemFormModel } from '@/domain/form/problem/ProblemFormModel';
+    import type UpdateProblemAdmin from '@/domain/entities/UpdateProblemAdmin';
 
     const userStore = useUserStore();
 
@@ -161,13 +160,13 @@
                 console.log(row.id_disease)
                 router.push({
                     name: 'sub problems',
-                    params: { data: (row as ProblemAdmin).id_disease }
+                    params: { data: (row as ProblemAdmin).id_disease + "_" + (row as ProblemAdmin).disease_name_FR }
                 });
             } else {
                 userStore.isProblemViewAction = true;
                 router.push({
                     name: 'solutionsList',
-                    params: { data: (row as ProblemAdmin).id_disease }
+                    params: { data: (row as ProblemAdmin).id_disease + "_" + (row as ProblemAdmin).disease_name_FR }
                 });
                 //vers solution
             }
@@ -176,13 +175,13 @@
                 console.log(row.diseaseId)
                 router.push({
                     name: 'sub problems',
-                    params: { data: (row as Problem).diseaseId }
+                    params: { data: (row as Problem).diseaseId + "_" + (row as Problem).diseaseName }
                 });
             } else {
                 userStore.isProblemViewAction = true;
                 router.push({
                     name: 'solutionsList',
-                    params: { data: (row as Problem).diseaseId }
+                    params: { data: (row as Problem).diseaseId + "_" + (row as Problem).diseaseName }
                 });
                 //vers solution
             }
@@ -230,8 +229,9 @@
         console.log(row);
 
         const problemAdminFormModel: ProblemFormModel = {
+            id_disease: (row as ProblemAdmin).id_disease.toString(),
             disease_name_FR: (row as ProblemAdmin).disease_name_FR as string,
-            est_healing_time: (row as ProblemAdmin).est_healing_time,
+            est_healing_time: (row as ProblemAdmin).est_healing_time.toString(),
             status_disease: (row as ProblemAdmin).status_disease.toString()
         }
 
@@ -248,6 +248,24 @@
         if (mode.value === 'update') {
             const updated = await problemAdapter.update()
             console.log('Updated :', updated)
+            //Mise a jour en db
+            const idProblem = (updated as ProblemFormModel).id_disease as string
+            const problemAdmin: UpdateProblemAdmin = {
+                disease_name_FR: (updated as ProblemFormModel).disease_name_FR as string,
+                est_healing_time: Number((updated as ProblemFormModel).est_healing_time),
+                status_disease: (updated as ProblemFormModel).status_disease.toString() === 'true',
+
+            }
+            const updateProblem = await problemService?.updateProblem("admin", idProblem, problemAdmin)
+            console.log("updateProblem", updateProblem)
+            rows.value?.map((problem) => {
+                if (idProblem == problem.id_disease) {
+                    problem.disease_name_FR = updateProblem?.disease_name_FR
+                    problem.est_healing_time = updateProblem?.est_healing_time
+                    problem.status_disease = updateProblem?.status_disease
+                }
+            })
+            console.log("rows", rows.value)
         }
     }
 
