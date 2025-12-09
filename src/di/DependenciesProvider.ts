@@ -6,6 +6,10 @@ import { AlertsRepositoryHttp } from '@/dal/repositories/AlertsRepositoryHttp'
 import { AlertsService } from '@/domain/services/AlertsService'
 import { SolutionRepositoryHttp } from '@/dal/repositories/SolutionRepositoryHttp'
 import { SolutionService } from '@/domain/services/SolutionService'
+// import { useDependenciesStore } from '@/stores/DependenciesStore'
+// import type { ClassDef } from './DependenciesManager'
+
+// const dependenciesStore = useDependenciesStore()
 
 export function registerDependencies(app: App) {
   const http = new AxiosHttpClient()
@@ -23,4 +27,8 @@ export function registerDependencies(app: App) {
   app.provide('problemService', problemService)
   app.provide('alertsService', alertsService)
   app.provide('solutionService', solutionService)
+  // dependenciesStore.dependenciesManager.addSingletonClass(ProblemService)
+  // dependenciesStore.dependenciesManager.addSingletonClass(
+  //   SolutionService as ClassDef<SolutionService>,
+  // )
 }

@@ -3,16 +3,17 @@ import { ProblemService } from '@/domain/services/ProblemService'
 import { createFormAdapter } from '../../../utils/formFactories/CreateFormAdapter'
 import { problemFormInitial, type ProblemFormModel } from './ProblemFormModel'
 import { problemFormRules } from './ProblemFormRules'
-import type Problem from '@/domain/entities/Problem'
 import type CreateProblem from '@/domain/entities/createProblem'
 import { ProblemRepositoryHttp } from '@/dal/repositories/ProblemRepositoryHttp'
 import { AxiosHttpClient } from '@/dal/http/AxiosHttpClient'
 
 // ✅ Simulations API
-async function apiCreateProblem(data: ProblemFormModel): Promise<Problem> {
+async function apiCreateProblem(data: ProblemFormModel): Promise<ProblemFormModel> {
   //‼️Pas de service avec l'inject, passer l'inject dans la fonction apiCreateProblem‼️
 
   // const problemService = inject<ProblemService>('problemService')
+  //   const dependenciesStore = useDependenciesStore()
+  // const problemService = dependenciesStore.dependenciesManager.inject<ProblemService>
   const http = new AxiosHttpClient()
 
   const propRepository = new ProblemRepositoryHttp(http)
@@ -26,9 +27,19 @@ async function apiCreateProblem(data: ProblemFormModel): Promise<Problem> {
     est_healing_time: Number(data.est_healing_time),
     status_disease: false,
   }
-  const response = problemService?.createProblem('admin', newProblem) as Promise<Problem>
-  console.log('CREATE Problem:', await response)
-  return response
+  return problemService
+    ?.createProblem('admin', newProblem)
+    .then(async (result) => {
+      if (result) {
+        const formProblem: ProblemFormModel = {
+          disease_name_FR: result.diseaseName as string,
+          est_healing_time: result.est_healing_time as number,
+        }
+        console.log('CREATE Problem:', formProblem)
+        return formProblem
+      }
+    })
+    .catch((e) => e)
 }
 
 async function apiUpdateProblem(data: ProblemFormModel): Promise<ProblemFormModel> {
