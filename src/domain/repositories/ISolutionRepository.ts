@@ -2,6 +2,8 @@ import type Solution from '../entities/Solution'
 import type SolutionPayload from '../entities/SolutionListPayload'
 
 export interface ISolutionRepository {
+  get(url: string): Promise<Solution[]>
+
   getAllSolution(page: number, limit: number): Promise<SolutionPayload>
   getSolutionsBySubProblemId(
     idSubProblem: string,

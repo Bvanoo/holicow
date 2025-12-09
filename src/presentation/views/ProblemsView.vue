@@ -41,7 +41,7 @@
         {{ filterResult }}
         <TableContainer :columns="columns" :data="(rows as Problem[])"
             :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
-            :titleKey="'diseaseName'" @action="ButtonAction">
+            :titleKey="'diseaseName'" @action="ButtonAction" @edit="openUpdate">
         </TableContainer>
 
         <!-- <ProblemTable :columns="columns" :data="rows" primary-key="disease_name_FR"> -->
@@ -209,6 +209,12 @@
         showModal.value = true
     }
 
+    const openUpdate = () => {
+        mode.value = 'update'
+
+        problemAdapter.reset()
+        showModal.value = true
+    }
     async function handleSubmit() {
         if (mode.value === 'create') {
             const created = await problemAdapter.create()

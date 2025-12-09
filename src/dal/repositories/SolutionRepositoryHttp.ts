@@ -14,6 +14,9 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
       getSolutionById: (url: string) => Promise<Solution>
     },
   ) {}
+  get(url: string): Promise<Solution[]> {
+    throw new Error('Method not implemented.')
+  }
   async getAllSolution(page: number, limit: number): Promise<SolutionPayload> {
     return await this.http.getAllSolution(
       `http://localhost:3000/solution?page=${page}&limit=${limit}`,
