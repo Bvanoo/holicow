@@ -4,7 +4,7 @@ import type Comment from "@/domain/entities/Comment.ts";
 import type ProblemPayload from "@/domain/entities/ProblemPayload.ts";
 
 export default interface ICommentRepository {
-  getUserById(
+  getCommentByUserId(
     id: string,
     page: number,
     limit: number,
@@ -12,7 +12,7 @@ export default interface ICommentRepository {
     sortedOrder: string,
   ): Promise<CommentPayload>
 
-  getAllAdminVetCons(
+  getAllCommentByAdminVetCons(
     page: number,
     limit: number,
     sortedBy: string,
