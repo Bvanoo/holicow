@@ -43,7 +43,7 @@
         </GenericFormModal>
 
         {{ filterResult }}
-        <TableContainer :columns="columns" :data="(rows as Problem[])"
+        <TableContainer :columns="columns" :data="(rows as Problem[] | ProblemAdmin[])"
             :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
             :titleKey="'diseaseName'" @action="ButtonAction" @edit="openUpdate">
         </TableContainer>
@@ -225,11 +225,17 @@
         showModal.value = true
     }
 
-    const openUpdate = (row: ProblemFormModel) => {
+    const openUpdate = (row: ProblemAdmin | Problem) => {
         mode.value = 'update'
         console.log(row);
 
-        problemAdapter.load(row)
+        const problemAdminFormModel: ProblemFormModel = {
+            disease_name_FR: (row as ProblemAdmin).disease_name_FR as string,
+            est_healing_time: (row as ProblemAdmin).est_healing_time,
+            status_disease: (row as ProblemAdmin).status_disease.toString()
+        }
+
+        problemAdapter.load(problemAdminFormModel)
 
         showModal.value = true
     }
