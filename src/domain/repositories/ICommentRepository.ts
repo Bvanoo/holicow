@@ -20,4 +20,5 @@ export default interface ICommentRepository {
   ): Promise<CommentPayload>
 
   createComment(role : string, object: CreateComment): Promise<CommentPayload>
+
 }
