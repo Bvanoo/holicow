@@ -35,31 +35,6 @@ export class ProblemService {
       .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
   }
 
-  async getSubProblemByProblemId(
-    idProfile: string,
-    idProblem: string,
-    page: number,
-    limit: number,
-    sortedBy: string,
-    sortedOrder: string,
-  ): Promise<SubProblemPayload | void> {
-    return await this.repo
-      .getAllSubProblemByProblemId(idProfile, idProblem, page, limit, '', '')
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
-  }
-  async getSubProblemByProblemIdAdmin(
-    // idProfile: string,
-    idProblem: string,
-    // page: number,
-    // limit: number,
-    // sortedBy: string,
-    // sortedOrder: string,
-  ): Promise<SubProblemAdmin[] | void> {
-    return await this.repo
-      .getAllSubProblemByProblemIdAdmin(idProblem /*, page, limit, '', ''*/)
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
-  }
-
   async updateProblem(role: string, id: string, updateProblem: UpdateProblemAdmin) {
     return await this.repo.updateProblem(role, id, updateProblem)
   }
