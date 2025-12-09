@@ -11,7 +11,7 @@
 
   const logoInterreg = "/images/logo_interreg.svg"
   const logoHolicow = "/images/logo_holicow.svg"
-  const profilLogo = ref("http://www." + usersStore.getCurrentUserPicture)
+  const profilLogo = ref("http://www." + usersStore.currentProfile?.avatar_picture)
 
   const activeTab = ref('home')
   const isDark = ref(false) // tu peux lier ça à un bouton

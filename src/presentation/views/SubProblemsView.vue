@@ -57,7 +57,7 @@
     import router from '@/router/index';
     import type SubProblemPayload from '@/domain/entities/SubProblemPayload';
     import type SubProblemAdmin from '@/domain/entities/SubProblemAdmin';
-    // import type SubProblemPayload from '@/domain/entities/SubProblemPayload';
+    import type IUserProfile from '@/domain/entities/IUserProfile';
 
     const userStore = useUserStore();
 
@@ -100,9 +100,9 @@
                 { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
                 { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
             ]
-            results.value = await problemService?.getSubProblemByProblemId(userStore.currentProfile?.profilId as string, idProblem, currentPage.value, pageSize.value, "", "")
+            results.value = await problemService?.getSubProblemByProblemId((userStore.currentProfile as IUserProfile)?.profilId as string, idProblem, currentPage.value, pageSize.value, "", "")
             console.log(results)
-            rows.value = results.value?.subDiseases as SubProblem[]
+            rows.value = (results.value as SubProblemPayload)?.subDiseases as SubProblem[]
         }
         // // A modifier dès que l'api est mise à jour (pagination)
         // totalItems.value = results.value?.totalDiseases

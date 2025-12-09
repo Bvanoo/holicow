@@ -13,10 +13,7 @@ export const useUserStore = defineStore('userStore', {
     isHydrate: ref<boolean>(false),
     isProblemViewAction: ref<boolean>(true),
   }),
-  getters: {
-    getCurrentProfile: (state) => state.currentProfile,
-    getCurrentUserPicture: (state) => state.currentProfile?.avatar_picture,
-  },
+  getters: {},
   actions: {
     setCurrentUser(newUser: IUserProfile | void) {
       this.currentProfile = newUser

@@ -32,8 +32,9 @@ async function apiCreateProblem(data: ProblemFormModel): Promise<ProblemFormMode
     .then(async (result) => {
       if (result) {
         const formProblem: ProblemFormModel = {
-          disease_name_FR: result.diseaseName as string,
+          disease_name_FR: result.disease_name_FR as string,
           est_healing_time: result.est_healing_time as number,
+          status_disease: result.status_disease as string,
         }
         console.log('CREATE Problem:', formProblem)
         return formProblem
@@ -43,14 +44,13 @@ async function apiCreateProblem(data: ProblemFormModel): Promise<ProblemFormMode
 }
 
 async function apiUpdateProblem(data: ProblemFormModel): Promise<ProblemFormModel> {
-  console.log('UPDATE API:', data)
+  console.log('UPDATE API PROBLEM:', data)
   return { ...data }
 }
 
 async function apiDeleteProblem(data: ProblemFormModel): Promise<void> {
   console.log('DELETE API:', data)
 }
-
 export function createProblemFormAdapter() {
   return createFormAdapter<ProblemFormModel>({
     initial: problemFormInitial,

@@ -32,7 +32,7 @@
 
         <div class="main-container-card-content-prevention">
           <p>
-            <span class="main-container-card-content-prevention-title">{{ 'Prévention : ' }}</span>
+
             {{ prevention }}
           </p>
         </div>
