@@ -47,8 +47,8 @@ export class CommentsRepositoryHttp implements ICommentRepository{
   }
 
 
-  async getCommentByDisease(diseaseId: string, page: number, limit: number, sortedBy: string, sortedOrder: string): Promise<CommentPayload> {
-    const url = `http://localhost:3000/comments/disease/${diseaseId}?page=${page}&limit=${limit}&sortedBy=${sortedBy}&sortedOrder=${sortedOrder}`;
+  async getCommentBySolutionId(solutionId: string, page: number, limit: number, sortedBy: string, sortedOrder: string): Promise<CommentPayload> {
+    const url = `http://localhost:3000/comments/solution/${solutionId}?page=${page}&limit=${limit}&sortedBy=${sortedBy}&sortedOrder=${sortedOrder}`;
     return await this.http.get(url)
   }
 

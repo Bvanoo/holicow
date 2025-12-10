@@ -24,8 +24,8 @@ export default interface ICommentRepository {
 
   createComment(role : string, object: CreateComment): Promise<Comment>
 
-  getCommentByDisease(
-    diseaseId : string,
+  getCommentBySolutionId(
+    solutionId : string,
     page : number,
     limit : number,
     sortedBy: string,

@@ -10,8 +10,8 @@ export class  CommentService {
     if (!newComment.content || newComment.content.length === 0) {
       throw new Error("Le commentaire ne peut pas être vide")
     }
-    if(!newComment.id || !newComment.diseaseId){
-      throw new Error ("Identifiant de l'utilisateur ou identifiant de maladie manquant")
+    if(!newComment.id || !newComment.solutionId){
+      throw new Error ("Identifiant de l'utilisateur ou solution manquante")
     }
     return await this.repo.createComment(role, newComment);
   }
@@ -56,13 +56,13 @@ export class  CommentService {
       sortedBy || '',
       sortedOrder || '')
   }
-  async getCommentByDisease(diseaseId: string, page: number, limit: number, sortedBy: string, sortedOrder: string) : Promise<CommentPayload> {
-    if(!diseaseId){
-      throw new Error ("Maladie inexistante")
+  async getCommentBySolutionId(solutionId: string, page: number, limit: number, sortedBy: string, sortedOrder: string) : Promise<CommentPayload> {
+    if(!solutionId){
+      throw new Error ("Solution inexistante")
     }
     else{
-      return await this.repo.getCommentByDisease(
-        diseaseId,
+      return await this.repo.getCommentBySolutionId(
+        solutionId,
         Math.max(page, 1),
         Math.max(limit, 4),
         sortedBy,
