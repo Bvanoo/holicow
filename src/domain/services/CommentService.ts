@@ -16,6 +16,24 @@ export class  CommentService {
     return await this.repo.createComment(role, newComment);
   }
 
+  async deleteComment(role : string, id_commentaire: string): Promise<boolean>  {
+    if(role !== "Admin"){
+      throw new Error("Vous n'êtes pas autorisé à supprimer un commentaire")
+    }
+    if(!id_commentaire){
+      throw new Error("Il n'y a aucun commentaire à supprimer")
+    }
+    return await this.repo.deleteComment(id_commentaire, role);
+  }
+
+  async updateComment(role : string, id_commentaire: string, updateComment : Comment): Promise<Comment>  {
+
+    if(role !== "Farmer") {
+      throw new Error("Impossible de modifier le commentaire")
+    }
+    return await this.repo.updateComment(role, id_commentaire, updateComment);
+  }
+
   async getAllCommentById(
     role : string,
     id : string,
@@ -52,5 +70,4 @@ export class  CommentService {
       )
     }
   }
-
 }

@@ -21,7 +21,8 @@ export default interface ICommentRepository {
     sortedOrder: string,
   ): Promise<CommentPayload>
 
-  createComment(role : string, object: CreateComment): Promise<CommentPayload>
+
+  createComment(role : string, object: CreateComment): Promise<Comment>
 
   getCommentByDisease(
     diseaseId : string,
@@ -30,4 +31,21 @@ export default interface ICommentRepository {
     sortedBy: string,
     sortedOrder: string,
   ): Promise<CommentPayload>
+
+  deleteComment(
+    id_comment: string,
+    role : string,
+  ) : Promise<boolean>
+
+
+  updateComment(
+    id_comment: string,
+    role : string,
+    updatePayload : { content: string }
+  ) : Promise<Comment>
+
+  approveComment(
+    id_comment: string,
+    role : string,
+  ) : Promise<boolean>
 }
