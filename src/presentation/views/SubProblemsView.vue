@@ -1,6 +1,8 @@
 <template>
     <!-- <ChatBubble /> -->
     <section style="padding: 16px">
+        <h1>{{ problemName }}</h1>
+
         <Transition name="fade-slide" tag="FilterPanel" appear>
 
             <FilterPanel title="Filtres" @submit="handleSubmitFilter" class="filter">
@@ -42,7 +44,6 @@
             </n-form-item>
         </GenericFormModal>
 
-        <h1>{{ problemName }}</h1>
         <TableContainer :columns="columns" :data="(rows as SubProblem[] | SubProblemAdmin[])"
             :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
             :titleKey="'subDiseaseName'" @action="ButtonAction" @edit="openUpdate">
@@ -54,7 +55,7 @@
       </template> -->
         <!-- </ProblemTable> -->
         <div class="table-footer">
-            <n-pagination v-model:page="currentPage" :page-count="pageCount" simple />
+            <n-pagination v-model:page="currentPage" :page-count="totalPages" simple />
             <slot name="footer"></slot>
         </div>
     </section>
@@ -96,11 +97,9 @@
     const results = ref<SubProblemPayload | SubProblemAdmin[] | void>();
 
     const currentPage = ref<number>(1)
-    const pageSize = ref<number>(3)
+    const limitItemsPage = ref<number>(3)
     const rows = ref<SubProblem[] | SubProblemAdmin[] | void>()
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const totalItems = ref<number>();
-    const pageCount = ref<number>(0)
+    const totalPages = ref<number>(1);
 
     const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])
     const subProblemService = inject<SubProblemService>("subProblemService");
@@ -117,41 +116,38 @@
                 { key: 'status_sub_disease', label: 'Status', icon: AlertAvatarIcon },
                 { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
             ]
-            results.value = await subProblemService?.getSubProblemByProblemIdAdmin(idProblem.value as string/*, currentPage.value, pageSize.value, "", ""*/)
+            results.value = await subProblemService?.getSubProblemByProblemIdAdmin(idProblem.value as string/*, currentPage.value, limitItemPage.value, "", ""*/)
+
+            //‼️‼️A changer quand la pagination est faites sur le endpoints "/subDisease" (pas "/subDisease/:idDisease")
+            //Par défaut je met tout sur une page
+            totalPages.value = 1
 
             rows.value = results.value as SubProblemAdmin[]
         }
         else {
             columns.value = [
-                { key: 'diseaseName', label: 'Nom', icon: ProblemIcon },
+                { key: 'subDiseaseName', label: 'Nom', icon: ProblemIcon },
                 { key: 'commentCount', label: 'Commentaires', icon: CommentIcon },
                 { key: 'farmerAlertCount', label: 'Alertes', icon: AlertsIcon },
                 { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
                 { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
             ]
-            results.value = await subProblemService?.getSubProblemByProblemId(userStore.currentProfile?.profilId as string, idProblem.value as string, currentPage.value, pageSize.value, "", "")
+            results.value = await subProblemService?.getSubProblemByProblemId(userStore.currentProfile?.profilId as string, idProblem.value as string, currentPage.value, limitItemsPage.value, "", "")
+            totalPages.value = Number(results.value?.totalPages)
             rows.value = results.value?.subDiseases as SubProblem[]
         }
-        // // A modifier dès que l'api est mise à jour (pagination)
-        // totalItems.value = results.value?.totalDiseases
-        // pageSize.value = results.value!.totalPages + 1
-        // if (totalItems.value)
-        //     pageCount.value = totalItems.value / pageSize.value
-        // console.log("results.value!.totalDiseases", results.value!.totalDiseases);
-        // console.log("results.value!.totalPages", results.value!.totalPages);
-        // console.log("pageSize.value", pageSize.value);
-        // console.log("pageCount.value", pageCount.value);
 
     })
 
     watch(currentPage, async () => {
         if (userStore?.currentProfile?.role === "Administrator") {
-            results.value = await subProblemService?.getSubProblemByProblemIdAdmin(idProblem.value as string/*, currentPage.value, pageSize.value, "", ""*/)
+            results.value = await subProblemService?.getSubProblemByProblemIdAdmin(idProblem.value as string/*, currentPage.value, limitItemPage.value, "", ""*/)
 
             rows.value = results.value as SubProblemAdmin[]
         }
         else {
-            results.value = await subProblemService?.getSubProblemByProblemId(userStore.currentProfile?.profilId as string, idProblem.value as string, currentPage.value, pageSize.value, "", "")
+            results.value = await subProblemService?.getSubProblemByProblemId(userStore.currentProfile?.profilId as string, idProblem.value as string, currentPage.value, limitItemsPage.value, "", "")
+            totalPages.value = Number(results.value?.totalPages)
             rows.value = results.value?.subDiseases as SubProblem[]
         }
     })

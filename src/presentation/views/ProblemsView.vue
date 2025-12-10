@@ -96,7 +96,7 @@
     //#region [const] pagination
     const currentPage = ref<number>(1);
     const totalPages = ref<number>(1);
-    const limitItems = ref<number>(3);
+    const limitItemsPage = ref<number>(3);
     //#endregion [const] pagination
 
     //#region [const] modalForm
@@ -120,9 +120,9 @@
                 { key: 'status_disease', label: 'Status', icon: AlertAvatarIcon },
                 { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
             ]
-            results.value = await problemService?.getAllProblemsAdmin(currentPage.value, limitItems.value, "", "")
+            results.value = await problemService?.getAllProblemsAdmin(currentPage.value, limitItemsPage.value, "", "")
             totalPages.value = Number(results.value?.totalPages)
-            console.log("limitItems.value", limitItems.value);
+            console.log("limitItems.value", limitItemsPage.value);
             rows.value = results.value!.data
         }
         else {
@@ -133,7 +133,7 @@
                 { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
                 { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
             ]
-            results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, limitItems.value, "", "")
+            results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
             totalPages.value = Number(results.value?.totalPages)
             rows.value = results.value!.diseases
         }
@@ -141,16 +141,16 @@
 
     //Observation du changement de page
     watch(currentPage, async () => {
-        console.log("limitItems.value", limitItems.value);
+        console.log("limitItems.value", limitItemsPage.value);
 
         //Les objets que nous renvoit l'api ne sont pas les mêmes en fonction de l'admin ou du farmer
         if (userStore?.currentProfile?.role === "Administrator") {
-            results.value = await problemService?.getAllProblemsAdmin(currentPage.value, limitItems.value, "", "")
+            results.value = await problemService?.getAllProblemsAdmin(currentPage.value, limitItemsPage.value, "", "")
             totalPages.value = Number(results.value?.totalPages)
             rows.value = results.value!.data
         }
         else {
-            results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, limitItems.value, "", "")
+            results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
             totalPages.value = Number(results.value?.totalPages)
             rows.value = results.value!.diseases
         }
