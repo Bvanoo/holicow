@@ -28,7 +28,7 @@
     "yarn": "^1.22.22"
   },
   "devDependencies": {
-    "@tsconfig/node22": "^22.0.5",
+    "@tsconfig/node22": "^22.0.2",
     "@types/axios": "^0.9.36",
     "@types/jsdom": "^27.0.0",
     "@types/node": "^22.18.11",
@@ -48,7 +48,7 @@
     "sass-embedded": "^1.93.3",
     "typescript": "~5.9.0",
     "vfonts": "^0.0.3",
-    "vite": "^7.2.7",
+    "vite": "^7.1.11",
     "vite-plugin-vue-devtools": "^8.0.3",
     "vue-tsc": "^3.1.1"
   }

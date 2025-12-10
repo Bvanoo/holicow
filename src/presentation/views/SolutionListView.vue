@@ -56,7 +56,6 @@
     import type Solution from '@/domain/entities/Solution';
     import type { SolutionService } from '@/domain/services/SolutionService';
     import { useRoute } from 'vue-router';
-    import { showError } from 'nuxt/app';
     import { showSimpleErrorBox } from '@/domain/exception/utils';
 
     const route = useRoute();
