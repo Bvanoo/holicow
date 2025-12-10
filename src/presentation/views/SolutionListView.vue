@@ -34,7 +34,7 @@
       </template> -->
         <!-- </ProblemTable> -->
         <div class="table-footer">
-            <n-pagination v-model:page="currentPage" :page-count="pageCount" simple />
+            <n-pagination v-model:page="currentPage" :page-count="totalPage" simple />
             <slot name="footer"></slot>
         </div>
     </section>
@@ -56,7 +56,6 @@
     import type Solution from '@/domain/entities/Solution';
     import type { SolutionService } from '@/domain/services/SolutionService';
     import { useRoute } from 'vue-router';
-    import { showSimpleErrorBox } from '@/domain/exception/utils';
 
     const route = useRoute();
     const userStore = useUserStore();
@@ -64,10 +63,10 @@
     const results = ref<Solution[] | void>();
 
     const currentPage = ref<number>(1)
-    const pageSize = ref<number>(3)
+    const totalPage = ref<number>(0)
+    const limitItemsPage = ref<number>(3)
     const rows = ref<Solution[]>()
     // const totalItems = ref<number>();
-    const pageCount = ref<number>(0)
 
     const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])
     const solutionService = inject<SolutionService>("solutionService");
@@ -88,12 +87,17 @@
         //Si on vient du problemView, alors on utilise la route pour avoir les solutions par rapport à un PROBLEME id
         if (userStore.isProblemViewAction) {
 
-            results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
-            //Sinon on vient du subProblemView
+            results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+
         }
         else
-            results.value = await solutionService?.getSolutionsBySubProblemId(idProblemSolution?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
-        console.log(results)
+            results.value = await solutionService?.getSolutionsBySubProblemId(idProblemSolution?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+
+        //Calcul pagination
+        if (results.value) {
+            totalPage.value = Math.ceil(results.value?.length / limitItemsPage.value)
+            console.log("totalPage.value", totalPage.value)
+        }
         rows.value = results.value as Solution[]
         // A modifier dès que l'api est mise à jour (pagination)
         // totalItems.value = results.value?.
@@ -109,7 +113,7 @@
 
     watch(currentPage, async () => {
         // if (sortKey.value) sortOrder.value = 'asc'
-        results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+        results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
 
         rows.value = results.value as Solution[];
     })
