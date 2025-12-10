@@ -46,6 +46,7 @@
 
 <script setup lang="ts">
 
+    //#region imports
     import { onMounted, ref, type Ref, inject, watch, type Component, computed } from 'vue'
     import { ProblemService } from '@/domain/services/ProblemService'
 
@@ -66,6 +67,8 @@
     import type { ProblemFormModel } from '@/domain/form/problem/ProblemFormModel';
     import type UpdateProblemAdmin from '@/domain/entities/UpdateProblemAdmin';
     import type ProblemPayload from '@/domain/entities/ProblemPayload';
+    //#endregion imports
+
     const userStore = useUserStore();
 
     //#region [const] FilterPanel
