@@ -22,10 +22,11 @@
             </FilterPanel>
         </Transition>
         {{ filterResult }}
-        <TableContainer :columns="columns" :data="(rows as Solution[])"
+        <TableContainer v-if="rows" :columns="columns" :data="(rows as Solution[])"
             :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
             :titleKey="'diseaseName'" @action="ButtonAction">
         </TableContainer>
+        <div v-else>NO data from API</div>
 
         <!-- <ProblemTable :columns="columns" :data="rows" primary-key="disease_name_FR"> -->
         <!-- <template #footer>
@@ -55,6 +56,8 @@
     import type Solution from '@/domain/entities/Solution';
     import type { SolutionService } from '@/domain/services/SolutionService';
     import { useRoute } from 'vue-router';
+    import { showError } from 'nuxt/app';
+    import { showSimpleErrorBox } from '@/domain/exception/utils';
 
     const route = useRoute();
     const userStore = useUserStore();
@@ -91,7 +94,6 @@
         }
         else
             results.value = await solutionService?.getSolutionsBySubProblemId(idProblemSolution?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
-
         console.log(results)
         rows.value = results.value as Solution[]
         // A modifier dès que l'api est mise à jour (pagination)

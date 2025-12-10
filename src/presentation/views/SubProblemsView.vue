@@ -30,6 +30,7 @@
 
         <GenericFormModal v-model:show="showModal" :title="modalTitle" :adapter="subProblemAdapter"
             @submit="handleSubmit">
+
             <n-form-item label="Nom du problème">
                 <n-input :disabled="true" v-model:value="problemName" />
             </n-form-item>
@@ -190,6 +191,7 @@
         mode.value = 'create'
 
         subProblemAdapter.reset()
+        subProblemAdapter.form.value.id_disease = idProblem.value
         showModal.value = true
     }
 
@@ -215,6 +217,9 @@
         if (mode.value === 'create') {
             const created = await subProblemAdapter.create()
             console.log('Created :', created)
+            results.value = await subProblemService?.getSubProblemByProblemIdAdmin(idProblem.value as string/*, currentPage.value, pageSize.value, "", ""*/)
+            rows.value = results.value as SubProblemAdmin[]
+
         }
 
         if (mode.value === 'update') {

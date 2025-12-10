@@ -12,6 +12,7 @@ import { showSimpleErrorBox } from '../exception/utils'
 import type { ProblemRepositoryHttp } from '@/dal/repositories/ProblemRepositoryHttp'
 import type UpdateSubProblem from '../entities/updateSubProblem'
 import type UpdateSubProblemAdmin from '../entities/UpdateSubProblemAdmin'
+import type CreateSubProblem from '../entities/createSubProblem'
 
 export class SubProblemService {
   constructor(private repo: SubProblemRepositoryHttp) {}
@@ -43,5 +44,8 @@ export class SubProblemService {
 
   async updateSubProblem(role: string, id: string, updateProblem: UpdateSubProblemAdmin) {
     return await this.repo.updateSubProblem(role, id, updateProblem)
+  }
+  async createSubProblem(role: string, createSubProblem: CreateSubProblem) {
+    return await this.repo.createSubProblem(role, createSubProblem)
   }
 }

@@ -2,6 +2,10 @@
 import { createFormAdapter } from '../../../utils/formFactories/CreateFormAdapter'
 import { problemFormRules } from './SubProblemFormRules'
 import { subProblemFormInitial, type SubProblemFormModel } from './SubProblemFormModel'
+import { AxiosHttpClient } from '@/dal/http/AxiosHttpClient'
+import { SubProblemRepositoryHttp } from '@/dal/repositories/SubProblemRepositoryHttp'
+import { SubProblemService } from '@/domain/services/SubProblemService'
+import type CreateSubProblem from '@/domain/entities/createSubProblem'
 
 // ✅ Simulations API
 async function apiCreateSubProblem(data: SubProblemFormModel): Promise<SubProblemFormModel> {
@@ -9,31 +13,35 @@ async function apiCreateSubProblem(data: SubProblemFormModel): Promise<SubProble
   // const problemService = inject<ProblemService>('problemService')
   //   const dependenciesStore = useDependenciesStore()
   // const problemService = dependenciesStore.dependenciesManager.inject<ProblemService>
-  // const http = new AxiosHttpClient()
-  // const propRepository = new ProblemRepositoryHttp(http)
-  // const problemService = new ProblemService(propRepository)
-  // const newProblem: CreateProblem = {
-  //   disease_name_FR: data.disease_name_FR,
-  //   disease_name_DE: '',
-  //   disease_name_EN: '',
-  //   disease_name_NL: '',
-  //   est_healing_time: Number(data.),
-  //   status_disease: false,
-  // }
-  // return problemService
-  //   ?.createProblem('admin', newProblem)
-  //   .then(async (result) => {
-  //     if (result) {
-  //       const formProblem: SubProblemFormModel = {
-  //         disease_name_FR: result.disease_name_FR as string,
-  //         est_healing_time: result.est_healing_time as number,
-  //         status_disease: result.status_disease as string,
-  //       }
-  //       console.log('CREATE Problem:', formProblem)
-  //       return formProblem
-  //     }
-  //   })
-  //   .catch((e) => e)
+  const http = new AxiosHttpClient()
+  const subPropRepository = new SubProblemRepositoryHttp(http)
+  const subProblemService = new SubProblemService(subPropRepository)
+  console.log('data', data)
+
+  const newSubProblem: CreateSubProblem = {
+    sub_disease_name_FR: data.sub_disease_name_FR,
+    sub_disease_name_DE: '',
+    sub_disease_name_EN: '',
+    sub_disease_name_NL: '',
+    status_sub_disease: false,
+    diseaseId: data.id_disease as string,
+  }
+  return subProblemService
+    ?.createSubProblem('admin', newSubProblem)
+    .then(async (result) => {
+      console.log('------------', result)
+      if (result) {
+        const formProblem: SubProblemFormModel = {
+          id_disease: result.diseaseId,
+          id_sub_disease: result.id_sub_disease,
+          sub_disease_name_FR: result.sub_disease_name_FR,
+          status_sub_disease: result.status_sub_disease ? 'true' : 'false',
+        }
+        console.log('CREATE Problem:', formProblem)
+        return formProblem
+      }
+    })
+    .catch((e) => e)
 }
 
 async function apiUpdateSubProblem(data: SubProblemFormModel): Promise<SubProblemFormModel> {
