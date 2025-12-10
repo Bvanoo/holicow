@@ -5,21 +5,11 @@
             <FilterPanel title="Filtres" @submit="handleSubmitFilter" class="filter">
                 <div class="filter__order">
                     <!-- Composant 1 -->
-                    <FilterSelectComponent class="filter__order-select" field-name="colonne" :options="[
-                        { label: 'Nom', value: 'diseaseName' },
-                        { label: 'Alertes', value: 'alerts' },
-                        { label: 'Commentaires', value: 'comments' },
-                        { label: 'Alertes/Avatar', value: 'avatarAlerts' }
-                    ]"></FilterSelectComponent>
+                    <FilterSelectComponent class="filter__order-select" field-name="colonne" :options="optionsFilter">
+                    </FilterSelectComponent>
                     <!-- Composant 2 -->
                     <FilterOrderSwitchComponent fieldName="order"></FilterOrderSwitchComponent>
                 </div>
-                <!-- Ajouter un v-if et regarder si l'utilisateur est un "Administator" -->
-                <!-- <div class="filter__search">
-                <span>Rechercher :</span> 
-            Composant 3
-            <FilterInputComponent fieldName="test"></FilterInputComponent>
-            </div> -->
             </FilterPanel>
 
         </Transition>
@@ -47,13 +37,8 @@
             :titleKey="'diseaseName'" @action="ButtonAction" @edit="openUpdate">
         </TableContainer>
 
-        <!-- <ProblemTable :columns="columns" :data="rows" primary-key="disease_name_FR"> -->
-        <!-- <template #footer>
-        <n-button type="primary">Action footer</n-button>
-      </template> -->
-        <!-- </ProblemTable> -->
         <div class="table-footer">
-            <n-pagination v-model:page="currentPage" :page-count="pageCount" simple />
+            <n-pagination v-model:page="currentPage" :page-count="totalPages" simple />
             <slot name="footer"></slot>
         </div>
     </section>
@@ -63,8 +48,7 @@
 
     import { onMounted, ref, type Ref, inject, watch, type Component, computed } from 'vue'
     import { ProblemService } from '@/domain/services/ProblemService'
-    import type ProblemPayload from '@/domain/entities/ProblemPayload';
-    import type Problem from '@/domain/entities/Problem';
+
     import FilterPanel from '../components/Filter/FilterPanel.vue';
     import FilterSelectComponent from '../components/Filter/FilterSelectComponent.vue';
     import FilterOrderSwitchComponent from '../components/Filter/FilterOrderSwitchComponent.vue';
@@ -77,14 +61,24 @@
     import router from '@/router/index';
     import GenericFormModal from '../components/GenericFormModal.vue';
     import { createProblemFormAdapter } from '@/domain/form/problem/ProblemFormAdapter';
+    import type Problem from '@/domain/entities/Problem';
     import type ProblemAdmin from '@/domain/entities/ProblemAdmin';
     import type { ProblemFormModel } from '@/domain/form/problem/ProblemFormModel';
     import type UpdateProblemAdmin from '@/domain/entities/UpdateProblemAdmin';
-
+    import type ProblemPayload from '@/domain/entities/ProblemPayload';
     const userStore = useUserStore();
 
-    const results = ref<ProblemPayload | void>();
+    //#region [const] FilterPanel
+    const optionsFilter = [
+        { label: 'Nom', value: 'diseaseName' },
+        { label: 'Alertes', value: 'alerts' },
+        { label: 'Commentaires', value: 'comments' },
+        { label: 'Alertes/Avatar', value: 'avatarAlerts' }
+    ]
+    const filterResult = ref<Record<string, unknown>>();
+    //#endregion [const] FilterPanel
 
+    //#region [const] modalForm
     const statusOptions = [{
         label: 'Activer',
         value: 'true'
@@ -92,25 +86,43 @@
         label: 'Désactiver',
         value: 'false'
     }]
+    //#endregion [const] modalForm
 
-    const currentPage = ref<number>(1)
-    const pageCount = ref<number>(0)
-    const totalPages = ref<number>(3)
+    //#region [const] tableContainer
     const rows = ref<Problem[] | ProblemAdmin[]>()
-    const totalItems = ref<number>();
+    const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])//est défini dans le onMounted
+    //#endregion [const] tableContainer
 
-    const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])
+    //#region [const] pagination
+    const currentPage = ref<number>(1);
+    const totalPages = ref<number>(1);
+    const limitItems = ref<number>(3);
+    //#endregion [const] pagination
+
+    //#region [const] modalForm
+    const problemAdapter = createProblemFormAdapter()
+    const showModal = ref(false)
+    const mode = ref<'create' | 'update'>('create')
+    const modalTitle = computed(() =>
+        mode.value === 'create' ? 'Créer un problème' : 'Modifier le problème',
+    )
+    //#endregion [const] modalForm
+
+    //#region [const] service
     const problemService = inject<ProblemService>("problemService");
+    const results = ref<ProblemPayload | void>();
+    //#endregion [const] service
 
     onMounted(async () => {
-        //‼️‼️Quand on est à la page 2 et qu'on retourne à la page 1, on a un 4e problème (alors que la limite est à 3)‼️‼️
         if (userStore?.currentProfile?.role === "Administrator") {
             columns.value = [
                 { key: 'disease_name_FR', label: 'Nom', icon: ProblemIcon },
                 { key: 'status_disease', label: 'Status', icon: AlertAvatarIcon },
                 { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
             ]
-            results.value = await problemService?.getAllProblemsAdmin(currentPage.value, totalPages.value, "", "")
+            results.value = await problemService?.getAllProblemsAdmin(currentPage.value, limitItems.value, "", "")
+            totalPages.value = Number(results.value?.totalPages)
+            console.log("limitItems.value", limitItems.value);
             rows.value = results.value!.data
         }
         else {
@@ -121,38 +133,30 @@
                 { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
                 { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
             ]
-            results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, totalPages.value, "", "")
+            results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, limitItems.value, "", "")
+            totalPages.value = Number(results.value?.totalPages)
             rows.value = results.value!.diseases
         }
-
-        console.log(results)
-        // A modifier dès que l'api est mise à jour (pagination)
-        totalItems.value = results.value?.totalItems
-        totalPages.value = results.value!.totalPages
-        if (totalItems.value)
-            pageCount.value = Math.ceil(totalItems.value / totalPages.value)
-        console.log("results.value!.totalDiseases", results.value!.totalItems);
-        console.log("results.value!.totalPages", results.value!.totalPages);
-        console.log("pageSize.value", totalPages.value);
-        console.log("pageCount.value", pageCount.value);
-
     })
 
+    //Observation du changement de page
     watch(currentPage, async () => {
+        console.log("limitItems.value", limitItems.value);
 
         //Les objets que nous renvoit l'api ne sont pas les mêmes en fonction de l'admin ou du farmer
         if (userStore?.currentProfile?.role === "Administrator") {
-            results.value = await problemService?.getAllProblemsAdmin(currentPage.value, totalPages.value, "", "")
+            results.value = await problemService?.getAllProblemsAdmin(currentPage.value, limitItems.value, "", "")
+            totalPages.value = Number(results.value?.totalPages)
             rows.value = results.value!.data
         }
         else {
-            results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, totalPages.value, "", "")
+            results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, limitItems.value, "", "")
+            totalPages.value = Number(results.value?.totalPages)
             rows.value = results.value!.diseases
         }
     })
 
-    const filterResult = ref<Record<string, unknown>>();
-
+    //#region [functions] tableContainer
     function ButtonAction(row: Problem | ProblemAdmin) {
         //Les objets que nous renvoit l'api ne sont pas les mêmes en fonction de l'admin ou du farmer
         if (userStore.currentProfile?.role === "Administrator") {
@@ -195,35 +199,6 @@
             return 'voir les solutions'
         }
     }
-    //===========================================
-    // filter 
-    //===========================================
-    function handleSubmitFilter(payload: Record<string, unknown>) {
-        filterResult.value = payload
-        console.log(payload)
-    }
-
-    //===========================================
-    // modal Form (create, update, delete)
-    //===========================================
-
-    // Adapter instance
-    const problemAdapter = createProblemFormAdapter()
-
-    const showModal = ref(false)
-    const mode = ref<'create' | 'update'>('create')
-
-    // Dynamic Title
-    const modalTitle = computed(() =>
-        mode.value === 'create' ? 'Créer un problème' : 'Modifier le problème',
-    )
-    const openCreate = () => {
-        mode.value = 'create'
-
-        problemAdapter.reset()
-        showModal.value = true
-    }
-
     const openUpdate = (row: ProblemAdmin | Problem) => {
         mode.value = 'update'
         console.log(row);
@@ -239,6 +214,23 @@
 
         showModal.value = true
     }
+    //#endregion [functions] tableContainer
+
+    //#region [functions] filterPanel
+    function handleSubmitFilter(payload: Record<string, unknown>) {
+        filterResult.value = payload
+        console.log(payload)
+    }
+    //#endregion [functions] filterPanel
+
+    //#region [functions] genericModalForm and add button
+    const openCreate = () => {
+        mode.value = 'create'
+
+        problemAdapter.reset()
+        showModal.value = true
+    }
+
     async function handleSubmit() {
         if (mode.value === 'create') {
             const created = await problemAdapter.create()
@@ -269,6 +261,7 @@
         }
     }
 
+    //#endregion [functions] genericModalForm and add button
 </script>
 
 <style lang="scss" scoped>
