@@ -34,7 +34,7 @@
         {{ filterResult }}
         <TableContainer :columns="columns" :data="(rows as Problem[] | ProblemAdmin[])"
             :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
-            :titleKey="'diseaseName'" @action="ButtonAction" @edit="openUpdate">
+            :titleKey="'diseaseName'" @action="ButtonAction" @edit="openUpdate" @delete="openDelete">
         </TableContainer>
 
         <div class="table-footer">
@@ -47,7 +47,7 @@
 <script setup lang="ts">
 
     //#region imports
-    import { onMounted, ref, type Ref, inject, watch, type Component, computed } from 'vue'
+    import { onMounted, ref, type Ref, inject, watch, type Component, computed, shallowRef } from 'vue'
     import { ProblemService } from '@/domain/services/ProblemService'
 
     import FilterPanel from '../components/Filter/FilterPanel.vue';
@@ -67,6 +67,7 @@
     import type { ProblemFormModel } from '@/domain/form/problem/ProblemFormModel';
     import type UpdateProblemAdmin from '@/domain/entities/UpdateProblemAdmin';
     import type ProblemPayload from '@/domain/entities/ProblemPayload';
+    import type ToggleProblem from '@/domain/entities/ToggleProblem';
     //#endregion imports
 
     const userStore = useUserStore();
@@ -92,7 +93,7 @@
     //#endregion [const] modalForm
 
     //#region [const] tableContainer
-    const rows = ref<Problem[] | ProblemAdmin[]>()
+    const rows = ref<Problem[] | ProblemAdmin[]>([])
     const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])//est défini dans le onMounted
     //#endregion [const] tableContainer
 
@@ -119,22 +120,22 @@
     onMounted(async () => {
         if (userStore?.currentProfile?.role === "Administrator") {
             columns.value = [
-                { key: 'disease_name_FR', label: 'Nom', icon: ProblemIcon },
-                { key: 'status_disease', label: 'Status', icon: AlertAvatarIcon },
-                { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
+                { key: 'disease_name_FR', label: 'Nom', icon: shallowRef(ProblemIcon) },
+                { key: 'status_disease', label: 'Status', icon: shallowRef(AlertAvatarIcon) },
+                { key: 'actions', label: 'Actions', icon: shallowRef(AlertAvatarIcon) },
             ]
             results.value = await problemService?.getAllProblemsAdmin(currentPage.value, limitItemsPage.value, "", "")
             totalPages.value = Number(results.value?.totalPages)
             console.log("limitItems.value", limitItemsPage.value);
-            rows.value = results.value!.data
+            rows.value = results.value!.data as ProblemAdmin[]
         }
         else {
             columns.value = [
-                { key: 'diseaseName', label: 'Nom', icon: ProblemIcon },
-                { key: 'commentCount', label: 'Commentaires', icon: CommentIcon },
-                { key: 'farmerAlertCount', label: 'Alertes', icon: AlertsIcon },
-                { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
-                { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
+                { key: 'diseaseName', label: 'Nom', icon: shallowRef(ProblemIcon) },
+                { key: 'commentCount', label: 'Commentaires', icon: shallowRef(CommentIcon) },
+                { key: 'farmerAlertCount', label: 'Alertes', icon: shallowRef(AlertsIcon) },
+                { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: shallowRef(AlertAvatarIcon) },
+                { key: 'actions', label: 'Actions', icon: shallowRef(AlertAvatarIcon) },
             ]
             results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
             totalPages.value = Number(results.value?.totalPages)
@@ -150,7 +151,7 @@
         if (userStore?.currentProfile?.role === "Administrator") {
             results.value = await problemService?.getAllProblemsAdmin(currentPage.value, limitItemsPage.value, "", "")
             totalPages.value = Number(results.value?.totalPages)
-            rows.value = results.value!.data
+            rows.value = results.value!.data as ProblemAdmin[]
         }
         else {
             results.value = await problemService?.getAllProblems(userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
@@ -216,6 +217,15 @@
         problemAdapter.load(problemAdminFormModel)
 
         showModal.value = true
+    }
+    const openDelete = async (row: ProblemAdmin | Problem) => {
+        //Appeler le service pour toggle
+        const results = await problemService?.toggleProblemStatus("admin", row.id_disease as string) as ToggleProblem
+
+        rows.value.map(async (problem) => {
+            if ((problem as ProblemAdmin).id_disease == results?.disease?.id_disease)
+                (problem as ProblemAdmin).status_disease = results?.disease.status_disease as boolean
+        })
     }
     //#endregion [functions] tableContainer
 

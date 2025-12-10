@@ -1,7 +1,7 @@
 import type SubProblem from './SubProblem'
 
 export default interface Problem extends Record<string, unknown> {
-  subDiseaseExists: boolean
+  subDiseaseExists?: boolean
   id_disease: number
   disease_name_FR: string
   disease_name_DE: string
@@ -9,5 +9,5 @@ export default interface Problem extends Record<string, unknown> {
   disease_name_NL: string
   est_healing_time: number
   status_disease: boolean
-  sub_diseases: SubProblem[]
+  sub_diseases?: SubProblem[]
 }

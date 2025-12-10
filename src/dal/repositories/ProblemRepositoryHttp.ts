@@ -10,6 +10,7 @@ import type CreateProblem from '@/domain/entities/createProblem'
 import type SubProblemAdmin from '@/domain/entities/SubProblemAdmin'
 import type UpdateProblemAdmin from '@/domain/entities/UpdateProblemAdmin'
 import type { UpdateVerb } from '../http/AxiosHttpClient'
+import type ToggleProblem from '@/domain/entities/ToggleProblem'
 
 export class ProblemRepositoryHttp implements IProblemRepository {
   constructor(
@@ -22,6 +23,7 @@ export class ProblemRepositoryHttp implements IProblemRepository {
         updateProblem: UpdateProblemAdmin,
         uv: UpdateVerb,
       ) => Promise<UpdateProblemAdmin>
+      toggleProblemStatus: (url: string) => Promise<ToggleProblem>
     },
   ) {}
 
@@ -57,5 +59,10 @@ export class ProblemRepositoryHttp implements IProblemRepository {
   ): Promise<UpdateProblemAdmin> {
     const url = `http://localhost:3000/disease/save/${role}/${id}`
     return await this.http.update(url, updateProblem, 1 as UpdateVerb.patch)
+  }
+  async toggleProblemStatus(role: string, idProblem: string): Promise<ToggleProblem> {
+    return await this.http.toggleProblemStatus(
+      `http://localhost:3000/disease/status/${role}/${idProblem}`,
+    )
   }
 }

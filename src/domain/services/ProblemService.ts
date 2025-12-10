@@ -38,4 +38,7 @@ export class ProblemService {
   async updateProblem(role: string, id: string, updateProblem: UpdateProblemAdmin) {
     return await this.repo.updateProblem(role, id, updateProblem)
   }
+  async toggleProblemStatus(role: string, idProblem: string) {
+    return await this.repo.toggleProblemStatus(role, idProblem)
+  }
 }

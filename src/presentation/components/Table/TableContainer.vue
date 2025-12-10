@@ -68,7 +68,8 @@
   }>()
 
   function openDelete(row: T) {
-    console.log('Delete', row)
+    emit("delete", row as T)
+
   }
 
   // function handleUpdateSubmit(data: unknown) {
