@@ -94,10 +94,9 @@
             results.value = await solutionService?.getSolutionsBySubProblemId(idProblemSolution?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
 
         //Calcul pagination
-        if (results.value) {
-            totalPage.value = Math.ceil(results.value?.length / limitItemsPage.value)
-            console.log("totalPage.value", totalPage.value)
-        }
+
+        totalPage.value = 1
+
         rows.value = results.value as Solution[]
         // A modifier dès que l'api est mise à jour (pagination)
         // totalItems.value = results.value?.
