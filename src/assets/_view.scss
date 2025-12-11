@@ -1,0 +1,53 @@
+@use 'variables' as *;
+.view {
+  display: grid;
+  row-gap: 20px;
+  flex-direction: column;
+  margin-bottom: 20px;
+  h1 {
+    text-align: center;
+  }
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    &__buttonProbleme {
+      border: 1px solid $white !important;
+      background: linear-gradient(135deg, $main_color_dark, $main_color);
+      box-shadow: 0 0 4px $shadow_0_7;
+      font-weight: 700;
+      transition:
+        transform,
+        0.3s ease-out;
+      &:hover {
+        transform: translateY(-2px);
+      }
+    }
+  }
+  &__content {
+    background: rgba(255, 255, 255, 0.178);
+    border-radius: 3px;
+    padding: 12px 24px;
+  }
+  &__footer {
+    justify-content: center;
+  }
+}
+
+@media (min-width: $tablet) {
+  .view {
+    &__header {
+      flex-direction: row;
+      padding-inline: 50px;
+    }
+    &__content {
+      width: 90%;
+      margin-inline: 20px;
+      justify-self: center;
+    }
+  }
+}
+
+@media (max-width: $mobile) {
+}

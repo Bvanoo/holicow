@@ -1,64 +1,59 @@
 <template>
     <!-- <ChatBubble /> -->
-    <section style="padding: 16px">
+    <section class="view">
         <h1>{{ problemName }}</h1>
+        <div class="view__header">
 
-        <Transition name="fade-slide" tag="FilterPanel" appear>
+            <Transition name="fade-slide" tag="FilterPanel" appear>
 
-            <FilterPanel title="Filtres" @submit="handleSubmitFilter" class="filter">
-                <div class="filter__order">
-                    <!-- Composant 1 -->
-                    <FilterSelectComponent class="filter__order-select" field-name="colonne" :options="[
-                        { label: 'Nom', value: 'disease_name_FR' },
-                        { label: 'Alertes', value: 'alerts' },
-                        { label: 'Commentaires', value: 'comments' },
-                        { label: 'Alertes/Avatar', value: 'avatarAlerts' },
-                    ]"></FilterSelectComponent>
-                    <!-- Composant 2 -->
-                    <FilterOrderSwitchComponent fieldName="order"></FilterOrderSwitchComponent>
-                </div>
-                <!-- <div class="filter__search">
-                <span>Rechercher :</span> 
-            Composant 3
-            <FilterInputComponent fieldName="test"></FilterInputComponent>
-            </div> -->
-            </FilterPanel>
-        </Transition>
+                <TransitionGroup name="fade-slide" tag="FilterPanel" appear>
+                    <FilterPanel title="Filtres" @submit="handleSubmitFilter" class="filter">
+                        <!-- Composant 1 -->
+                        <FilterSelectComponent class="filter__order-select" field-name="colonne"
+                            :options="optionsFilter">
+                        </FilterSelectComponent>
+                        <!-- Composant 2 -->
+                        <FilterOrderSwitchComponent fieldName="order"></FilterOrderSwitchComponent>
+                    </FilterPanel>
+                </TransitionGroup>
+            </Transition>
+            <section v-if="userStore.currentProfile?.role === 'Administrator'">
+                <n-button class="view__header__buttonProbleme" tertiary type="primary" color="white" size="large"
+                    @click="openCreate">
+                    Créer un sous-problème
+                </n-button>
+            </section>
+        </div>
         {{ filterResult }}
-        <section v-if="userStore.currentProfile?.role === 'Administrator'"
-            style="display: flex; justify-content: space-around">
-            <n-button type="primary" @click="openCreate"> Créer un sous-problème </n-button>
+        <section class="view__content">
+            <TableContainer :columns="columns" :data="(rows as SubProblem[] | SubProblemAdmin[])"
+                :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
+                :titleKey="'subDiseaseName'" @action="ButtonAction" @edit="openUpdate" @delete="toggleStatus">
+            </TableContainer>
         </section>
-
-        <GenericFormModal v-model:show="showModal" :title="modalTitle" :adapter="subProblemAdapter"
-            @submit="handleSubmit">
-
-            <n-form-item label="Nom du problème">
-                <n-input :disabled="true" v-model:value="problemName" />
-            </n-form-item>
-            <n-form-item label="Nom du sous-problème" path="sub_disease_name_FR">
-                <n-input v-model:value="subProblemAdapter.form.value.sub_disease_name_FR" />
-            </n-form-item>
-            <n-form-item label="Status" path="status_sub_disease">
-                <n-select v-model:value="subProblemAdapter.form.value.status_sub_disease" :options="statusOptions" />
-            </n-form-item>
-        </GenericFormModal>
-
-        <TableContainer :columns="columns" :data="(rows as SubProblem[] | SubProblemAdmin[])"
-            :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
-            :titleKey="'subDiseaseName'" @action="ButtonAction" @edit="openUpdate" @delete="toggleStatus">
-        </TableContainer>
-
         <!-- <ProblemTable :columns="columns" :data="rows" primary-key="disease_name_FR"> -->
         <!-- <template #footer>
         <n-button type="primary">Action footer</n-button>
       </template> -->
         <!-- </ProblemTable> -->
-        <div class="table-footer">
+        <section class="view__footer">
             <n-pagination v-model:page="currentPage" :page-count="totalPages" simple />
             <slot name="footer"></slot>
-        </div>
+        </section>
     </section>
+
+    <GenericFormModal v-model:show="showModal" :title="modalTitle" :adapter="subProblemAdapter" @submit="handleSubmit">
+
+        <n-form-item label="Nom du problème">
+            <n-input :disabled="true" v-model:value="problemName" />
+        </n-form-item>
+        <n-form-item label="Nom du sous-problème" path="sub_disease_name_FR">
+            <n-input v-model:value="subProblemAdapter.form.value.sub_disease_name_FR" />
+        </n-form-item>
+        <n-form-item label="Status" path="status_sub_disease">
+            <n-select v-model:value="subProblemAdapter.form.value.status_sub_disease" :options="statusOptions" />
+        </n-form-item>
+    </GenericFormModal>
 </template>
 
 <script setup lang="ts">
@@ -86,6 +81,14 @@
     import type ToggleSubProblem from '@/domain/entities/ToggleSubProblem';
     import type SubProblemPayloadAdmin from '@/domain/entities/SubProblemPayloadAdmin';
 
+    //#region [const] FilterPanel
+    const optionsFilter = [
+        { label: 'Nom', value: 'diseaseName' },
+        { label: 'Alertes', value: 'alerts' },
+        { label: 'Commentaires', value: 'comments' },
+        { label: 'Alertes/Avatar', value: 'avatarAlerts' },
+    ]
+    //#endregion [const] FilterPanel
     const statusOptions = [{
         label: 'Activer',
         value: 'true'
