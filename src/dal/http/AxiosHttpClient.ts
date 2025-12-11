@@ -34,6 +34,16 @@ export class AxiosHttpClient {
     const response = await axios.post(url, object)
     return response.data
   }
+
+  async delete(url: string) {
+    const response = await axios.delete(url)
+    return { status: response.status }
+  }
+
+  async approve(url: string, object: Record<string, unknown>) {
+    const response = await axios.post(url, object)
+    return response.data
+  }
   async getAllSolution(url: string) {
     const response = await axios.get(url)
     return response.data

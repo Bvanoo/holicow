@@ -4,7 +4,10 @@ import {CommentsRepositoryHttp} from "@/dal/repositories/CommentsRepositoryHttp.
 import type Comment from "@/domain/entities/Comment.ts";
 import type { CommentPayload } from '@/domain/entities/CommentPayload';
 import type CreateComment from "@/domain/entities/createComment.ts";
-
+import {AxiosHttpClient} from "@/dal/http/AxiosHttpClient.ts";
+import type UpdateCommentPayload from '@/domain/entities/UpdatePayload.ts';
+const httpClient = new AxiosHttpClient();
+const commentService = new CommentService(new CommentsRepositoryHttp(httpClient));
 
 interface PaginationState {
   total : number;
@@ -48,9 +51,8 @@ export const CommentStore = defineStore('comments', {
   },
   actions: {
     async fetchCommentsBySolutionId(
-      solutionId: string,
+      solutionId: number,
       params: { page: number, limit: number, sortedBy: string, sortedOrder: string },
-      role: string
     ) {
       this.isLoading = true;
       this.error = null;
@@ -74,21 +76,21 @@ export const CommentStore = defineStore('comments', {
         };
 
       } catch (e) {
-        this.error = (e)
+        this.error = (e instanceof Error)
           ? e.message
           : "Erreur inconnue lors du chargement des commentaires de solution.";
       } finally {
         this.isLoading = false;
       }
     },
-    async createCommentAction(role : string, newComment: CreateComment){
+    async createCommentAction(solutionId : number, newComment: CreateComment){
       this.isLoading = true;
       this.error = null;
       try{
-        const createComment = await commentService.createComment(role, newComment);
+        const createComment = await commentService.createComment(solutionId, newComment);
         this.comments.unshift(createComment);
       } catch (e) {
-        this.error = (e) ? e.message : "Probleme lors de la création du commentaire.";
+        this.error = (e instanceof Error) ? e.message : "Probleme lors de la création du commentaire.";
         throw e;
       } finally {
         this.isLoading = false;
@@ -106,7 +108,25 @@ export const CommentStore = defineStore('comments', {
         }
 
       } catch (e) {
-        this.error = (e) ? e.message : "Erreur lors de la suppression du commentaire.";
+        this.error = (e instanceof Error) ? e.message : "Erreur lors de la suppression du commentaire.";
+        throw e;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    async updateCommentAction(UpdatePayload : UpdateCommentPayload){
+      this.isLoading = true;
+      this.error = null;
+
+      try{
+        const updateComment = await commentService.updateComment(UpdatePayload);
+        const index = this.comments.findIndex((c) => c.id === UpdatePayload.id_comment);
+        if(index !== -1){
+          this.comments[index] = updateComment
+        }
+        return updateComment
+      }catch(e){
+        this.error = (e instanceof Error) ? e.message : "Erreur lors de la modification du commentaire";
         throw e;
       } finally {
         this.isLoading = false;

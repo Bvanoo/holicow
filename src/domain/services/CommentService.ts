@@ -2,10 +2,11 @@ import type CreateComment from '../entities/createComment';
 import type { CommentsRepositoryHttp } from '@/dal/repositories/CommentsRepositoryHttp';
 import type Comment from '../entities/Comment';
 import type {CommentPayload} from "@/domain/entities/CommentPayload.ts";
+import type UpdatePayload from "@/domain/entities/UpdatePayload.ts";
 export class  CommentService {
   constructor(private repo : CommentsRepositoryHttp) {
   }
-  async createComment(role : string, newComment : CreateComment){
+  async createComment(solutionId : number, newComment : CreateComment){
 
     if (!newComment.content || newComment.content.length === 0) {
       throw new Error("Le commentaire ne peut pas être vide")
@@ -13,7 +14,7 @@ export class  CommentService {
     if(!newComment.id || !newComment.solutionId){
       throw new Error ("Identifiant de l'utilisateur ou solution manquante")
     }
-    return await this.repo.createComment(role, newComment);
+    return await this.repo.createComment(solutionId, newComment);
   }
 
   async deleteComment(role : string, id_commentaire: string): Promise<boolean>  {
@@ -26,12 +27,16 @@ export class  CommentService {
     return await this.repo.deleteComment(id_commentaire, role);
   }
 
-  async updateComment(role : string, id_commentaire: string, updateComment : Comment): Promise<Comment>  {
+  async updateComment(updatePayload : UpdatePayload): Promise<Comment>  {
 
-    if(role !== "Farmer") {
-      throw new Error("Impossible de modifier le commentaire")
+    if (!updatePayload.content || updatePayload.content.length === 0) {
+      throw new Error("Le contenu du commentaire ne peut pas être vide");
     }
-    return await this.repo.updateComment(role, id_commentaire, updateComment);
+    if (!updatePayload.id_comment || !updatePayload.solutionId) {
+      throw new Error("Identifiant du commentaire ou de la solution manquant");
+    }
+
+    return await this.repo.updateComment(updatePayload);
   }
 
   async getAllCommentById(
@@ -56,7 +61,7 @@ export class  CommentService {
       sortedBy || '',
       sortedOrder || '')
   }
-  async getCommentBySolutionId(solutionId: string, page: number, limit: number, sortedBy: string, sortedOrder: string) : Promise<CommentPayload> {
+  async getCommentBySolutionId(solutionId: number, page: number, limit: number, sortedBy: string, sortedOrder: string) : Promise<CommentPayload> {
     if(!solutionId){
       throw new Error ("Solution inexistante")
     }
@@ -68,6 +73,14 @@ export class  CommentService {
         sortedBy,
         sortedOrder,
       )
+    }
+  }
+  async approveComment(commentId : number, role : string) : Promise<boolean>  {
+    if(!commentId || !role){
+      throw new Error("Impossible de récupérer les commentaires ou role non défini")
+    }
+    else {
+      return await this.repo.approveComment(commentId, role)
     }
   }
 }

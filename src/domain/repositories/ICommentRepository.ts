@@ -2,6 +2,7 @@ import type {CommentPayload} from "@/domain/entities/CommentPayload.ts";
 import type CreateComment from "@/domain/entities/createComment.ts";
 import type Comment from "@/domain/entities/Comment.ts";
 import type ProblemPayload from "@/domain/entities/ProblemPayload.ts";
+import type UpdatePayload from "@/domain/entities/UpdatePayload.ts";
 
 export default interface ICommentRepository {
   getCommentByUserId(
@@ -22,10 +23,10 @@ export default interface ICommentRepository {
   ): Promise<CommentPayload>
 
 
-  createComment(role : string, object: CreateComment): Promise<Comment>
+  createComment(solutionId : number, object: CreateComment): Promise<Comment>
 
   getCommentBySolutionId(
-    solutionId : string,
+    solutionId : number,
     page : number,
     limit : number,
     sortedBy: string,
@@ -39,13 +40,11 @@ export default interface ICommentRepository {
 
 
   updateComment(
-    id_comment: string,
-    role : string,
-    updatePayload : { content: string }
+    updatePayload : UpdatePayload
   ) : Promise<Comment>
 
   approveComment(
-    id_comment: string,
+    commentId: number,
     role : string,
   ) : Promise<boolean>
 }
