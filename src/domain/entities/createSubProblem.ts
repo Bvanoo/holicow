@@ -1,3 +1,5 @@
+import type ProblemAdmin from './ProblemAdmin'
+
 export default interface CreateSubProblem extends Record<string, unknown> {
   sub_disease_name_FR: string
   sub_disease_name_DE?: string
@@ -6,6 +8,7 @@ export default interface CreateSubProblem extends Record<string, unknown> {
   status_sub_disease: boolean
   diseaseId: string
   id_sub_disease?: string
+  disease?: ProblemAdmin
 }
 /**  
  * "sub_disease_name_FR": "Grippe",

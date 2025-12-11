@@ -32,7 +32,7 @@ async function apiCreateSubProblem(data: SubProblemFormModel): Promise<SubProble
       console.log('------------', result)
       if (result) {
         const formProblem: SubProblemFormModel = {
-          id_disease: result.diseaseId,
+          id_disease: result.disease?.id_disease,
           id_sub_disease: result.id_sub_disease,
           sub_disease_name_FR: result.sub_disease_name_FR,
           status_sub_disease: result.status_sub_disease ? 'true' : 'false',

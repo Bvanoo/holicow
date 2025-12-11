@@ -2,7 +2,7 @@ import type SubProblem from './SubProblem'
 
 export default interface ProblemAdmin extends Record<string, unknown> {
   subDiseaseExists?: boolean
-  id_disease: number
+  id_disease: string
   disease_name_FR: string
   disease_name_DE: string
   disease_name_EN: string
