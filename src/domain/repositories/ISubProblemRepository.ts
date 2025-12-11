@@ -1,6 +1,6 @@
 import type CreateSubProblem from '../entities/createSubProblem'
-import type SubProblemAdmin from '../entities/SubProblemAdmin'
 import type SubProblemPayload from '../entities/SubProblemPayload'
+import type SubProblemPayloadAdmin from '../entities/SubProblemPayloadAdmin'
 import type ToggleSubProblem from '../entities/ToggleSubProblem'
 import type UpdateSubProblemAdmin from '../entities/UpdateSubProblemAdmin'
 export default interface ISubProblemRepository {
@@ -20,11 +20,11 @@ export default interface ISubProblemRepository {
   getAllSubProblemByProblemIdAdmin(
     // idProfile: string,
     idProblem: string,
-    // page: number,
-    // limit: number,
-    // sortedBy: string,
-    // sortedOrder: string,
-  ): Promise<SubProblemAdmin[]>
+    page: number,
+    limit: number,
+    sortedBy: string,
+    sortedOrder: string,
+  ): Promise<SubProblemPayloadAdmin>
   toggleSubProblemStatus(
     idProblem: string,
     role: string,

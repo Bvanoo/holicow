@@ -84,6 +84,7 @@
     import type UpdateSubProblemAdmin from '@/domain/entities/UpdateSubProblemAdmin';
     import type SubProblemPayload from '@/domain/entities/SubProblemPayload';
     import type ToggleSubProblem from '@/domain/entities/ToggleSubProblem';
+    import type SubProblemPayloadAdmin from '@/domain/entities/SubProblemPayloadAdmin';
 
     const statusOptions = [{
         label: 'Activer',
@@ -95,7 +96,7 @@
 
     const userStore = useUserStore();
 
-    const results = ref<SubProblemPayload | SubProblemAdmin[] | void>();
+    const results = ref<SubProblemPayload | SubProblemPayloadAdmin | void>();
 
     const currentPage = ref<number>(1)
     const limitItemsPage = ref<number>(3)
@@ -117,13 +118,13 @@
                 { key: 'status_sub_disease', label: 'Status', icon: shallowRef(AlertAvatarIcon) },
                 { key: 'actions', label: 'Actions', icon: shallowRef(AlertAvatarIcon) },
             ]
-            results.value = await subProblemService?.getSubProblemByProblemIdAdmin(idProblem.value as string/*, currentPage.value, limitItemPage.value, "", ""*/)
-
+            results.value = await subProblemService?.getSubProblemByProblemIdAdmin(idProblem.value as string, currentPage.value, limitItemsPage.value, "", "")
+            console.log("getAllSubProblem Admin : ", results.value)
             //‼️‼️A changer quand la pagination est faites sur le endpoints "/subDisease" (pas "/subDisease/:idDisease")
             //Par défaut je met tout sur une page
-            totalPages.value = 1
+            totalPages.value = Number(results.value?.meta.lastPage)
 
-            rows.value = results.value as SubProblemAdmin[]
+            rows.value = results.value?.data as SubProblemAdmin[]
         }
         else {
             columns.value = [
@@ -142,9 +143,9 @@
 
     watch(currentPage, async () => {
         if (userStore?.currentProfile?.role === "Administrator") {
-            results.value = await subProblemService?.getSubProblemByProblemIdAdmin(idProblem.value as string/*, currentPage.value, limitItemPage.value, "", ""*/)
-
-            rows.value = results.value as SubProblemAdmin[]
+            results.value = await subProblemService?.getSubProblemByProblemIdAdmin(idProblem.value as string, currentPage.value, limitItemsPage.value, "", "")
+            totalPages.value = Number(results.value?.meta.lastPage)
+            rows.value = results.value?.data as SubProblemAdmin[]
         }
         else {
             results.value = await subProblemService?.getSubProblemByProblemId(userStore.currentProfile?.profilId as string, idProblem.value as string, currentPage.value, limitItemsPage.value, "", "")
@@ -226,8 +227,8 @@
         if (mode.value === 'create') {
             const created = await subProblemAdapter.create()
             console.log('Created :', created)
-            results.value = await subProblemService?.getSubProblemByProblemIdAdmin(idProblem.value as string/*, currentPage.value, pageSize.value, "", ""*/)
-            rows.value = results.value as SubProblemAdmin[]
+            results.value = await subProblemService?.getSubProblemByProblemIdAdmin(idProblem.value as string, currentPage.value, limitItemsPage.value, "", "")
+            rows.value = results.value?.data as SubProblemAdmin[]
 
         }
 

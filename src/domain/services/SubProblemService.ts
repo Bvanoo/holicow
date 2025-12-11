@@ -14,6 +14,7 @@ import type UpdateSubProblem from '../entities/updateSubProblem'
 import type UpdateSubProblemAdmin from '../entities/UpdateSubProblemAdmin'
 import type CreateSubProblem from '../entities/createSubProblem'
 import type ToggleSubProblem from '../entities/ToggleSubProblem'
+import type SubProblemPayloadAdmin from '../entities/SubProblemPayloadAdmin'
 
 export class SubProblemService {
   constructor(private repo: SubProblemRepositoryHttp) {}
@@ -33,13 +34,13 @@ export class SubProblemService {
   async getSubProblemByProblemIdAdmin(
     // idProfile: string,
     idProblem: string,
-    // page: number,
-    // limit: number,
-    // sortedBy: string,
-    // sortedOrder: string,
-  ): Promise<SubProblemAdmin[] | void> {
+    page: number,
+    limit: number,
+    sortedBy: string,
+    sortedOrder: string,
+  ): Promise<SubProblemPayloadAdmin | void> {
     return await this.repo
-      .getAllSubProblemByProblemIdAdmin(idProblem /*, page, limit, '', ''*/)
+      .getAllSubProblemByProblemIdAdmin(idProblem, page, limit, sortedBy, sortedOrder)
       .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
   }
 

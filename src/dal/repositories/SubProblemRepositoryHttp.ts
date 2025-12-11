@@ -1,11 +1,11 @@
 import type CreateSubProblem from '@/domain/entities/createSubProblem'
 import type SubProblem from '@/domain/entities/SubProblem'
-import type SubProblemAdmin from '@/domain/entities/SubProblemAdmin'
 import type ISubProblemRepository from '@/domain/repositories/ISubProblemRepository'
 import type { UpdateVerb } from '../http/AxiosHttpClient'
 import type UpdateSubProblemAdmin from '@/domain/entities/UpdateSubProblemAdmin'
 import type SubProblemPayload from '@/domain/entities/SubProblemPayload'
 import type ToggleSubProblem from '@/domain/entities/ToggleSubProblem'
+import type SubProblemPayloadAdmin from '@/domain/entities/SubProblemPayloadAdmin'
 
 export class SubProblemRepositoryHttp implements ISubProblemRepository {
   constructor(
@@ -17,7 +17,7 @@ export class SubProblemRepositoryHttp implements ISubProblemRepository {
         uv: UpdateVerb,
       ) => Promise<UpdateSubProblemAdmin>
       create: (url: string, createSubProblem: CreateSubProblem) => Promise<CreateSubProblem>
-      getAllSubProblemByProblemIdAdmin: (url: string) => Promise<SubProblemAdmin[]>
+      getAllSubProblemByProblemIdAdmin: (url: string) => Promise<SubProblemPayloadAdmin>
       getAllSubProblemByProblemId: (url: string) => Promise<SubProblemPayload>
       toggleSubProblemStatus: (url: string) => Promise<ToggleSubProblem>
     },
@@ -53,13 +53,13 @@ export class SubProblemRepositoryHttp implements ISubProblemRepository {
   async getAllSubProblemByProblemIdAdmin(
     // idProfile: string,
     idProblem: string,
-    // page: number,
-    // limit: number,
-    // sortedBy: string,
-    // sortedOrder: string,
-  ): Promise<SubProblemAdmin[]> {
+    page: number,
+    limit: number,
+    sortedBy: string,
+    sortedOrder: string,
+  ): Promise<SubProblemPayloadAdmin> {
     return await this.http.getAllSubProblemByProblemIdAdmin(
-      `http://localhost:3000/disease/${idProblem}`,
+      `http://localhost:3000/disease/${idProblem}?page=${page}&limit=${limit}`,
     )
   }
   async toggleSubProblemStatus(
