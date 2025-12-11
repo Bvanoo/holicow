@@ -78,6 +78,6 @@
     justify-content: center;
     align-items: center;
     gap: 12px;
-    z-index: 400;
+    z-index: 200;
   }
 </style>

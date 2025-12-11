@@ -34,7 +34,7 @@
         {{ filterResult }}
         <TableContainer :columns="columns" :data="(rows as Problem[] | ProblemAdmin[])"
             :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
-            :titleKey="'diseaseName'" @action="ButtonAction" @edit="openUpdate" @delete="openDelete">
+            :titleKey="'diseaseName'" @action="ButtonAction" @edit="openUpdate" @delete="toggleStatus">
         </TableContainer>
 
         <div class="table-footer">
@@ -165,7 +165,6 @@
         //Les objets que nous renvoit l'api ne sont pas les mêmes en fonction de l'admin ou du farmer
         if (userStore.currentProfile?.role === "Administrator") {
             if (row.SubDiseaseExisting) {
-                console.log(row.id_disease)
                 router.push({
                     name: 'sub problems',
                     params: { data: (row as ProblemAdmin).id_disease + "_" + (row as ProblemAdmin).disease_name_FR }
@@ -218,7 +217,7 @@
 
         showModal.value = true
     }
-    const openDelete = async (row: ProblemAdmin | Problem) => {
+    const toggleStatus = async (row: ProblemAdmin | Problem) => {
         //Appeler le service pour toggle
         const results = await problemService?.toggleProblemStatus("admin", row.id_disease as string) as ToggleProblem
 

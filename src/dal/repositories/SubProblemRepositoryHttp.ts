@@ -1,17 +1,16 @@
 import type CreateSubProblem from '@/domain/entities/createSubProblem'
 import type SubProblem from '@/domain/entities/SubProblem'
 import type SubProblemAdmin from '@/domain/entities/SubProblemAdmin'
-import type UpdateStatusSubProblem from '@/domain/entities/updateStatusSubProblem'
 import type ISubProblemRepository from '@/domain/repositories/ISubProblemRepository'
 import type { UpdateVerb } from '../http/AxiosHttpClient'
 import type UpdateSubProblemAdmin from '@/domain/entities/UpdateSubProblemAdmin'
 import type SubProblemPayload from '@/domain/entities/SubProblemPayload'
+import type ToggleSubProblem from '@/domain/entities/ToggleSubProblem'
 
 export class SubProblemRepositoryHttp implements ISubProblemRepository {
   constructor(
     private http: {
       getChildren: (url: string) => Promise<SubProblem[]>
-      toggleSubProblemStatut: (url: string) => Promise<UpdateStatusSubProblem>
       update: (
         url: string,
         updateProblem: UpdateSubProblemAdmin,
@@ -20,12 +19,9 @@ export class SubProblemRepositoryHttp implements ISubProblemRepository {
       create: (url: string, createSubProblem: CreateSubProblem) => Promise<CreateSubProblem>
       getAllSubProblemByProblemIdAdmin: (url: string) => Promise<SubProblemAdmin[]>
       getAllSubProblemByProblemId: (url: string) => Promise<SubProblemPayload>
+      toggleSubProblemStatus: (url: string) => Promise<ToggleSubProblem>
     },
   ) {}
-  async toggleSubProblemStatus(role: string, id: number): Promise<UpdateStatusSubProblem> {
-    const url = `http://localhost:3000/subDisease/status/${id}?role=${role}`
-    return await this.http.toggleSubProblemStatut(url)
-  }
   async updateSubProblem(
     role: string,
     id: string,
@@ -64,6 +60,19 @@ export class SubProblemRepositoryHttp implements ISubProblemRepository {
   ): Promise<SubProblemAdmin[]> {
     return await this.http.getAllSubProblemByProblemIdAdmin(
       `http://localhost:3000/disease/${idProblem}`,
+    )
+  }
+  async toggleSubProblemStatus(
+    role: string,
+    idProblem: string,
+
+    // page: number,
+    // limit: number,
+    // sortedBy: string,
+    // sortedOrder: string,
+  ): Promise<ToggleSubProblem> {
+    return await this.http.toggleSubProblemStatus(
+      `http://localhost:3000/subDisease/status/${idProblem}?role=${role}`,
     )
   }
 }

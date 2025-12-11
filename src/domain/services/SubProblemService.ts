@@ -13,6 +13,7 @@ import type { ProblemRepositoryHttp } from '@/dal/repositories/ProblemRepository
 import type UpdateSubProblem from '../entities/updateSubProblem'
 import type UpdateSubProblemAdmin from '../entities/UpdateSubProblemAdmin'
 import type CreateSubProblem from '../entities/createSubProblem'
+import type ToggleSubProblem from '../entities/ToggleSubProblem'
 
 export class SubProblemService {
   constructor(private repo: SubProblemRepositoryHttp) {}
@@ -47,5 +48,8 @@ export class SubProblemService {
   }
   async createSubProblem(role: string, createSubProblem: CreateSubProblem) {
     return await this.repo.createSubProblem(role, createSubProblem)
+  }
+  async toggleSubProblemStatus(role: string, idSubProblem: string) {
+    return await this.repo.toggleSubProblemStatus(role, idSubProblem)
   }
 }

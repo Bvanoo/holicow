@@ -62,6 +62,10 @@ export class AxiosHttpClient {
     const response = await axios.patch(url)
     return response.data
   }
+  async toggleSubProblemStatus(url: string) {
+    const response = await axios.patch(url)
+    return response.data
+  }
 
   async getAllAlertsByUserId(url: string) {
     const response = await axios.get(url)

@@ -46,7 +46,7 @@
 
         <TableContainer :columns="columns" :data="(rows as SubProblem[] | SubProblemAdmin[])"
             :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
-            :titleKey="'subDiseaseName'" @action="ButtonAction" @edit="openUpdate">
+            :titleKey="'subDiseaseName'" @action="ButtonAction" @edit="openUpdate" @delete="toggleStatus">
         </TableContainer>
 
         <!-- <ProblemTable :columns="columns" :data="rows" primary-key="disease_name_FR"> -->
@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 
-    import { onMounted, ref, type Ref, inject, watch, type Component, computed } from 'vue';
+    import { onMounted, ref, type Ref, inject, watch, type Component, computed, shallowRef } from 'vue';
     import { SubProblemService } from '../../domain/services/SubProblemService';
     import FilterPanel from '../components/Filter/FilterPanel.vue';
     import FilterSelectComponent from '../components/Filter/FilterSelectComponent.vue';
@@ -83,6 +83,7 @@
     import type { SubProblemFormModel } from '@/domain/form/subProblem/SubProblemFormModel';
     import type UpdateSubProblemAdmin from '@/domain/entities/UpdateSubProblemAdmin';
     import type SubProblemPayload from '@/domain/entities/SubProblemPayload';
+    import type ToggleSubProblem from '@/domain/entities/ToggleSubProblem';
 
     const statusOptions = [{
         label: 'Activer',
@@ -98,7 +99,7 @@
 
     const currentPage = ref<number>(1)
     const limitItemsPage = ref<number>(3)
-    const rows = ref<SubProblem[] | SubProblemAdmin[] | void>()
+    const rows = ref<SubProblem[] | SubProblemAdmin[] | void>([])
     const totalPages = ref<number>(1);
 
     const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])
@@ -112,9 +113,9 @@
     onMounted(async () => {
         if (userStore?.currentProfile?.role === "Administrator") {
             columns.value = [
-                { key: 'sub_disease_name_FR', label: 'Nom', icon: ProblemIcon },
-                { key: 'status_sub_disease', label: 'Status', icon: AlertAvatarIcon },
-                { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
+                { key: 'sub_disease_name_FR', label: 'Nom', icon: shallowRef(ProblemIcon) },
+                { key: 'status_sub_disease', label: 'Status', icon: shallowRef(AlertAvatarIcon) },
+                { key: 'actions', label: 'Actions', icon: shallowRef(AlertAvatarIcon) },
             ]
             results.value = await subProblemService?.getSubProblemByProblemIdAdmin(idProblem.value as string/*, currentPage.value, limitItemPage.value, "", ""*/)
 
@@ -126,11 +127,11 @@
         }
         else {
             columns.value = [
-                { key: 'subDiseaseName', label: 'Nom', icon: ProblemIcon },
-                { key: 'commentCount', label: 'Commentaires', icon: CommentIcon },
-                { key: 'farmerAlertCount', label: 'Alertes', icon: AlertsIcon },
-                { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
-                { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
+                { key: 'subDiseaseName', label: 'Nom', icon: shallowRef(ProblemIcon) },
+                { key: 'commentCount', label: 'Commentaires', icon: shallowRef(CommentIcon) },
+                { key: 'farmerAlertCount', label: 'Alertes', icon: shallowRef(AlertsIcon) },
+                { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: shallowRef(AlertAvatarIcon) },
+                { key: 'actions', label: 'Actions', icon: shallowRef(AlertAvatarIcon) },
             ]
             results.value = await subProblemService?.getSubProblemByProblemId(userStore.currentProfile?.profilId as string, idProblem.value as string, currentPage.value, limitItemsPage.value, "", "")
             totalPages.value = Number(results.value?.totalPages)
@@ -206,6 +207,18 @@
 
         showModal.value = true
     }
+
+    const toggleStatus = async (row: SubProblemAdmin | SubProblem) => {
+        //Appeler le service pour toggle
+        const results = await subProblemService?.toggleSubProblemStatus("admin", row.id_sub_disease as string) as ToggleSubProblem
+        if (rows.value)
+            rows.value.map(async (problem) => {
+                console.log("results", results)
+                if ((problem as SubProblemAdmin).id_sub_disease == results?.subDisease?.id_sub_disease)
+                    (problem as SubProblemAdmin).status_sub_disease = results?.subDisease?.status_sub_disease as boolean
+            })
+    }
+
     const modalTitle = computed(() =>
         mode.value === 'create' ? 'Créer un sous-problème' : 'Modifier le sous-problème',
     )
