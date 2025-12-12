@@ -44,7 +44,7 @@
 
   function showAlert(row: Alert){
     router.push({
-                  name: 'Alerte',
+                  name: 'alerte',
                   params: { data: row.id_warn }
               });
   }
