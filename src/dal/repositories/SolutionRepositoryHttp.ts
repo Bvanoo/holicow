@@ -35,7 +35,7 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
   ): Promise<Solution[]> {
     console.log('')
     return await this.http.getSolutionsBySubProblemId(
-      `http://localhost:3000/solution/subDisease-solution/${idSubProblem}?lang=${lang}&role=${role}`,
+      `http://localhost:3000/solution/subDiseaseSolution/${idSubProblem}?lang=${lang}&role=${role}&page=${page}&limit=${limit}&profilId=${profilId}`,
     )
   }
   async getSolutionsByProblemId(

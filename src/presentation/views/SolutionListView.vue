@@ -115,6 +115,7 @@
     columns.value = userStore.currentProfile?.role === "Administrator" ? [
         { key: 'globalRating', label: 'Global rating', icon: shallowRef(ProblemIcon) },
         { key: 'solution_description_FR', label: 'Description', icon: shallowRef(ProblemIcon) },
+        { key: 'status_solution', label: 'Status', icon: shallowRef(ProblemIcon) },
         { key: 'actions', label: 'Actions', icon: shallowRef(AlertAvatarIcon) },
     ] : [
         { key: 'globalRating', label: 'Global rating', icon: shallowRef(ProblemIcon) },
@@ -128,10 +129,10 @@
 
         //Si on vient du problemView, alors on utilise la route pour avoir les solutions par rapport à un PROBLEME id
         if (userStore.isProblemViewAction) {
-            results.value = await solutionService?.getSolutionsByProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+            results.value = await solutionService?.getSolutionsByProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farmer", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
         }
         else
-            results.value = await solutionService?.getSolutionsBySubProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+            results.value = await solutionService?.getSolutionsBySubProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farmer", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
         //Calcul pagination
         totalPage.value = 1
         rows.value = results.value as Solution[]
@@ -184,22 +185,21 @@
         solutionAdapter.form.value.id_sub_disease = idSubProblemSolution.value
         //trouver l'id problem de la solution
 
-        solutionAdapter.form.value.id_disease = idSubProblemSolution.value
+        solutionAdapter.form.value.id_disease = idProblemSolution.value
         showModal.value = true
     }
     async function handleSubmit() {
         if (mode.value === 'create') {
             const created = await solutionAdapter.create()
             console.log('Created :', created)
-            // results.value = await solutionService?.getSubProblemByProblemIdAdmin(idProblemSolution.value as string, currentPage.value, limitItemsPage.value, "", "")
-            // console.log(results.value)
-            // if (results.value) {
-            //     totalPages.value = Math.ceil(results.value.data.length / limitItemsPage.value)
-            //     console.log("results.value.data.length", results.value.data.length)
-            //     console.log("limitItemsPage.value", limitItemsPage.value)
-            //     console.log("totalPages.value", totalPages.value)
-            // }
-            // rows.value = results.value?.data as SubProblemAdmin[]
+            if (userStore.isProblemViewAction) {
+                results.value = await solutionService?.getSolutionsByProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farmer", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+            }
+            else
+                results.value = await solutionService?.getSolutionsBySubProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farmer", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+            //Calcul pagination
+            totalPage.value = 1
+            rows.value = results.value as Solution[]
 
         }
 

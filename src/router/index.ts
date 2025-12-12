@@ -72,10 +72,10 @@ const router = createRouter({
     },
 
     //Capture de toutes les routes non définies
-    {
-      path: '/:catchAll(.*)',
-      redirect: '/',
-    },
+    // {
+    //   path: '/:catchAll(.*)',
+    //   redirect: '/',
+    // },
   ],
 })
 //Avant chaque changement de route

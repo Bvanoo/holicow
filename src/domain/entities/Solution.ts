@@ -11,6 +11,9 @@ export default interface Solution extends Record<string, unknown> {
   solution_description_NL: string
   status_solution: boolean
   solves?: Solve[]
+  limit: number
+  totalItems: number
+  totalPages: number
   // id_solution: number
   // content: string
   // status_solution: boolean
