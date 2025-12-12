@@ -1,4 +1,5 @@
 import type CreateSolution from '@/domain/entities/CreateSolution'
+import type UpdateSolution from '@/domain/entities/UpdateSolution'
 import axios from 'axios'
 
 export enum UpdateVerb {
@@ -37,6 +38,10 @@ export class AxiosHttpClient {
   }
   async createSolution(url: string, object: CreateSolution) {
     const response = await axios.post(url, object)
+    return response.data
+  }
+  async updateSolution(url: string, object: UpdateSolution) {
+    const response = await axios.patch(url, object)
     return response.data
   }
   async getAllSolution(url: string) {

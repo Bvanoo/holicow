@@ -5,6 +5,8 @@ import type SolutionPayload from '@/domain/entities/SolutionListPayload'
 import type Solution from '@/domain/entities/Solution'
 import type CreatedSolution from '@/domain/entities/CreatedSolution'
 import type CreateSolution from '@/domain/entities/CreateSolution'
+import type UpdateSolution from '@/domain/entities/UpdateSolution'
+import type UpdatedSolution from '@/domain/entities/UpdatedSolution'
 
 export class SolutionRepositoryHttp implements ISolutionRepository {
   constructor(
@@ -15,6 +17,7 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
       getAllSolution: (url: string) => Promise<SolutionPayload>
       getSolutionById: (url: string) => Promise<Solution>
       createSolution: (url: string, newSolution: CreateSolution) => Promise<CreatedSolution>
+      updateSolution: (url: string, newSolution: UpdateSolution) => Promise<UpdatedSolution>
     },
   ) {}
   async getAllSolution(page: number, limit: number): Promise<SolutionPayload> {
@@ -66,6 +69,16 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
     return await this.http.createSolution(
       `http://localhost:3000/solution/create/${role}?lang=${lang}&profilId=${profilId}`,
       newSolution,
+    )
+  }
+  async updateSolution(
+    role: string,
+    idSolution: number,
+    updateSolution: UpdateSolution,
+  ): Promise<UpdatedSolution> {
+    return await this.http.updateSolution(
+      `http://localhost:3000/solution/modify/${role}/${idSolution}`,
+      updateSolution,
     )
   }
 }

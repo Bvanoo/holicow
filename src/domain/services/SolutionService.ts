@@ -1,5 +1,6 @@
 import type { SolutionRepositoryHttp } from '@/dal/repositories/SolutionRepositoryHttp'
 import type CreateSolution from '../entities/CreateSolution'
+import type UpdateSolution from '../entities/UpdateSolution'
 
 export class SolutionService {
   constructor(private repo: SolutionRepositoryHttp) {}
@@ -53,6 +54,11 @@ export class SolutionService {
   async createSolution(role: string, lang: string, profilId: string, newSolution: CreateSolution) {
     return await this.repo
       .createSolution(role, lang, profilId, newSolution)
+      .catch((err) => console.warn(err.message))
+  }
+  async updateSolution(role: string, idSolution: number, updateSolution: UpdateSolution) {
+    return await this.repo
+      .updateSolution(role, idSolution, updateSolution)
       .catch((err) => console.warn(err.message))
   }
 }

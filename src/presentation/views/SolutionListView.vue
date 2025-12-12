@@ -31,7 +31,7 @@
         {{ filterResult }}
         <TableContainer v-if="rows" :columns="columns" :data="(rows as Solution[])"
             :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
-            :titleKey="'diseaseName'" @action="ButtonAction">
+            :titleKey="'diseaseName'" @action="ButtonAction" @edit="openUpdate">
         </TableContainer>
         <div v-else>NO data from API</div>
 
@@ -47,11 +47,14 @@
     </section>
     <GenericFormModal v-model:show="showModal" :title="modalTitle" :adapter="solutionAdapter" @submit="handleSubmit">
 
-        <n-form-item label="Nom du problème">
+        <n-form-item label="Nom du problème" v-if="userStore.isProblemViewAction">
+            <n-input :disabled="true" v-model:value="solutionSubProblemName" />
+        </n-form-item>
+        <n-form-item label="Nom du sous-problème" v-else>
             <n-input :disabled="true" v-model:value="solutionSubProblemName" />
         </n-form-item>
         <n-form-item label="Nom du sous-problème" path="sub_disease_name_FR">
-            <n-input v-model:value="solutionAdapter.form.value.solution_description_FR" />
+            <n-input type="textarea" v-model:value="solutionAdapter.form.value.solution_description_FR" />
         </n-form-item>
         <n-form-item label="Status" path="status_sub_disease">
             <n-select v-model:value="solutionAdapter.form.value.status_solution" :options="statusOptions" />
@@ -75,9 +78,10 @@
     import type Solution from '@/domain/entities/Solution';
     import type { SolutionService } from '@/domain/services/SolutionService';
     import { useRoute } from 'vue-router';
-    import { createSubProblemFormAdapter } from '@/domain/form/subProblem/SubProblemFormAdapter';
     import GenericFormModal from '../components/GenericFormModal.vue';
     import { createSolutionFormAdapter } from '@/domain/form/solutionFormAdapter/SolutionFormAdapter';
+    import type { SolutionFormModel } from '@/domain/form/solutionFormAdapter/SolutionFormModel';
+    import type UpdateSolution from '@/domain/entities/UpdateSolution';
 
     const statusOptions = [{
         label: 'Activer',
@@ -188,6 +192,19 @@
         solutionAdapter.form.value.id_disease = idProblemSolution.value
         showModal.value = true
     }
+    const openUpdate = (row: Solution) => {
+        mode.value = 'update'
+        console.log(row)
+
+        const problemAdminFormModel: SolutionFormModel = {
+            solution_description_FR: row.solution_description_FR as string,
+            status_solution: row.status_solution ? "true" : "false",
+        }
+
+        solutionAdapter.load(problemAdminFormModel)
+
+        showModal.value = true
+    }
     async function handleSubmit() {
         if (mode.value === 'create') {
             const created = await solutionAdapter.create()
@@ -207,18 +224,19 @@
             const updated = await solutionAdapter.update()
             console.log('Updated :', updated)
             //Mise a jour en db
-            const idSubProblem = (updated as SubProblemFormModel).id_sub_disease as string
-            const subProblemAdmin: UpdateSubProblemAdmin = {
-                sub_disease_name_FR: (updated as SubProblemFormModel).sub_disease_name_FR as string,
-                status_sub_disease: (updated as SubProblemFormModel).status_sub_disease === "true",
+            const idSolution = updated.id_solution
+            const updateSolution: UpdateSolution = {
+                solution_description_FR: updated.solution_description_FR as string,
+                status_solution: updated.status_solution === "true",
 
             }
-            const updateSubProblem = await solutionService?.updateSubProblem("admin", idSubProblem, subProblemAdmin)
-            console.log("updateProblem", updateSubProblem)
+
+            const updatedSolution = await solutionService?.updateSolution("admin", Number(idSolution), updateSolution)
+            console.log("updateProblem", updatedSolution)
             rows.value?.map((subProblem) => {
-                if (idSubProblem == subProblem.id_sub_disease) {
-                    subProblem.sub_disease_name_FR = updateSubProblem?.sub_disease_name_FR
-                    subProblem.status_sub_disease = updateSubProblem?.status_sub_disease
+                if (idSolution == subProblem.id_solution) {
+                    subProblem.solution_description_FR = updatedSolution?.solution_description_FR as string
+                    subProblem.status_solution = updatedSolution?.status_solution as boolean
                 }
             })
             console.log("rows", rows.value)

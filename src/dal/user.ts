@@ -1,5 +1,4 @@
 import axios from 'axios'
-import type IFirstLogin from '@/domain/entities/IFirstLogin'
 import type IUserProfile from '@/domain/entities/IUserProfile'
 import type updateProfile from '@/domain/entities/updateProfile'
 import type IFirstLoginPayload from '@/domain/entities/IFirstLoginPayload'
