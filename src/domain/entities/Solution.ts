@@ -1,17 +1,21 @@
+import type Solve from './Solve'
+
 export default interface Solution extends Record<string, unknown> {
-  id_solution: string
-  status_solution: boolean
+  commentCount?: number
+  farmerAlertCount?: number
+  id_solution: number
+  similarAvatarAlertCount?: number
+  solution_description_DE: string
+  solution_description_EN: string
   solution_description_FR: string
   solution_description_NL: string
-  solution_description_EN: string
-  solution_description_DE: string
-  // id_solution: number | string
-  // problemId: number | string
-  // subProblemId: number | string
-  // solution_description_FR: string
-  // globalRating: number
-  // profilRating: number
-  // commentCurrentUser: Comment
+  status_solution: boolean
+  solves?: Solve[]
+  limit: number
+  totalItems: number
+  totalPages: number
+  // id_solution: number
+  // content: string
   // status_solution: boolean
-  // id_subDisease: number
+  // farmerStats: FarmerStats
 }

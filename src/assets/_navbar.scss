@@ -1,10 +1,11 @@
 @use 'variables' as *;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 .navbar {
   width: 100%;
   // background: linear-gradient(135deg, $white, $main_color 30%);
   background-color: $white;
-  box-shadow: 0 0 16px $shadow_0_3;
+  box-shadow: 0 0 8px;
   padding: 8px 16px;
   position: fixed;
   z-index: 1000;
@@ -46,23 +47,30 @@
   align-items: center;
 }
 .tab {
+  font-family: 'Montserrat';
   background: transparent;
   border: none;
   padding: 12px 16px;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 14px;
-  transition: all 0.3s ease-out;
+  font-size: clamp(0.875rem, 0.7477rem + 0.5581vw, 1.25rem);
+  font-optical-sizing: auto;
+  font-variation-settings: 'wght' 600;
+  font-style: normal;
+  color: $main_color_dark;
+  transition:
+    all,
+    0.3s ease-out;
 }
 .tab:hover {
-  background: $main_color_dark;
-  box-shadow: 0 0 8px $shadow_0_5;
   transform: translateY(-3px);
-  color: $white;
 }
 .tab.active {
-  background: $main_color_dark;
+  background: linear-gradient(135deg, $main_color_dark, $main_color);
+  transform: translateY(-3px);
+  box-shadow: 0 0 3px 0 $main_color;
+  color: $white;
+  font-variation-settings: 'wght' 700;
 }
 
 .right {
@@ -136,7 +144,7 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: $tablet) {
   .center {
     display: none;
   }

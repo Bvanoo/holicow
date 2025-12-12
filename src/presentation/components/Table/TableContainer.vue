@@ -7,7 +7,7 @@
         <n-icon v-if="col.icon" :component="col.icon" class="header-icon" />
         {{ col.label }}
       </div>
-      <div v-if="isAuthorized" class="header-cell">Actions</div>
+      <div v-if="isAuthorized" class="header-cell">CRUD</div>
     </div>
 
     <!-- BODY -->
@@ -18,6 +18,9 @@
         <component :is="isMobile ? TableRowMobile : TableRowDesktop" :columns="columns" :row="row"
           :actionLabel="actionLabel(row)" :actionLabelOne="actionLabelOne" @action="handleAction" :titleKey="titleKey" :is-authorized="isAuthorized" :is-alert="isAlert"
           @edit="openEdit" @delete="openDelete">
+
+          <!-- :actionLabel="actionLabel(row)" @action="handleAction" :titleKey="titleKey" :is-authorized="isAuthorized"
+          :is-alert="true" @edit="openEdit" @delete="openDelete"> -->
           <!-- Forward all column slots -->
           <!-- <template v-for="col in columns" #[col.key]="slotProps">
             <slot :name="col.key" v-bind="slotProps" />
@@ -28,8 +31,6 @@
 
     <!-- handleUpdateSubmit - handleDeleteSubmit -->
     <!-- Rebrancher un event en passant le payload à la page -->
-    <ModalForm v-model:show="updateModalVisible" title="Modifier" @submit="handleUpdateSubmit" />
-    <ModalForm v-model:show="deleteModalVisible" title="Supprimer" @submit="handleDeleteSubmit" />
   </div>
 </template>
 
@@ -40,7 +41,7 @@
   import TableRowDesktop from './TableRowDesktop.vue'
   import TableRowMobile from './TableRowMobile.vue'
   import RowContainer from './RowContainer.vue'
-  import ModalForm from './ModalForm.vue'
+  // import ModalForm from './ModalForm.vue'
 
   const props = defineProps<{
     columns: ColumnDefinition<T>[]
@@ -60,12 +61,13 @@
 
   /* Modal */
   const updateModalVisible = ref(false)
-  const deleteModalVisible = ref(false)
+  // const deleteModalVisible = ref(false)
   const selectedRow = ref<T | null>(null)
 
   function openEdit(row: T) {
     selectedRow.value = row
     updateModalVisible.value = true
+    emit("edit", row as T)
   }
 
   const emit = defineEmits<{
@@ -75,20 +77,20 @@
   }>()
 
   function openDelete(row: T) {
-    console.log('Delete', row)
+    emit("delete", row as T)
+
   }
 
-  function handleUpdateSubmit(data: unknown) {
-    console.log('Form submitted', data)
-    // Emit vers le page qui est la page (eventception)
-    emit("edit", data as T)
-  }
+  // function handleUpdateSubmit(data: unknown) {
+  //   console.log('Form submitted', data)
+  //   // Emit vers le page qui est la page (eventception)
+  // }
 
-  function handleDeleteSubmit(data: unknown) {
-    console.log('Form submitted', data)
-    // Emit vers le page qui est la page (eventception => eventbus)
-    emit("delete", data as T)
-  }
+  // function handleDeleteSubmit(data: unknown) {
+  //   console.log('Form submitted', data)
+  //   // Emit vers le page qui est la page (eventception => eventbus)
+  //   emit("delete", data as T)
+  // }
 
   function handleAction(row: T) {
     emit("action", row)
@@ -145,14 +147,14 @@
   /* --- HEADER (centré) --- */
   .table-header {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     background: #f3f3f3;
-    padding: 12px;
+    padding: 24px 20px;
     font-weight: 600;
     color: #444;
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 300;
   }
 
   .header-cell {

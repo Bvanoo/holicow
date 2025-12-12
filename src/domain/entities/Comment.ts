@@ -1,10 +1,10 @@
-import type Avatar from "./Avatar";
+import type Avatar from './Avatar'
 
-export default interface Comment {
-  id: string | number,
-  content: string,
-  avatar: Avatar,
-  date: Date,
-  commentsFromVet: Array<Comment>,
-  commentsFromUsers: Array<Comment>
+export default interface Comment extends Record<string, unknown> {
+  id: string | number
+  content: string
+  avatar: Avatar
+  date: Date
+  // commentsFromVet: Array<Comment>,
+  // commentsFromUsers: Array<Comment>
 }

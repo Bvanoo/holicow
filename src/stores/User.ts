@@ -11,11 +11,9 @@ export const useUserStore = defineStore('userStore', {
     currentUserId: ref<string | void>(),
     isNewProfil: ref<boolean>(false),
     isHydrate: ref<boolean>(false),
+    isProblemViewAction: ref<boolean>(true),
   }),
-  getters: {
-    getCurrentProfile: (state) => state.currentProfile,
-    getCurrentUserPicture: (state) => state.currentProfile?.avatar_picture,
-  },
+  getters: {},
   actions: {
     setCurrentUser(newUser: IUserProfile | void) {
       this.currentProfile = newUser
@@ -38,9 +36,9 @@ export const useUserStore = defineStore('userStore', {
       //Utilisation pour le guard router
 
       const usersServices = new UsersServices()
-      // const userIdWALLeSmart: string = 'ADMIN001'
+      const userIdWALLeSmart: string = 'ADMIN001'
       // const userIdWALLeSmart: string = '579b043d-0971-494f-ab71-02e841e87dbe'
-      const userIdWALLeSmart: string = '3cc7e361-c7f3-45c8-9097-979ddcb709f4'
+      // const userIdWALLeSmart: string = '3cc7e361-c7f3-45c8-9097-979ddcb709f4'
 
       //1) récupérer l'utilisateur en DB
       const firstLoginPayload: IFirstLoginPayload | void =

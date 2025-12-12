@@ -1,4 +1,9 @@
+
 import type { updateStatusSolve } from '@/domain/entities/updateStatusSolve'
+
+import type CreateSolution from '@/domain/entities/CreateSolution'
+import type UpdateSolution from '@/domain/entities/UpdateSolution'
+
 import axios from 'axios'
 
 export enum UpdateVerb {
@@ -35,6 +40,14 @@ export class AxiosHttpClient {
     const response = await axios.post(url, object)
     return response.data
   }
+  async createSolution(url: string, object: CreateSolution) {
+    const response = await axios.post(url, object)
+    return response.data
+  }
+  async updateSolution(url: string, object: UpdateSolution) {
+    const response = await axios.patch(url, object)
+    return response.data
+  }
   async getAllSolution(url: string) {
     const response = await axios.get(url)
     return response.data
@@ -43,6 +56,31 @@ export class AxiosHttpClient {
     const response = await axios.get(url)
     return response.data
   }
+  async getSolutionsByProblemId(url: string) {
+    const response = await axios.get(url)
+    return response.data
+  }
+  async getSolutionById(url: string) {
+    const response = await axios.get(url)
+    return response.data
+  }
+  async getAllSubProblemByProblemIdAdmin(url: string) {
+    const response = await axios.get(url)
+    return response.data
+  }
+  async getAllSubProblemByProblemId(url: string) {
+    const response = await axios.get(url)
+    return response.data
+  }
+  async toggleProblemStatus(url: string) {
+    const response = await axios.patch(url)
+    return response.data
+  }
+  async toggleSubProblemStatus(url: string) {
+    const response = await axios.patch(url)
+    return response.data
+  }
+
   async getAllAlertsByUserId(url: string) {
     const response = await axios.get(url)
     return response.data

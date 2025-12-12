@@ -22,13 +22,14 @@
       <div @click="() => {
         router.push({
           name: 'sub problems',
-          params: { data: row.id_disease }
+          params: { data: row.id_disease as string }
         });
       }" class="table-row" v-for="(row, index) in data" :key="index">
         <!-- Desktop layout -->
         <template v-if="!isMobile">
           <div class="row-cell" v-for="col in columns" :key="col.key">
-            <n-badge v-if="col.key == 'disease_name_FR'" :value="row.disease_name_FR" type="info" class="bubble" />
+            <n-badge v-if="col.key == 'disease_name_FR'" :value="row.disease_name_FR as string" type="info"
+              class="bubble" />
             <template v-else> ? </template>
           </div>
         </template>
@@ -57,7 +58,7 @@
 
 <script setup lang="ts">
   import { ref, onMounted, onUnmounted } from 'vue'
-  import { NFlex, NBadge, NSelect, NButton } from 'naive-ui'
+  import { NBadge } from 'naive-ui'
   import type Problem from '@/domain/entities/Problem'
   import router from '@/router'
 
@@ -94,9 +95,10 @@
 
   // Sorting
   type SortOrder = 'asc' | 'desc' | null
-  const sortKey = ref<string | null>(null)
+  // const sortKey = ref<string | null>(null)
   const sortOrder = ref<SortOrder>(null)
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function toggleSortOrder() {
     sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
   }

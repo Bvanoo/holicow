@@ -63,7 +63,6 @@
     actionLabel: string
     actionLabelOne?: string
   }>()
-
   const emit = defineEmits<{
     (e: 'edit', row: T): void
     (e: 'delete', row: T): void
@@ -97,6 +96,7 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
+    flex-flow: row wrap;
   }
 
   .mobile-label {
@@ -113,6 +113,7 @@
 
   .mobile-value {
     color: #444;
+    margin-left: 20px;
   }
 
   .mobile-card-footer {

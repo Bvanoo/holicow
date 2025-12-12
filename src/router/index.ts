@@ -9,13 +9,14 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/stores/User'
 import SolutionView from '@/presentation/views/SolutionView.vue'
 import SolutionListView from '@/presentation/views/SolutionListView.vue'
+import TestView from '@/presentation/views/TestView.vue'
 // import SolutionsListView from '@/presentation/views/SolutionsListView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      name: `page d'accueil`,
+      name: ``,
       path: '/',
       component: HomeView,
     },
@@ -30,18 +31,23 @@ const router = createRouter({
       component: DiseasesView,
     },
     {
+      name: 'test',
+      path: '/test',
+      component: TestView,
+    },
+    {
       name: 'sub problems',
       path: '/sousproblemes/:data',
       component: () => import('@/presentation/views/SubProblemsView.vue'),
     },
     {
-      name: 'solutions',
-      path: '/solutions/:data',
+      name: 'solution',
+      path: '/solution/:data',
       component: () => import('@/presentation/views/SolutionView.vue'),
     },
     {
       name: 'solutionsList',
-      path: '/solutionsList/:data',
+      path: '/solutionsList/:data(\\d+)*',
       component: () => import('@/presentation/views/SolutionListView.vue'),
     },
     {
@@ -50,17 +56,12 @@ const router = createRouter({
       component: CommentsView,
     },
     {
-      name: 'Alerte',
+      name: 'alerte',
       path: '/alert/:data',
       component: () => import('@/presentation/views/AlertView.vue'),
     },
     {
-      name: 'Alertes',
-      path: '/alertes',
-      component: AlertsView,
-    },
-    {
-      name: 'Profile',
+      name: 'profile',
       path: '/profile',
       component: ProfileView,
     },
@@ -78,19 +79,18 @@ const router = createRouter({
   ],
 })
 //Avant chaque changement de route
-router.beforeEach(async (to /*, from*/) => {
+router.beforeEach(async (to, from) => {
   const userStore = useUserStore()
-  //START Bloquage des routes si on est un nouveau profil
 
-  // On récupère le profil s'il n'est pas récupéré
+  // On hydrate le store
   if (userStore.isHydrate === false) {
     await userStore.hydrateApp()
   }
-
+  //Blocage de l'admin s'il veut aller sur la route profile
+  if (userStore.currentProfile?.role === 'Administrator' && to.name === 'profile') return from
+  //Blocage du nouvel utilisateur
   if (userStore.isNewProfil && to.name !== 'First Connexion') {
-    /* console.log('userStore.isNewProfil', userStore.isNewProfil)*/
     return '/firstConnexion'
   }
-  //END Bloquage des routes si on est un nouveau profil
 })
 export default router

@@ -1,20 +1,4 @@
-<!-- <script lang="ts" setup>
-import type Alert from '@/domain/entities/Alert'
-import { AlertsService } from '@/domain/services/AlertsService'
-import { inject, onMounted } from 'vue'
-
-onMounted(async () => {
-  const alertsService = inject<AlertsService>('alertsService')
-  const alerts = await alertsService?.getAllAlertsByUserId('FARM001', 'fr', 1, 3)
-  console.log('alerts', alerts)
-})
-</script> -->
-
 <template>
-  <!-- <div class="tesImage">
-        <img class="logo" src="/logos/Herbagere.png">
-        <img class="stars" src="/logos/star4.png">
-    </div> -->
   <div class="alert">
     <div class="title">Mes alerts actives</div>
       <TableContainer class="tc" :columns="columns" :data="(rows as Alert[])"
@@ -26,7 +10,7 @@ onMounted(async () => {
 
 <script setup lang="ts">
 
-import { onMounted, ref, type Ref, inject, type Component } from 'vue'
+  import { onMounted, ref, type Ref, inject, type Component } from 'vue'
   import { AlertsService } from '@/domain/services/AlertsService'
   import type Alert from '@/domain/entities/Alert';
   import TableContainer from '../components/Table/TableContainer.vue';
@@ -82,27 +66,3 @@ import { onMounted, ref, type Ref, inject, type Component } from 'vue'
   }
 
 </style>
-<!-- <style lang="scss" scoped>
-// .tesImage {
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     position: relative;
-
-//     img {
-//         width: 96px;
-//         height: 96px;
-//         border-radius: 100%;
-//     }
-
-//     .logo {
-//         background-color: rgba(255, 0, 0, 0.189);
-//     }
-
-//     .stars {
-//         position: absolute;
-//         top: -10px;
-
-//     }
-// }
-</style> -->

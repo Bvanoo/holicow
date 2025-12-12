@@ -2,6 +2,8 @@ import type { SolveFromAlert } from '../entities/SolveFromAlert'
 import type { updateStatusSolve } from '../entities/updateStatusSolve'
 import { showSimpleErrorBox } from '../exception/utils'
 import type { SolutionRepositoryHttp } from '@/dal/repositories/SolutionRepositoryHttp'
+import type CreateSolution from '../entities/CreateSolution'
+import type UpdateSolution from '../entities/UpdateSolution'
 
 export class SolutionService {
   constructor(private repo: SolutionRepositoryHttp) {}
@@ -11,15 +13,27 @@ export class SolutionService {
   }
 
   async getSolutionsBySubProblemId(
-    idSubProblem: string,
+    idProblem: string,
+    lang: string,
+    role: string,
+    profilId: string,
     page: number,
     limit: number,
     sortedBy: string,
     sortedOrder: string,
   ) {
     return await this.repo
-      .getSolutionsBySubProblemId(idSubProblem, page, limit, sortedBy, sortedOrder)
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+      .getSolutionsBySubProblemId(
+        idProblem,
+        lang,
+        role,
+        profilId,
+        page,
+        limit,
+        sortedBy,
+        sortedOrder,
+      )
+      .catch((err) => console.error(err.message))
   }
   async getSolutionsByProblemId(
     idProblem: string,
@@ -33,7 +47,22 @@ export class SolutionService {
   ) {
     return await this.repo
       .getSolutionsByProblemId(idProblem, lang, role, profilId, page, limit, sortedBy, sortedOrder)
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+      .catch((err) => console.error(err.message))
+  }
+  async getSolutionById(idSolution: string, lang: string) {
+    return await this.repo
+      .getSolutionById(idSolution, lang)
+      .catch((err) => console.error(err.message))
+  }
+  async createSolution(role: string, lang: string, profilId: string, newSolution: CreateSolution) {
+    return await this.repo
+      .createSolution(role, lang, profilId, newSolution)
+      .catch((err) => console.warn(err.message))
+  }
+  async updateSolution(role: string, idSolution: number, updateSolution: UpdateSolution) {
+    return await this.repo
+      .updateSolution(role, idSolution, updateSolution)
+      .catch((err) => console.warn(err.message))
   }
 
   async getSolutionByProblemFromAlert(idProblem: string, lang: string, role: string, idUser: string | void | undefined){

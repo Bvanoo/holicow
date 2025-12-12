@@ -1,5 +1,5 @@
 import useUsersDAL from '@/dal/user'
-import { checkUndefinedAndNullValue, showSimpleErrorBox } from '@/domain/exception/utils'
+import { checkUndefinedAndNullValue } from '@/domain/exception/utils'
 import { InvalidParameterException } from '@/domain/exception/InvalidParameterException'
 import type IUserProfile from '@/domain/entities/IUserProfile'
 import type updateProfile from '../entities/updateProfile'
@@ -9,14 +9,10 @@ export default class UsersServices {
   private usersDAL = useUsersDAL()
 
   public async getFirstLogin(profil_id: string): Promise<IFirstLoginPayload | void> {
-    return await this.usersDAL
-      .getFirstLogin(profil_id)
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+    return await this.usersDAL.getFirstLogin(profil_id).catch((err) => console.error(err.message))
   }
   public async getProfile(profil_id: string): Promise<IUserProfile | void> {
-    return await this.usersDAL
-      .getProfile(profil_id)
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+    return await this.usersDAL.getProfile(profil_id).catch((err) => console.error(err.message))
   }
 
   public async updateUserProfile(profil_id: string, userProfile: updateProfile): Promise<void> {
@@ -25,6 +21,6 @@ export default class UsersServices {
     }
     return await this.usersDAL
       .updateUserProfile(profil_id, userProfile)
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+      .catch((err) => console.error(err.message))
   }
 }
