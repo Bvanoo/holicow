@@ -125,7 +125,7 @@
             console.log("getAllSubProblem Admin : ", results.value)
             //‼️‼️A changer quand la pagination est faites sur le endpoints "/subDisease" (pas "/subDisease/:idDisease")
             //Par défaut je met tout sur une page
-            totalPages.value = Number(results.value?.meta.lastPage)
+            totalPages.value = Number(results.value?.meta.totalPages)
 
             rows.value = results.value?.data as SubProblemAdmin[]
         }
@@ -147,7 +147,7 @@
     watch(currentPage, async () => {
         if (userStore?.currentProfile?.role === "Administrator") {
             results.value = await subProblemService?.getSubProblemByProblemIdAdmin(idProblem.value as string, currentPage.value, limitItemsPage.value, "", "")
-            totalPages.value = Number(results.value?.meta.lastPage)
+            totalPages.value = Number(results.value?.meta.totalPages)
             rows.value = results.value?.data as SubProblemAdmin[]
         }
         else {
@@ -164,13 +164,16 @@
         if (userStore?.currentProfile?.role === "Administrator") {
             router.push({
                 name: 'solutionsList',
-                params: { data: (row as SubProblemAdmin).id_sub_disease }
+                // params: { data: (row as SubProblemAdmin).id_sub_disease + '_' + (row as SubProblemAdmin).sub_disease_name_FR }
+                params: {
+                    data: [idProblem.value as string, (row as SubProblemAdmin).id_sub_disease, problemName.value as string]
+                }
             });
         }
         else {
             router.push({
                 name: 'solutionsList',
-                params: { data: (row as SubProblem).subDiseaseId }
+                params: { data: (row as SubProblemAdmin).id_sub_disease + '_' + (row as SubProblemAdmin).sub_disease_name_FR }
             });
         }
     }
@@ -231,6 +234,8 @@
             const created = await subProblemAdapter.create()
             console.log('Created :', created)
             results.value = await subProblemService?.getSubProblemByProblemIdAdmin(idProblem.value as string, currentPage.value, limitItemsPage.value, "", "")
+            console.log(results.value)
+            totalPages.value = Number(results.value?.meta.totalPages)
             rows.value = results.value?.data as SubProblemAdmin[]
 
         }

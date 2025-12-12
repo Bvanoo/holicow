@@ -1,6 +1,7 @@
 <template>
     <!-- <ChatBubble /> -->
     <section style="padding: 16px">
+        <h1>{{ solutionSubProblemName }}</h1>
         <Transition name="fade-slide" tag="FilterPanel" appear>
             <FilterPanel title="Filtres" @submit="handleSubmitFilter" class="filter">
                 <div class="filter__order">
@@ -21,6 +22,12 @@
             </div> -->
             </FilterPanel>
         </Transition>
+        <section v-if="userStore.currentProfile?.role === 'Administrator'">
+            <n-button class="view__header__buttonProbleme" tertiary type="primary" color="white" size="large"
+                @click="openCreate">
+                Créer une solution
+            </n-button>
+        </section>
         {{ filterResult }}
         <TableContainer v-if="rows" :columns="columns" :data="(rows as Solution[])"
             :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
@@ -38,11 +45,23 @@
             <slot name="footer"></slot>
         </div>
     </section>
+    <GenericFormModal v-model:show="showModal" :title="modalTitle" :adapter="solutionAdapter" @submit="handleSubmit">
+
+        <n-form-item label="Nom du problème">
+            <n-input :disabled="true" v-model:value="solutionSubProblemName" />
+        </n-form-item>
+        <n-form-item label="Nom du sous-problème" path="sub_disease_name_FR">
+            <n-input v-model:value="solutionAdapter.form.value.solution_description_FR" />
+        </n-form-item>
+        <n-form-item label="Status" path="status_sub_disease">
+            <n-select v-model:value="solutionAdapter.form.value.status_solution" :options="statusOptions" />
+        </n-form-item>
+    </GenericFormModal>
 </template>
 
 <script setup lang="ts">
 
-    import { onMounted, ref, type Ref, inject, watch, type Component } from 'vue'
+    import { onMounted, ref, type Ref, inject, watch, type Component, computed, shallowRef } from 'vue'
     import FilterPanel from '../components/Filter/FilterPanel.vue';
     import FilterSelectComponent from '../components/Filter/FilterSelectComponent.vue';
     import FilterOrderSwitchComponent from '../components/Filter/FilterOrderSwitchComponent.vue';
@@ -56,7 +75,17 @@
     import type Solution from '@/domain/entities/Solution';
     import type { SolutionService } from '@/domain/services/SolutionService';
     import { useRoute } from 'vue-router';
+    import { createSubProblemFormAdapter } from '@/domain/form/subProblem/SubProblemFormAdapter';
+    import GenericFormModal from '../components/GenericFormModal.vue';
+    import { createSolutionFormAdapter } from '@/domain/form/solutionFormAdapter/SolutionFormAdapter';
 
+    const statusOptions = [{
+        label: 'Activer',
+        value: 'true'
+    }, {
+        label: 'Désactiver',
+        value: 'false'
+    }]
     const route = useRoute();
     const userStore = useUserStore();
 
@@ -70,33 +99,41 @@
 
     const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])
     const solutionService = inject<SolutionService>("solutionService");
-    const splittedParams = (route.params.data as string).split("_")
-    console.log("splittedParams", splittedParams)
-    const idProblemSolution = splittedParams[0]
+    console.log(route.params.data)
+    const idProblemSolution = ref<string>()
+    const idSubProblemSolution = ref<string>()
+    const solutionSubProblemName = ref<string>()
+    if (route.params.data) {
+        idProblemSolution.value = route.params.data[0]
+        idSubProblemSolution.value = route.params.data[1]
+        solutionSubProblemName.value = route.params.data[2]
+    }
 
-    columns.value = [
-        { key: 'globalRating', label: 'Global rating', icon: ProblemIcon },
-        { key: 'solution_description_FR', label: 'Description', icon: ProblemIcon },
-        { key: 'commentCount', label: 'Commentaires', icon: CommentIcon },
-        { key: 'farmerAlertCount', label: 'Alertes', icon: AlertsIcon },
-        { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: AlertAvatarIcon },
-        { key: 'actions', label: 'Actions', icon: AlertAvatarIcon },
+    const showModal = ref(false)
+    const solutionAdapter = createSolutionFormAdapter()
+
+    columns.value = userStore.currentProfile?.role === "Administrator" ? [
+        { key: 'globalRating', label: 'Global rating', icon: shallowRef(ProblemIcon) },
+        { key: 'solution_description_FR', label: 'Description', icon: shallowRef(ProblemIcon) },
+        { key: 'actions', label: 'Actions', icon: shallowRef(AlertAvatarIcon) },
+    ] : [
+        { key: 'globalRating', label: 'Global rating', icon: shallowRef(ProblemIcon) },
+        { key: 'solution_description_FR', label: 'Description', icon: shallowRef(ProblemIcon) },
+        { key: 'commentCount', label: 'Commentaires', icon: shallowRef(CommentIcon) },
+        { key: 'farmerAlertCount', label: 'Alertes', icon: shallowRef(AlertsIcon) },
+        { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: shallowRef(AlertAvatarIcon) },
+        { key: 'actions', label: 'Actions', icon: shallowRef(AlertAvatarIcon) },
     ]
     onMounted(async () => {
 
         //Si on vient du problemView, alors on utilise la route pour avoir les solutions par rapport à un PROBLEME id
         if (userStore.isProblemViewAction) {
-
-            results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
-
+            results.value = await solutionService?.getSolutionsByProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
         }
         else
-            results.value = await solutionService?.getSolutionsBySubProblemId(idProblemSolution?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
-
+            results.value = await solutionService?.getSolutionsBySubProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
         //Calcul pagination
-
         totalPage.value = 1
-
         rows.value = results.value as Solution[]
         // A modifier dès que l'api est mise à jour (pagination)
         // totalItems.value = results.value?.
@@ -112,10 +149,15 @@
 
     watch(currentPage, async () => {
         // if (sortKey.value) sortOrder.value = 'asc'
-        results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+        results.value = await solutionService?.getSolutionsByProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
 
         rows.value = results.value as Solution[];
     })
+
+    const mode = ref<'create' | 'update'>('create')
+    const modalTitle = computed(() =>
+        mode.value === 'create' ? 'Créer une solution' : 'Modifier la solution',
+    )
 
     const filterResult = ref<Record<string, unknown>>();
 
@@ -133,6 +175,54 @@
     function handleSubmitFilter(payload: Record<string, unknown>) {
         filterResult.value = payload
         console.log(payload)
+    }
+
+    const openCreate = () => {
+        mode.value = 'create'
+
+        solutionAdapter.reset()
+        solutionAdapter.form.value.id_sub_disease = idSubProblemSolution.value
+        //trouver l'id problem de la solution
+
+        solutionAdapter.form.value.id_disease = idSubProblemSolution.value
+        showModal.value = true
+    }
+    async function handleSubmit() {
+        if (mode.value === 'create') {
+            const created = await solutionAdapter.create()
+            console.log('Created :', created)
+            // results.value = await solutionService?.getSubProblemByProblemIdAdmin(idProblemSolution.value as string, currentPage.value, limitItemsPage.value, "", "")
+            // console.log(results.value)
+            // if (results.value) {
+            //     totalPages.value = Math.ceil(results.value.data.length / limitItemsPage.value)
+            //     console.log("results.value.data.length", results.value.data.length)
+            //     console.log("limitItemsPage.value", limitItemsPage.value)
+            //     console.log("totalPages.value", totalPages.value)
+            // }
+            // rows.value = results.value?.data as SubProblemAdmin[]
+
+        }
+
+        if (mode.value === 'update') {
+            const updated = await solutionAdapter.update()
+            console.log('Updated :', updated)
+            //Mise a jour en db
+            const idSubProblem = (updated as SubProblemFormModel).id_sub_disease as string
+            const subProblemAdmin: UpdateSubProblemAdmin = {
+                sub_disease_name_FR: (updated as SubProblemFormModel).sub_disease_name_FR as string,
+                status_sub_disease: (updated as SubProblemFormModel).status_sub_disease === "true",
+
+            }
+            const updateSubProblem = await solutionService?.updateSubProblem("admin", idSubProblem, subProblemAdmin)
+            console.log("updateProblem", updateSubProblem)
+            rows.value?.map((subProblem) => {
+                if (idSubProblem == subProblem.id_sub_disease) {
+                    subProblem.sub_disease_name_FR = updateSubProblem?.sub_disease_name_FR
+                    subProblem.status_sub_disease = updateSubProblem?.status_sub_disease
+                }
+            })
+            console.log("rows", rows.value)
+        }
     }
 
 </script>

@@ -3,6 +3,8 @@
 import type { ISolutionRepository } from '@/domain/repositories/ISolutionRepository'
 import type SolutionPayload from '@/domain/entities/SolutionListPayload'
 import type Solution from '@/domain/entities/Solution'
+import type CreatedSolution from '@/domain/entities/CreatedSolution'
+import type CreateSolution from '@/domain/entities/CreateSolution'
 
 export class SolutionRepositoryHttp implements ISolutionRepository {
   constructor(
@@ -12,11 +14,9 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
       getSolutionsByProblemId: (url: string) => Promise<Solution[]>
       getAllSolution: (url: string) => Promise<SolutionPayload>
       getSolutionById: (url: string) => Promise<Solution>
+      createSolution: (url: string, newSolution: CreateSolution) => Promise<CreatedSolution>
     },
   ) {}
-  get(url: string): Promise<Solution[]> {
-    throw new Error('Method not implemented.')
-  }
   async getAllSolution(page: number, limit: number): Promise<SolutionPayload> {
     return await this.http.getAllSolution(
       `http://localhost:3000/solution?page=${page}&limit=${limit}`,
@@ -55,6 +55,17 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
   async getSolutionById(id: string, lang: string): Promise<Solution> {
     return await this.http.getSolutionById(
       `http://localhost:3000/solution/comment/${id}?lang=${lang}`,
+    )
+  }
+  async createSolution(
+    role: string,
+    lang: string,
+    profilId: string,
+    newSolution: CreateSolution,
+  ): Promise<CreatedSolution> {
+    return await this.http.createSolution(
+      `http://localhost:3000/solution/create/${role}?lang=${lang}&profilId=${profilId}`,
+      newSolution,
     )
   }
 }

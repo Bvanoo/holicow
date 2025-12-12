@@ -1,6 +1,6 @@
 export default interface Meta {
-  total: number
+  totalItems: number
   page: number
   limit: number
-  lastPage: number
+  totalPages: number
 }

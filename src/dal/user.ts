@@ -8,7 +8,7 @@ const userUrlApi = 'http://localhost:3000'
 export default function useUsersDAL() {
   const getFirstLogin = async (profil_id: string): Promise<IFirstLoginPayload | void> => {
     return await axios
-      .get(`${userUrlApi}/users/first-login`, {
+      .get(`${userUrlApi}/users/firstLogin`, {
         params: { profilId: profil_id },
       })
       .then((resp) => {

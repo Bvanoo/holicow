@@ -1,7 +1,10 @@
 export interface SubProblemFormModel extends Record<string, unknown> {
   id_disease?: string
   id_sub_disease?: string
-  sub_disease_name_FR: string
+  sub_disease_name_FR?: string
+  sub_disease_name_DE?: string
+  sub_disease_name_EN?: string
+  sub_disease_name_NL?: string
   status_sub_disease: string
 }
 

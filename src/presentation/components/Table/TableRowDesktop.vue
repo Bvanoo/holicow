@@ -43,6 +43,7 @@
     row: T
     columns: ColumnDefinition<T>[]
     isAuthorized: boolean
+    isAlert?: boolean
     actionLabel: string
     titleKey: string
   }>()

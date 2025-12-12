@@ -1,7 +1,7 @@
 // import type ProblemPayload from './ProblemPayload'
 
 export default interface SubProblemAdmin extends Record<string, unknown> {
-  id_sub_disease: number
+  id_sub_disease: string
   sub_disease_name_FR: string
   sub_disease_name_DE: string
   sub_disease_name_EN: string

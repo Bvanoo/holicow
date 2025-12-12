@@ -1,26 +1,18 @@
-import type FarmerStats from './FarmerStats'
 import type Solve from './Solve'
 
 export default interface Solution extends Record<string, unknown> {
+  commentCount?: number
+  farmerAlertCount?: number
   id_solution: number
-  content: string
+  similarAvatarAlertCount?: number
+  solution_description_DE: string
+  solution_description_EN: string
+  solution_description_FR: string
+  solution_description_NL: string
   status_solution: boolean
-  solves: Solve[]
-  farmerStats: FarmerStats
-
-  // id_solution: string
+  solves?: Solve[]
+  // id_solution: number
+  // content: string
   // status_solution: boolean
-  // solution_description_FR: string
-  // solution_description_NL: string
-  // solution_description_EN: string
-  // solution_description_DE: string
-  // id_solution: number | string
-  // problemId: number | string
-  // subProblemId: number | string
-  // solution_description_FR: string
-  // globalRating: number
-  // profilRating: number
-  // commentCurrentUser: Comment
-  // status_solution: boolean
-  // id_subDisease: number
+  // farmerStats: FarmerStats
 }

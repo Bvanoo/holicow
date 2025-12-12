@@ -6,7 +6,7 @@ export default interface CreateSubProblem extends Record<string, unknown> {
   sub_disease_name_EN?: string
   sub_disease_name_NL?: string
   status_sub_disease: boolean
-  diseaseId: string
+  id_disease: number
   id_sub_disease?: string
   disease?: ProblemAdmin
 }

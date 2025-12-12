@@ -47,7 +47,7 @@ const router = createRouter({
     },
     {
       name: 'solutionsList',
-      path: '/solutionsList/:data',
+      path: '/solutionsList/:data(\\d+)*',
       component: () => import('@/presentation/views/SolutionListView.vue'),
     },
     {
