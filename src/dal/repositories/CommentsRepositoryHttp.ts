@@ -39,7 +39,7 @@ export class CommentsRepositoryHttp implements ICommentRepository{
 
 
   async createComment(solutionId : number, object: CreateComment): Promise<Comment> {
-    const url = `http://localhost:3000/comments/${solutionId}`;
+    const url = `http://localhost:3000/solution/comment/${solutionId}`;
     return await this.http.create(url, object);
   }
 
@@ -59,12 +59,12 @@ export class CommentsRepositoryHttp implements ICommentRepository{
 
   async updateComment(updatePayload : UpdatePayload): Promise<Comment> {
     const solutionIdValue = updatePayload.solutionId
-    const url = `http://localhost:3000/comments/${solutionIdValue}`;
+    const url = `http://localhost:3000/solution/comment/${solutionIdValue}`;
     return await this.http.update(url, updatePayload, UpdateVerb.put);
   }
 
   async approveComment(commentId : number, role : string): Promise<boolean> {
-    const url = `http://localhost:3000/solution/approve_comment/${commentId}`;
+    const url = `http://localhost:3000/solution/approve-comment/${commentId}`;
     const response = await this.http.approve(url, {});
     return response.status === 200 || response.status === 204;
   }

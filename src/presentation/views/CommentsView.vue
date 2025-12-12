@@ -10,12 +10,16 @@
 
   const route = useRoute();
   const commentStore =  CommentStore()
-  const {
-    comments,
-    isLoading,
-    approvedComments
-  } = storeToRefs(commentStore);
+  const { comments, isLoading, approvedComments} = storeToRefs(commentStore);
+  const rawSolutionId = route.params.solutionId;
+  let solutionId: number | undefined;
+  const defaultParams = {
+    page: 1,
+    limit: 4,
+    sortedBy: 'ASC',
+    sortedOrder: 'createdAt',
+  }
 
-  const rawSolution = route.params.solutionId;
-  /*commentStore.fetchCommentsBySolutionId(solutionId ,  {page  : pageValue, limit : string, sortedBy : string, sortedOrder : string})*/
+
+  commentStore.fetchCommentsBySolutionId(1, {page : 1, limit: 4, sortedOrder: "ASC", sortedBy: "dfjhfdsifh"})
 </script>
