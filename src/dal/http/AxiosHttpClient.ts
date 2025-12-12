@@ -1,3 +1,4 @@
+import type { updateStatusSolve } from '@/domain/entities/updateStatusSolve'
 import axios from 'axios'
 
 export enum UpdateVerb {
@@ -44,6 +45,29 @@ export class AxiosHttpClient {
   }
   async getAllAlertsByUserId(url: string) {
     const response = await axios.get(url)
+    return response.data
+  }
+  async getAlertById(url: string){
+    const response = await axios.get(url)
+    return response.data
+  }
+
+  async getSubProblemWithStat(url: string){
+    const response = await axios.get(url)
+    return response.data
+  }
+  async updateStatus(url: string){
+    const response = await axios.put(url)
+    return response.data
+  }
+
+  async getSolutionByProblemFromAlert(url: string){
+    const response = await axios.get(url)
+    return response.data
+  }
+
+  async putStatusSolve(url: string,  object: updateStatusSolve){
+    const response = await axios.put(url, object)
     return response.data
   }
 }

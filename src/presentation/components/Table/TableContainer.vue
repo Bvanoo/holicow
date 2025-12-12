@@ -16,7 +16,7 @@
         :style="{ transitionDelay: rIndex * 0.07 + 's' }">
         <!-- {{ onRowCreated(props.) }} -->
         <component :is="isMobile ? TableRowMobile : TableRowDesktop" :columns="columns" :row="row"
-          :actionLabel="actionLabel(row)" @action="handleAction" :titleKey="titleKey" :is-authorized="isAuthorized"
+          :actionLabel="actionLabel(row)" :actionLabelOne="actionLabelOne" @action="handleAction" :titleKey="titleKey" :is-authorized="isAuthorized" :is-alert="isAlert"
           @edit="openEdit" @delete="openDelete">
           <!-- Forward all column slots -->
           <!-- <template v-for="col in columns" #[col.key]="slotProps">
@@ -46,11 +46,17 @@
     columns: ColumnDefinition<T>[]
     data: T[]
     isAuthorized?: boolean
+    isAlert?: boolean
     actionLabel: (row: T) => string
+    actionLabelOne?: string
     titleKey: string
   }>()
 
   const isAuthorized = computed(() => props.isAuthorized ?? false)
+
+  const isAlert = computed(() => props.isAlert ?? false)
+
+  const actionLabelOne = computed(() => props.actionLabelOne ?? false)
 
   /* Modal */
   const updateModalVisible = ref(false)

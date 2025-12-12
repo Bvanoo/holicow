@@ -50,6 +50,11 @@ const router = createRouter({
       component: CommentsView,
     },
     {
+      name: 'Alerte',
+      path: '/alert/:data',
+      component: () => import('@/presentation/views/AlertView.vue'),
+    },
+    {
       name: 'Alertes',
       path: '/alertes',
       component: AlertsView,

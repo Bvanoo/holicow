@@ -2,6 +2,7 @@
 import type CreateProblem from '../entities/createProblem'
 import type Problem from '../entities/Problem'
 import type SubProblem from '../entities/SubProblem'
+import type SubProblemPayload from '../entities/SubProblemPayload'
 // import type SubProblemPayload from '../entities/SubProblemPayload'
 import { showSimpleErrorBox } from '../exception/utils'
 import type { ProblemRepositoryHttp } from '@/dal/repositories/ProblemRepositoryHttp'
