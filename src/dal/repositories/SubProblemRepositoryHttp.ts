@@ -1,36 +1,78 @@
 import type CreateSubProblem from '@/domain/entities/createSubProblem'
 import type SubProblem from '@/domain/entities/SubProblem'
-import type UpdateStatusSubProblem from '@/domain/entities/updateStatusSubProblem'
-import type UpdateSubProblem from '@/domain/entities/updateSubProblem'
 import type ISubProblemRepository from '@/domain/repositories/ISubProblemRepository'
+import type { UpdateVerb } from '../http/AxiosHttpClient'
+import type UpdateSubProblemAdmin from '@/domain/entities/UpdateSubProblemAdmin'
+import type SubProblemPayload from '@/domain/entities/SubProblemPayload'
+import type ToggleSubProblem from '@/domain/entities/ToggleSubProblem'
+import type SubProblemPayloadAdmin from '@/domain/entities/SubProblemPayloadAdmin'
 
 export class SubProblemRepositoryHttp implements ISubProblemRepository {
   constructor(
     private http: {
       getChildren: (url: string) => Promise<SubProblem[]>
-      toggleSubProblemStatut: (url: string) => Promise<UpdateStatusSubProblem>
-      update: (url: string, updateProblem: UpdateSubProblem) => Promise<UpdateSubProblem>
+      update: (
+        url: string,
+        updateProblem: UpdateSubProblemAdmin,
+        uv: UpdateVerb,
+      ) => Promise<UpdateSubProblemAdmin>
       create: (url: string, createSubProblem: CreateSubProblem) => Promise<CreateSubProblem>
+      getAllSubProblemByProblemIdAdmin: (url: string) => Promise<SubProblemPayloadAdmin>
+      getAllSubProblemByProblemId: (url: string) => Promise<SubProblemPayload>
+      toggleSubProblemStatus: (url: string) => Promise<ToggleSubProblem>
     },
   ) {}
-  async toggleSubProblemStatus(role: string, id: number): Promise<UpdateStatusSubProblem> {
-    const url = `http://localhost:3000/subDisease/status/${id}?role=${role}`
-    return await this.http.toggleSubProblemStatut(url)
-  }
   async updateSubProblem(
     role: string,
-    id: number,
-    updateSubProblem: UpdateSubProblem,
-  ): Promise<UpdateSubProblem> {
+    id: string,
+    updateSubProblem: UpdateSubProblemAdmin,
+  ): Promise<UpdateSubProblemAdmin> {
     const url = `http://localhost:3000/subDisease/save/${role}/${id}`
-    return await this.http.update(url, updateSubProblem)
+    return await this.http.update(url, updateSubProblem, 1 as UpdateVerb.patch)
   }
-  async createSubProblem(role: string, createSubProblem: CreateSubProblem) {
+  async createSubProblem(
+    role: string,
+    createSubProblem: CreateSubProblem,
+  ): Promise<CreateSubProblem> {
     const url = `http://localhost:3000/subDisease/create?role=${role}`
     return await this.http.create(url, createSubProblem)
   }
 
-  async getAllSubProblemByProblemId(id: string): Promise<SubProblem[]> {
-    return await this.http.getChildren(`http://localhost:3000/disease/${id}`)
+  async getAllSubProblemByProblemId(
+    idProfile: string,
+    idProblem: string,
+    page: number,
+    limit: number,
+    // sortedBy: string,
+    // sortedOrder: string,
+  ): Promise<SubProblemPayload> {
+    return await this.http.getAllSubProblemByProblemId(
+      `http://localhost:3000/subDisease/stats/farmer/${idProfile}?page=${page}&limit=${limit}&diseaseId=${idProblem}`,
+    )
+  }
+  async getAllSubProblemByProblemIdAdmin(
+    // idProfile: string,
+    idProblem: string,
+    page: number,
+    limit: number,
+    sortedBy: string,
+    sortedOrder: string,
+  ): Promise<SubProblemPayloadAdmin> {
+    return await this.http.getAllSubProblemByProblemIdAdmin(
+      `http://localhost:3000/disease/${idProblem}?page=${page}&limit=${limit}`,
+    )
+  }
+  async toggleSubProblemStatus(
+    role: string,
+    idProblem: string,
+
+    // page: number,
+    // limit: number,
+    // sortedBy: string,
+    // sortedOrder: string,
+  ): Promise<ToggleSubProblem> {
+    return await this.http.toggleSubProblemStatus(
+      `http://localhost:3000/subDisease/status/${idProblem}?role=${role}`,
+    )
   }
 }

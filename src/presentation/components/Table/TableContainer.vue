@@ -38,7 +38,7 @@
   import TableRowDesktop from './TableRowDesktop.vue'
   import TableRowMobile from './TableRowMobile.vue'
   import RowContainer from './RowContainer.vue'
-  import ModalForm from './ModalForm.vue'
+  // import ModalForm from './ModalForm.vue'
 
   const props = defineProps<{
     columns: ColumnDefinition<T>[]
@@ -52,7 +52,7 @@
 
   /* Modal */
   const updateModalVisible = ref(false)
-  const deleteModalVisible = ref(false)
+  // const deleteModalVisible = ref(false)
   const selectedRow = ref<T | null>(null)
 
   function openEdit(row: T) {
@@ -68,19 +68,20 @@
   }>()
 
   function openDelete(row: T) {
-    console.log('Delete', row)
+    emit("delete", row as T)
+
   }
 
-  function handleUpdateSubmit(data: unknown) {
-    console.log('Form submitted', data)
-    // Emit vers le page qui est la page (eventception)
-  }
+  // function handleUpdateSubmit(data: unknown) {
+  //   console.log('Form submitted', data)
+  //   // Emit vers le page qui est la page (eventception)
+  // }
 
-  function handleDeleteSubmit(data: unknown) {
-    console.log('Form submitted', data)
-    // Emit vers le page qui est la page (eventception => eventbus)
-    emit("delete", data as T)
-  }
+  // function handleDeleteSubmit(data: unknown) {
+  //   console.log('Form submitted', data)
+  //   // Emit vers le page qui est la page (eventception => eventbus)
+  //   emit("delete", data as T)
+  // }
 
   function handleAction(row: T) {
     emit("action", row)
@@ -144,7 +145,7 @@
     color: #444;
     position: sticky;
     top: 0;
-    z-index: 200;
+    z-index: 300;
   }
 
   .header-cell {

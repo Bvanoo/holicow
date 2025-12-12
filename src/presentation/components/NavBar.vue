@@ -1,8 +1,9 @@
 <script setup lang="ts">
-    import { ref, computed, onMounted, onUnmounted, defineProps, defineEmits } from 'vue'
+    import { ref, computed, onMounted, onUnmounted } from 'vue'
     import router from '@/router'
     import { NAvatar, NDrawer, NButton } from 'naive-ui'
     import { useUserStore } from '@/stores/User'
+    import { useRoute } from 'vue-router';
 
     const userStore = useUserStore();
 
@@ -17,8 +18,6 @@
         modelValue?: string
     }>()
 
-    const emit = defineEmits(['update:active'])
-
     const tabs: Tab[] = [
         { key: '', label: 'Home' },
         { key: 'problemes', label: 'Problèmes' },
@@ -27,13 +26,12 @@
         { key: 'profile', label: 'Profile' },
     ]
 
-    const active = computed(() => props.modelValue ?? 'maladies')
+    const route = useRoute();
 
     const showDrawer = ref(false)
     const mobile = ref(false)
 
     const logoSrc = props.logoSrc ?? ''
-    const profileSrc = props.profileSrc ?? ''
 
     function checkMobile() {
         mobile.value = window.innerWidth <= 768
@@ -48,7 +46,6 @@
     })
 
     function onSelect(key: string) {
-        emit('update:active', key)
         router.push('/' + key)
         showDrawer.value = false
     }
@@ -73,10 +70,13 @@
             </div>
 
             <div class="center" v-if="!mobile">
-                <button v-for="item in tabs" :key="item.key" :class="['tab', { active: item.key === active }]"
-                    @click="$emit('update:active', item.key)">
-                    {{ item.label }}
-                </button>
+                <template v-for="item in tabs" :key="item.key">
+                    <button v-if="!(userStore.currentProfile?.role === 'Administrator' && item.label === 'Profile')"
+                        class="tab" :class="{ 'active': item.key === route.name }" @click="onSelect(item.key)">
+                        {{ item.label }}
+                    </button>
+
+                </template>
             </div>
 
             <div class="right">
@@ -87,19 +87,9 @@
                     </svg>
                 </n-button>
 
-                <div class="profile" @click="$emit('update:active', 'profile')">
-                    <div class="stars-wrap" aria-hidden>
-                        <!-- inline svg of stars circling the avatar -->
-                        <svg viewBox="0 0 100 100" class="stars-svg">
-                            <g transform="translate(50,50)">
-                                <g v-for="i in 8" :key="i" :transform="`rotate(${(i - 1) * 45}) translate(32,0)`">
-                                    <polygon
-                                        points="0,-3 0.9,-1 3,-1 1.2,0.4 1.9,2.6 0,1.1 -1.9,2.6 -1.2,0.4 -3,-1 -0.9,-1" />
-                                </g>
-                            </g>
-                        </svg>
-                    </div>
-                    <n-avatar :src="'http://' + userStore.currentProfile?.avatar_picture" :size="56" round />
+                <div v-if="!userStore.currentProfile?.role" class="profile" @click="onSelect('profile')">
+                    <n-avatar :src="'http://' + userStore.currentProfile?.avatar_picture" :size="56" round
+                        color="transparent" />
                 </div>
             </div>
         </div>
@@ -107,7 +97,7 @@
         <n-drawer v-model:show="showDrawer" placement="left" size="70%">
             <div class="drawer-content">
                 <button v-for="item in tabs" :key="item.key + '-drawer'"
-                    :class="['drawer-item', { active: item.key === active }]" @click="onSelect(item.key)">
+                    :class="['drawer-item', { active: item.key === route.name }]" @click="onSelect(item.key)">
                     {{ item.label }}
                 </button>
             </div>

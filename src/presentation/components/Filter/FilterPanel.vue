@@ -4,7 +4,7 @@
             <div class="section-header">{{ title }}</div>
         </template>
         <section class="section-body">
-            <slot />
+            <slot class="test" />
         </section>
         <template #footer>
             <slot name="footer" />
@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
     import { NCard } from 'naive-ui'
-    import { defineProps, defineEmits, provide, reactive } from 'vue'
+    import { provide, reactive } from 'vue'
 
     defineProps<{ title: string }>()
     const emit = defineEmits<{
@@ -44,7 +44,12 @@
     }
 </script>
 
-<style scoped>
+<!-- <style lang="scss" scoped>
+    .filter {
+        flex-direction: row;
+        align-items: center;
+    }
+
     .main-container {
         width: 100%;
         margin-bottom: 1rem;
@@ -64,4 +69,4 @@
         justify-content: flex-end;
         gap: 1rem;
     }
-</style>
+</style> -->

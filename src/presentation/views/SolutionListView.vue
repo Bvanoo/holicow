@@ -22,10 +22,11 @@
             </FilterPanel>
         </Transition>
         {{ filterResult }}
-        <TableContainer :columns="columns" :data="(rows as Solution[])"
+        <TableContainer v-if="rows" :columns="columns" :data="(rows as Solution[])"
             :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
             :titleKey="'diseaseName'" @action="ButtonAction">
         </TableContainer>
+        <div v-else>NO data from API</div>
 
         <!-- <ProblemTable :columns="columns" :data="rows" primary-key="disease_name_FR"> -->
         <!-- <template #footer>
@@ -33,7 +34,7 @@
       </template> -->
         <!-- </ProblemTable> -->
         <div class="table-footer">
-            <n-pagination v-model:page="currentPage" :page-count="pageCount" simple />
+            <n-pagination v-model:page="currentPage" :page-count="totalPage" simple />
             <slot name="footer"></slot>
         </div>
     </section>
@@ -62,14 +63,16 @@
     const results = ref<Solution[] | void>();
 
     const currentPage = ref<number>(1)
-    const pageSize = ref<number>(3)
+    const totalPage = ref<number>(0)
+    const limitItemsPage = ref<number>(3)
     const rows = ref<Solution[]>()
-    const totalItems = ref<number>();
-    const pageCount = ref<number>(0)
+    // const totalItems = ref<number>();
 
     const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])
     const solutionService = inject<SolutionService>("solutionService");
-    const idProblemSolution = route.params.data as string
+    const splittedParams = (route.params.data as string).split("_")
+    console.log("splittedParams", splittedParams)
+    const idProblemSolution = splittedParams[0]
 
     columns.value = [
         { key: 'globalRating', label: 'Global rating', icon: ProblemIcon },
@@ -84,13 +87,16 @@
         //Si on vient du problemView, alors on utilise la route pour avoir les solutions par rapport à un PROBLEME id
         if (userStore.isProblemViewAction) {
 
-            results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
-            //Sinon on vient du subProblemView
+            results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+
         }
         else
-            results.value = await solutionService?.getSolutionsBySubProblemId(idProblemSolution, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+            results.value = await solutionService?.getSolutionsBySubProblemId(idProblemSolution?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
 
-        console.log(results)
+        //Calcul pagination
+
+        totalPage.value = 1
+
         rows.value = results.value as Solution[]
         // A modifier dès que l'api est mise à jour (pagination)
         // totalItems.value = results.value?.
@@ -106,7 +112,7 @@
 
     watch(currentPage, async () => {
         // if (sortKey.value) sortOrder.value = 'asc'
-        results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution, "fr", "farm", userStore.currentUserId as string, currentPage.value, pageSize.value, "", "")
+        results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
 
         rows.value = results.value as Solution[];
     })

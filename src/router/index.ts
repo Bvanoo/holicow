@@ -16,7 +16,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      name: `page d'accueil`,
+      name: ``,
       path: '/',
       component: HomeView,
     },
@@ -56,12 +56,12 @@ const router = createRouter({
       component: CommentsView,
     },
     {
-      name: 'Alertes',
+      name: 'alertes',
       path: '/alertes',
       component: AlertsView,
     },
     {
-      name: 'Profile',
+      name: 'profile',
       path: '/profile',
       component: ProfileView,
     },
@@ -79,19 +79,18 @@ const router = createRouter({
   ],
 })
 //Avant chaque changement de route
-router.beforeEach(async (to /*, from*/) => {
+router.beforeEach(async (to, from) => {
   const userStore = useUserStore()
-  //START Bloquage des routes si on est un nouveau profil
 
-  // On récupère le profil s'il n'est pas récupéré
+  // On hydrate le store
   if (userStore.isHydrate === false) {
     await userStore.hydrateApp()
   }
-
+  //Blocage de l'admin s'il veut aller sur la route profile
+  if (userStore.currentProfile?.role === 'Administrator' && to.name === 'profile') return from
+  //Blocage du nouvel utilisateur
   if (userStore.isNewProfil && to.name !== 'First Connexion') {
-    /* console.log('userStore.isNewProfil', userStore.isNewProfil)*/
     return '/firstConnexion'
   }
-  //END Bloquage des routes si on est un nouveau profil
 })
 export default router

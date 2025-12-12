@@ -33,7 +33,7 @@ async function apiCreateProblem(data: ProblemFormModel): Promise<ProblemFormMode
       if (result) {
         const formProblem: ProblemFormModel = {
           disease_name_FR: result.disease_name_FR as string,
-          est_healing_time: result.est_healing_time as number,
+          est_healing_time: result.est_healing_time?.toString() as string,
           status_disease: result.status_disease as string,
         }
         console.log('CREATE Problem:', formProblem)

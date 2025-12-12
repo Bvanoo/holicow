@@ -1,8 +1,8 @@
 import type CreateProblem from '../entities/createProblem'
 import type Problem from '../entities/Problem'
 import type ProblemPayload from '../entities/ProblemPayload'
-import type SubProblemAdmin from '../entities/SubProblemAdmin'
-import type SubProblemPayload from '../entities/SubProblemPayload'
+import type ToggleProblem from '../entities/ToggleProblem'
+import type UpdateProblemAdmin from '../entities/UpdateProblemAdmin'
 // import type SubProblemPayload from '../entities/SubProblemPayload'
 
 export default interface IProblemRepository {
@@ -22,22 +22,10 @@ export default interface IProblemRepository {
   ): Promise<ProblemPayload>
 
   createProblem(role: string, object: CreateProblem): Promise<Problem>
-
-  getAllSubProblemByProblemId(
-    idProfile: string,
-    idProblem: string,
-    page: number,
-    limit: number,
-    sortedBy: string,
-    sortedOrder: string,
-  ): Promise<SubProblemPayload>
-
-  getAllSubProblemByProblemIdAdmin(
-    idProfile: string,
-    idProblem: string,
-    page: number,
-    limit: number,
-    sortedBy: string,
-    sortedOrder: string,
-  ): Promise<SubProblemAdmin[]>
+  updateProblem(
+    role: string,
+    id: string,
+    updateProblem: UpdateProblemAdmin,
+  ): Promise<UpdateProblemAdmin>
+  toggleProblemStatus(role: string, idProblem: string): Promise<ToggleProblem>
 }

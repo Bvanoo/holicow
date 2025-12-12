@@ -48,7 +48,7 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
     sortedBy: string,
     sortedOrder: string,
   ): Promise<Solution[]> {
-    return await this.http.get(
+    return await this.http.getSolutionsByProblemId(
       `http://localhost:3000/solution/disease-solution/${idProblem}?lang=${lang}&role=${role}&profilId=${profilId}`,
     )
   }
