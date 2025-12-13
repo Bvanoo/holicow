@@ -16,8 +16,8 @@
         :style="{ transitionDelay: rIndex * 0.07 + 's' }">
         <!-- {{ onRowCreated(props.) }} -->
         <component :is="isMobile ? TableRowMobile : TableRowDesktop" :columns="columns" :row="row"
-          :actionLabel="actionLabel(row)" :actionLabelOne="actionLabelOne" @action="handleAction" :titleKey="titleKey" :is-authorized="isAuthorized" :is-alert="isAlert"
-          @edit="openEdit" @delete="openDelete">
+          :actionLabel="actionLabel(row)" :actionLabelOne="actionLabelOne" @action="handleAction" :titleKey="titleKey"
+          :is-authorized="isAuthorized" :isAlert="isAlert" @edit="openEdit" @delete="openDelete">
 
           <!-- :actionLabel="actionLabel(row)" @action="handleAction" :titleKey="titleKey" :is-authorized="isAuthorized"
           :is-alert="true" @edit="openEdit" @delete="openDelete"> -->
@@ -53,11 +53,11 @@
     titleKey: string
   }>()
 
-  const isAuthorized = computed(() => props.isAuthorized ?? false)
+  const isAuthorized = props.isAuthorized
 
-  const isAlert = computed(() => props.isAlert ?? false)
+  const isAlert = props.isAlert
 
-  const actionLabelOne = computed(() => props.actionLabelOne ?? false)
+  const actionLabelOne = props.actionLabelOne
 
   /* Modal */
   const updateModalVisible = ref(false)

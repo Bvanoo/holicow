@@ -3,9 +3,11 @@
   display: grid;
   row-gap: 20px;
   flex-direction: column;
-  margin-bottom: 20px;
-  h1 {
-    text-align: center;
+  margin-block: 20px;
+  &--title {
+    font-weight: 700;
+    color: $white;
+    font-size: 24px;
   }
   &__header {
     display: flex;
@@ -13,6 +15,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+
     &__buttonProbleme {
       border: 1px solid $white !important;
       background: linear-gradient(135deg, $main_color_dark, $main_color);

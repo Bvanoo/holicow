@@ -29,10 +29,10 @@
           {{ props.actionLabel }}
         </n-button>
         <n-button v-if="isAlert" secondary type="info" @click="emit('action', row)">
-        <!-- <n-icon :component="UpdateIcon" /> -->
-        <!-- voir solution(s) -->
-        {{ props.actionLabel }}
-      </n-button>
+          <!-- <n-icon :component="UpdateIcon" /> -->
+          <!-- voir solution(s) -->
+          {{ props.actionLabel }}
+        </n-button>
       </section>
       <section v-if="isAuthorized" class="mobile-card-footer-crud">
         <n-button class="crud-button" circle type="primary" @click="emit('edit', row)">

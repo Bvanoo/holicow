@@ -12,25 +12,19 @@
               <!-- voir solution(s) -->
               {{ props.actionLabel }}
             </n-button>
+            <n-button v-if="isAlert" secondary type="info" @click="emit('action', row)">
+              <!-- <n-icon :component="UpdateIcon" /> -->
+              <!-- voir solution(s) -->
+              {{ props.actionLabelOne }}
+            </n-button>
           </section>
         </template>
+        <!--Title-->
         <template v-else>
           <span class="titleKey">{{ row[col.key] }}</span>
         </template>
       </slot>
     </div>
-    <section class="mobile-card-footer-user">
-      <n-button secondary type="info" @click="emit('action', row)">
-        <!-- <n-icon :component="UpdateIcon" /> -->
-        <!-- voir solution(s) -->
-        {{ props.actionLabel }}
-      </n-button>
-      <n-button v-if="isAlert" secondary type="info" @click="emit('action', row)">
-        <!-- <n-icon :component="UpdateIcon" /> -->
-        <!-- voir solution(s) -->
-        {{ props.actionLabelOne }} 
-      </n-button>
-    </section>
 
     <!-- <div class="desktop-admin"> -->
     <div v-if="isAuthorized" class="desktop-admin">

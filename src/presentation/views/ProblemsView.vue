@@ -24,8 +24,9 @@
         <section class="view__content">
             <TableContainer :columns="columns" :data="(rows as Problem[] | ProblemAdmin[])"
                 :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
-                :titleKey="userStore.currentProfile?.role === 'Administrator' ? 'disease_name_FR' : 'diseaseName'
-                    " @action="ButtonAction" @edit="openUpdate" @delete="toggleStatus">
+                :titleKey="userStore.currentProfile?.role === 'Administrator' ? 'disease_name_FR' : 'diseaseName'"
+                @action="ButtonAction" @edit="openUpdate" @delete="toggleStatus">
+
             </TableContainer>
         </section>
 

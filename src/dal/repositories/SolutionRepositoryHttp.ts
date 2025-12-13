@@ -13,7 +13,6 @@ import type CreateSolution from '@/domain/entities/CreateSolution'
 import type UpdateSolution from '@/domain/entities/UpdateSolution'
 import type UpdatedSolution from '@/domain/entities/UpdatedSolution'
 
-
 export class SolutionRepositoryHttp implements ISolutionRepository {
   constructor(
     private http: {
@@ -22,13 +21,12 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
       getSolutionsByProblemId: (url: string) => Promise<Solution[]>
       getAllSolution: (url: string) => Promise<SolutionPayload>
 
-      getSolutionByProblemFromAlert:(url: string) => Promise<SolutionBySubDisease>
-      putStatusSolve:(url: string, object: updateStatusSolve) => Promise<SolveFromAlert>
+      getSolutionByProblemFromAlert: (url: string) => Promise<SolutionBySubDisease>
+      putStatusSolve: (url: string, object: updateStatusSolve) => Promise<SolveFromAlert>
 
       getSolutionById: (url: string) => Promise<Solution>
       createSolution: (url: string, newSolution: CreateSolution) => Promise<CreatedSolution>
       updateSolution: (url: string, newSolution: UpdateSolution) => Promise<UpdatedSolution>
-
     },
   ) {}
   async getAllSolution(page: number, limit: number): Promise<SolutionPayload> {
@@ -67,15 +65,23 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
     )
   }
 
-  async getSolutionByProblemFromAlert(idProblem: string, lang: string, role: string, idUser: string| void | undefined): Promise<SolutionBySubDisease>{
+  async getSolutionByProblemFromAlert(
+    idProblem: string,
+    lang: string,
+    role: string,
+    profilId: string | void | undefined,
+    page: string,
+    limit: string,
+  ): Promise<SolutionBySubDisease> {
     return await this.http.getSolutionByProblemFromAlert(
-      `http://localhost:3000/solution/subDisease-solution/${idProblem}?lang=${lang}&role=${role}&profilId=${idUser}`
+      `http://localhost:3000/solution/subDiseaseSolution/${idProblem}?lang=${lang}&role=${role}&page=${page}&limit=${limit}&profilId=${profilId}`,
     )
   }
 
-  async putStatusSolve(idWarn: string, data: updateStatusSolve): Promise<SolveFromAlert>{
+  async putStatusSolve(idWarn: string, data: updateStatusSolve): Promise<SolveFromAlert> {
     return await this.http.putStatusSolve(
-      `http://localhost:3000/solve/addSolutions/${idWarn}`, data
+      `http://localhost:3000/solve/addSolutions/${idWarn}`,
+      data,
     )
   }
 

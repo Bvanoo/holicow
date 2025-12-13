@@ -1,12 +1,10 @@
+import type ProblemByAlert from './ProblemByAlert'
 
-import type ProblemByAlert from "./ProblemByAlert"
-
-export default interface AlertWithProblem{
-    id_warn: number
-    warn_status: boolean
-    warning_date: string
-    id_animal: string
-    id_troupeau: string
-    disease: ProblemByAlert[]    
-  }
-
+export default interface AlertWithProblem extends Record<string, unknown> {
+  id_warn: number
+  warn_status: boolean
+  warning_date: string
+  id_animal: string
+  id_troupeau: string
+  disease: ProblemByAlert[]
+}

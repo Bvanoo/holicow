@@ -65,15 +65,22 @@ export class SolutionService {
       .catch((err) => console.warn(err.message))
   }
 
-  async getSolutionByProblemFromAlert(idProblem: string, lang: string, role: string, idUser: string | void | undefined){
+  async getSolutionByProblemFromAlert(
+    idProblem: string,
+    lang: string,
+    role: string,
+    profilId: string | void | undefined,
+    page: string,
+    limit: string,
+  ) {
     return await this.repo
-    .getSolutionByProblemFromAlert(idProblem, lang, role, idUser)
-    .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+      .getSolutionByProblemFromAlert(idProblem, lang, role, profilId, page, limit)
+      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
   }
 
-  async putStatusSolve(idWarn: string, solve: updateStatusSolve){
+  async putStatusSolve(idWarn: string, solve: updateStatusSolve) {
     return await this.repo
-    .putStatusSolve(idWarn, solve)
-    .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+      .putStatusSolve(idWarn, solve)
+      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
   }
 }

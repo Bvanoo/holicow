@@ -1,4 +1,4 @@
-export default interface Alert {
+export default interface Alert extends Record<string, unknown> {
   id_warn: number
   warn_status: boolean
   warning_date: string
