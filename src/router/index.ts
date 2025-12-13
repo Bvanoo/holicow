@@ -37,12 +37,12 @@ const router = createRouter({
     },
     {
       name: 'sub problems',
-      path: '/sousproblemes/:data',
+      path: '/sousproblemes/:data(\\d+)*',
       component: () => import('@/presentation/views/SubProblemsView.vue'),
     },
     {
       name: 'solution',
-      path: '/solution/:data',
+      path: '/solution/:data(\\d+)*',
       component: () => import('@/presentation/views/SolutionView.vue'),
     },
     {

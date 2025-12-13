@@ -212,13 +212,13 @@
                 console.log(row.diseaseId)
                 router.push({
                     name: 'sub problems',
-                    params: { data: (row as Problem).diseaseId + '_' + (row as Problem).diseaseName },
+                    params: { data: [(row as Problem).diseaseId?.toString() as string, (row as Problem).diseaseName?.toString() as string] },
                 })
             } else {
                 userStore.isProblemViewAction = true
                 router.push({
                     name: 'solutionsList',
-                    params: { data: (row as Problem).diseaseId + '_' + (row as Problem).diseaseName },
+                    params: { data: [(row as Problem).diseaseId?.toString() as string, (row as Problem).diseaseName?.toString() as string] },
                 })
                 //vers solution
             }

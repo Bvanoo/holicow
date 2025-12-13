@@ -133,7 +133,7 @@
 
         //Si on vient du problemView, alors on utilise la route pour avoir les solutions par rapport à un PROBLEME id
         if (userStore.isProblemViewAction) {
-            results.value = await solutionService?.getSolutionsByProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farmer", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+            results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution.value?.toString() as string, "fr", "farmer", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
         }
         else
             results.value = await solutionService?.getSolutionsBySubProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farmer", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")

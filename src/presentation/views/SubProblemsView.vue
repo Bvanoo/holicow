@@ -110,9 +110,13 @@
     const subProblemService = inject<SubProblemService>("subProblemService");
     const route = useRoute();
     //1_Grippe%20aviaireeeeeé
-    const splittedParams = (route.params.data as string).split("_")
-    const idProblem = ref(splittedParams[0])
-    const problemName = ref(splittedParams[1])
+    console.log(route.params.data)
+    const idProblem = ref<string>()
+    const problemName = ref<string>()
+    if (route.params.data) {
+        idProblem.value = route.params.data[0]
+        problemName.value = route.params.data[1]
+    }
 
     onMounted(async () => {
         if (userStore?.currentProfile?.role === "Administrator") {
@@ -160,6 +164,7 @@
     const filterResult = ref<Record<string, unknown>>();
 
     function ButtonAction(row: SubProblem | SubProblemAdmin) {
+        console.log("row", row)
         userStore.isProblemViewAction = false;
         if (userStore?.currentProfile?.role === "Administrator") {
             router.push({
@@ -173,7 +178,7 @@
         else {
             router.push({
                 name: 'solutionsList',
-                params: { data: (row as SubProblemAdmin).id_sub_disease + '_' + (row as SubProblemAdmin).sub_disease_name_FR }
+                params: { data: [idProblem.value as string, (row as SubProblem).subDiseaseId?.toString() as string, problemName.value as string] }
             });
         }
     }
