@@ -11,13 +11,13 @@
                     <FilterOrderSwitchComponent fieldName="order"></FilterOrderSwitchComponent>
                 </FilterPanel>
             </TransitionGroup>
-
             <section v-if="userStore.currentProfile?.role === 'Administrator'">
                 <n-button class="view__header__buttonProbleme" tertiary type="primary" color="white" size="large"
                     @click="openCreate">
                     Créer un problème
                 </n-button>
             </section>
+
         </div>
 
         {{ filterResult }}
@@ -194,7 +194,8 @@
             router.push({
                 name: 'sub problems',
                 params: {
-                    data: (row as ProblemAdmin).id_disease + '_' + (row as ProblemAdmin).disease_name_FR,
+                    data: [(row as ProblemAdmin).id_disease, (row as ProblemAdmin).disease_name_FR],
+                    // data: (row as ProblemAdmin).id_disease + '_' + (row as ProblemAdmin).disease_name_FR,
                 },
             })
             // } else {

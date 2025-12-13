@@ -19,6 +19,7 @@
 </script>
 
 <template>
+
   <div class="appLayout">
     <NavBar v-if="!userStore.isNewProfil" v-model:active="activeTab" :logoSrc="logoHolicow" :profileSrc="profilLogo" />
     <main class="appContent">

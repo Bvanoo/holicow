@@ -211,6 +211,7 @@
         const subProblemAdminFormModel: SubProblemFormModel = {
 
             id_sub_disease: (row as SubProblemAdmin).id_sub_disease.toString(),
+            id_disease: idProblem.value,
             sub_disease_name_FR: (row as SubProblemAdmin).sub_disease_name_FR as string,
             status_sub_disease: (row as SubProblemAdmin).status_sub_disease.toString()
         }
@@ -253,7 +254,7 @@
             const subProblemAdmin: UpdateSubProblemAdmin = {
                 sub_disease_name_FR: (updated as SubProblemFormModel).sub_disease_name_FR as string,
                 status_sub_disease: (updated as SubProblemFormModel).status_sub_disease === "true",
-
+                id_disease: Number((updated as SubProblemFormModel).id_disease)
             }
             const updateSubProblem = await subProblemService?.updateSubProblem("admin", idSubProblem, subProblemAdmin)
             console.log("updateProblem", updateSubProblem)
