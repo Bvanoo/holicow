@@ -35,8 +35,8 @@ export const useUserStore = defineStore('userStore', {
     async hydrateApp() {
       //Utilisation pour le guard router
 
-      const usersServices = new UsersServices()
-      // const userIdWALLeSmart: string = 'ADMIN001'
+      const usersServices = new UsersServices() // ADMIN001
+      // const userIdWALLeSmart: string = 'FARM001'
       const userIdWALLeSmart: string = 'FARM001'
       // const userIdWALLeSmart: string = '579b043d-0971-494f-ab71-02e841e87dbe'
       // const userIdWALLeSmart: string = '3cc7e361-c7f3-45c8-9097-979ddcb709f4'

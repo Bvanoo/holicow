@@ -9,6 +9,13 @@ export class AlertsService {
       .catch((err) => console.error(err.message))
   }
 
+
+    async getAllResolvedAlertsByUserId(userId: string, lang: string, page: number, limit: number) {
+    return await this.repo
+      .getAllAlertsByUserId(userId, lang, limit, page)
+      .catch((err) => console.error(err.message))
+  }
+
   async getAlertById(idWarn: string, lang: string) {
     return await this.repo.getAlertById(idWarn, lang).catch((err) => console.error(err.message))
   }

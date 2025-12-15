@@ -51,7 +51,7 @@ import type { DropdownMixedOption } from 'naive-ui/es/dropdown/src/interface'
 
 // Entities
 export interface Props {
-  id: string
+  id?: string
   author?: string
   content?: string
   date?: string

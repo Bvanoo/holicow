@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { ref, computed, onMounted, onUnmounted } from 'vue'
+    import { ref, onMounted, onUnmounted } from 'vue'
     import router from '@/router'
     import { NAvatar, NDrawer, NButton } from 'naive-ui'
     import { useUserStore } from '@/stores/User'
@@ -22,7 +22,7 @@
         { key: '', label: 'Home' },
         { key: 'problemes', label: 'Problèmes' },
         { key: 'commentaires', label: 'Commentaires' },
-        { key: 'alertes', label: 'Alertes' },
+        { key: 'alerts', label: 'Alertes' },
         { key: 'profile', label: 'Profile' },
     ]
 
@@ -53,11 +53,11 @@
 </script>
 
 <template>
-    <!-- 
+    <!--
     <router-link to="/">Home</router-link>
-     <router-link to="/maladies">Maladies</router-link> 
+     <router-link to="/maladies">Maladies</router-link>
      <router-link to="/commentaires">Commentaires</router-link>
-    <router-link to="/alertes">Alertes</router-link> 
+    <router-link to="/alertes">Alertes</router-link>
     <router-link to="/profil">Profil</router-link> -->
 
     <nav class="navbar">

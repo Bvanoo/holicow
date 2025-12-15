@@ -1,6 +1,11 @@
 <template>
-    <SolutionItem :globalNote="4" :myNote="3" :badgeColor="'#FF0000'" :comments="comments"
-        :prevention="results?.content" :userCommentContent="'test'" :items="[
+    <SolutionItem :globalNote="4" :myNote="3" :badgeColor="'#FF0000'"
+        :prevention="(results?.content as string)" :userCommentContent="'test'"
+        :problemName="problemName"
+        :subproblemName="subProblemName"
+        :comments="coms"
+
+        :items="[
             {
                 id: 110,
                 disease: 'Mamite - Mammite subclinique',
@@ -21,27 +26,33 @@
     import type Solution from '@/domain/entities/Solution';
     import { SolutionService } from '@/domain/services/SolutionService';
     const route = useRoute();
-    const idSolution = route.params.data as string;
+    const idSolution = (route.params.data!)[0] as string;
+    const problemName = (route.params.data!)[1] as string
+    const subProblemName = route.params.data ? (route.params.data)[2] as string : undefined
 
     const solutionService = inject<SolutionService>("solutionService");
 
     const results = ref<Solution | void>()
 
-    const comments: Comment[] = [{
-        id: "1",
-        content: "string",
-        avatar: {
-            name: "string",
-            image: "string",
-            userTypePicture: "string"
-        },
-        date: new Date(),
+    const coms = ref<Comment[]>([])
 
-    }]
+
 
     onMounted(async () => {
         results.value = await solutionService?.getSolutionById(idSolution, "fr")
-        console.log(results);
+        .then(r => {
+          const comExtract = r?.solves!.filter(
+            (item => item.commentaire && item.commentaire.length > 0))
+
+          if(comExtract)
+            for(let i=0; i < comExtract.length; i++) {
+              console.log("Le commentaire extrait : ", comExtract[i]?.commentaire)
+              coms.value.push((comExtract[i]?.commentaire![0]) as Comment)
+              // coms.value?.concat(comExtract[i]?.commentaire)
+            }
+        })
+
+        // console.log(results);
 
     })
 </script>

@@ -17,7 +17,7 @@
                         <FilterOrderSwitchComponent fieldName="order"></FilterOrderSwitchComponent>
                     </div>
                     <!-- <div class="filter__search">
-                <span>Rechercher :</span> 
+                <span>Rechercher :</span>
             Composant 3
             <FilterInputComponent fieldName="test"></FilterInputComponent>
             </div> -->
@@ -222,7 +222,7 @@
     function ButtonAction(row: Solution) {
         router.push({
             name: 'solution',
-            params: { data: row.id_solution }
+            params: { data: [row.id_solution, solutionProblemName.value as string, solutionSubProblemName.value as string]}
         });
     }
 

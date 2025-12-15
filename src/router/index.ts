@@ -1,4 +1,3 @@
-import AlertsView from '@/presentation/views/AlertsView.vue'
 import CommentsView from '@/presentation/views/CommentsView.vue'
 import DiseasesView from '@/presentation/views/ProblemsView.vue'
 import FirstConnexion from '@/presentation/views/FirstConnexion.vue'
@@ -7,8 +6,6 @@ import NotAllowed from '@/presentation/views/NotAllowed.vue'
 import ProfileView from '@/presentation/views/ProfilView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/stores/User'
-import SolutionView from '@/presentation/views/SolutionView.vue'
-import SolutionListView from '@/presentation/views/SolutionListView.vue'
 import TestView from '@/presentation/views/TestView.vue'
 // import SolutionsListView from '@/presentation/views/SolutionsListView.vue'
 
@@ -56,9 +53,14 @@ const router = createRouter({
       component: CommentsView,
     },
     {
-      name: 'alerte',
+      name: 'alert',
       path: '/alert/:data',
       component: () => import('@/presentation/views/AlertView.vue'),
+    },
+        {
+      name: 'alerts',
+      path: '/alerts/:data',
+      component: () => import('@/presentation/views/AlertsView.vue'),
     },
     {
       name: 'profile',

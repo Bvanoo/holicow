@@ -11,7 +11,7 @@ export class AlertsRepositoryHttp implements IAlertsRepository {
       getAlertById: (url: string) => Promise<AlertWithProblem>
       updateStatus: (url: string) => Promise<StatusAlert>
     },
-    
+
   ) {}
 
   getAlertById(idWarn: string, lang: string): Promise<AlertWithProblem> {
@@ -29,6 +29,17 @@ export class AlertsRepositoryHttp implements IAlertsRepository {
   ): Promise<AlertPayload> {
     return this.http.getAllAlertsByUserId(
       `http://localhost:3000/alert/AllAlerte/${userId}/${lang}?page=${page}&limit=${limit}`,
+    )
+  }
+
+  getAllResolvedAlertsByUserId(
+    userId: string,
+    lang: string,
+    limit: number,
+    page: number,
+  ): Promise<AlertPayload> {
+    return this.http.getAllAlertsByUserId(
+      `http://localhost:3000/alert/AllAlerts/${userId}/${lang}?page=${page}&limit=${limit}`,
     )
   }
 

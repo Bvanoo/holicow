@@ -1,4 +1,3 @@
-import type { SolveFromAlert } from '../entities/SolveFromAlert'
 import type { updateStatusSolve } from '../entities/updateStatusSolve'
 import { showSimpleErrorBox } from '../exception/utils'
 import type { SolutionRepositoryHttp } from '@/dal/repositories/SolutionRepositoryHttp'

@@ -37,20 +37,19 @@
           </p>
         </div>
 
-        <div class="user-bubble-section">
+        <!-- <div class="user-bubble-section">
           <SimpleChatBubble :id="(-1).toString()"
             :avatar-path="userCommentAvatarPath ?? 'https://www.placehold.co/64x64'" :content="userCommentContent"
             :author="userName" :date="userCommentDate" :icon-path="'/pen.svg'" />
-        </div>
+        </div> -->
       </n-card>
     </transition>
 
     <n-empty v-if="comments.length === 0" description="Aucun Commentaire" class="empty-block" />
-    <!-- <template v-else v-for="(value, index) in comments" :key="index"> -->
-    <!-- Insérer des chatBubble avec les noms d'auteur et leurs avatars -->
-    <!-- <SimpleChatBubble :id="(-1).toString()" :avatar-path="userCommentAvatarPath ?? 'http://www.placehold.com/64*64'"
-        :content="userCommentContent" :author="userName" :date="userCommentDate" :icon-path="'/pen.svg'" /> -->
-    <!-- </template> -->
+    <template v-else v-for="(value, index) in comments" :key="index">
+    <!-- Insérer des chatBubble avec les noms d'auteur et leurs avatars :date="value.date.toLocaleDateString()" -->
+    <SimpleChatBubble :content="value.content"   :icon-path="'/pen.svg'" />
+    </template>
   </div>
 </template>
 
