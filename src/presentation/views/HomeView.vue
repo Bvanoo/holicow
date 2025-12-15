@@ -1,10 +1,26 @@
 <template>
-  <section class="view">
+  <section v-if="userStore.currentProfile?.role !== 'Administrator'" class="view">
     <div class="view__header">
       <div class="view--title">Mes alerts actives</div>
     </div>
     <section class="view__content">
       <TableContainer class="tc" :columns="columns" :data="(rows as Alert[])"
+        :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="() => 'Details'"
+        :titleKey="'disease_name'" @action="showAlert">
+      </TableContainer>
+    </section>
+  </section>
+  <section class="view">
+    <div class="view__header">
+      <div class="view--title">Mes notification</div>
+    </div>
+    <div class="view__header">
+      <div class="view--title" v-if="notif.length === 0">
+        Aucune notifications
+      </div>
+    </div>
+    <section v-if="notif.length !== 0" class="view__content">
+      <TableContainer class="tc" :columns="columns" 
         :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="() => 'Details'"
         :titleKey="'disease_name'" @action="showAlert">
       </TableContainer>
@@ -25,7 +41,7 @@
   const userStore = useUserStore();
 
   const alertService = inject<AlertsService>("alertsService");
-
+  const notif : [] = [];
   const res = ref<AlertPayload | void>();
   const rows = ref<Alert[]>();
   const columns: Ref<{ key: string; label: string, icon: Component | undefined }[]> = ref([])
