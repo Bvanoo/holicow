@@ -4,7 +4,7 @@ export default interface CreateSolution extends Record<string, unknown> {
   solution_description_EN: string
   solution_description_DE: string
   status_solution: boolean
-  id_subDisease: number
+  id_subDisease?: number
   id_disease: number
 }
 /**  

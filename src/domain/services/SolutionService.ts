@@ -49,6 +49,54 @@ export class SolutionService {
       .getSolutionsByProblemId(idProblem, lang, role, profilId, page, limit, sortedBy, sortedOrder)
       .catch((err) => console.error(err.message))
   }
+  async getSolutionsBySubProblemIdAdmin(
+    idProblem: string,
+    lang: string,
+    role: string,
+    profilId: string,
+    page: number,
+    limit: number,
+    sortedBy: string,
+    sortedOrder: string,
+  ) {
+    const resp = await this.repo
+      .getSolutionsBySubProblemIdAdmin(
+        idProblem,
+        lang,
+        role,
+        profilId,
+        page,
+        limit,
+        sortedBy,
+        sortedOrder,
+      )
+      .catch((err) => console.error(err.message))
+    console.log(resp)
+    return resp
+  }
+  async getSolutionsByProblemIdAdmin(
+    idProblem: string,
+    lang: string,
+    role: string,
+    profilId: string,
+    page: number,
+    limit: number,
+    sortedBy: string,
+    sortedOrder: string,
+  ) {
+    return await this.repo
+      .getSolutionsByProblemIdAdmin(
+        idProblem,
+        lang,
+        role,
+        profilId,
+        page,
+        limit,
+        sortedBy,
+        sortedOrder,
+      )
+      .catch((err) => console.error(err.message))
+  }
   async getSolutionById(idSolution: string, lang: string) {
     return await this.repo
       .getSolutionById(idSolution, lang)

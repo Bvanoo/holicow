@@ -1,8 +1,9 @@
 import type Solution from './Solution'
+import type SolutionAdmin from './SolutionAdmin'
 import type Solve from './Solve'
 
 export default interface SolutionPayload extends Record<string, unknown> {
-  data: Solution[]
+  data: SolutionAdmin[]
   solves: Solve[]
   // data: Solution[]
   // total: number

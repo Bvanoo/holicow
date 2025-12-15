@@ -1,49 +1,54 @@
 <template>
     <!-- <ChatBubble /> -->
-    <section style="padding: 16px">
+    <section class="view">
         <h1>{{ solutionSubProblemName }}</h1>
-        <Transition name="fade-slide" tag="FilterPanel" appear>
-            <FilterPanel title="Filtres" @submit="handleSubmitFilter" class="filter">
-                <div class="filter__order">
-                    <!-- Composant 1 -->
-                    <FilterSelectComponent class="filter__order-select" field-name="colonne" :options="[
-                        { label: 'Nom', value: 'disease_name_FR' },
-                        { label: 'Alertes', value: 'alerts' },
-                        { label: 'Commentaires', value: 'comments' },
-                        { label: 'Alertes/Avatar', value: 'avatarAlerts' }
-                    ]"></FilterSelectComponent>
-                    <!-- Composant 2 -->
-                    <FilterOrderSwitchComponent fieldName="order"></FilterOrderSwitchComponent>
-                </div>
-                <!-- <div class="filter__search">
+        <div class="view__header">
+            <Transition name="fade-slide" tag="FilterPanel" appear>
+                <FilterPanel title="Filtres" @submit="handleSubmitFilter" class="filter">
+                    <div class="filter__order">
+                        <!-- Composant 1 -->
+                        <FilterSelectComponent class="filter__order-select" field-name="colonne" :options="[
+                            { label: 'Nom', value: 'disease_name_FR' },
+                            { label: 'Alertes', value: 'alerts' },
+                            { label: 'Commentaires', value: 'comments' },
+                            { label: 'Alertes/Avatar', value: 'avatarAlerts' }
+                        ]"></FilterSelectComponent>
+                        <!-- Composant 2 -->
+                        <FilterOrderSwitchComponent fieldName="order"></FilterOrderSwitchComponent>
+                    </div>
+                    <!-- <div class="filter__search">
                 <span>Rechercher :</span> 
             Composant 3
             <FilterInputComponent fieldName="test"></FilterInputComponent>
             </div> -->
-            </FilterPanel>
-        </Transition>
-        <section v-if="userStore.currentProfile?.role === 'Administrator'">
-            <n-button class="view__header__buttonProbleme" tertiary type="primary" color="white" size="large"
-                @click="openCreate">
-                Créer une solution
-            </n-button>
-        </section>
+                </FilterPanel>
+            </Transition>
+            <section v-if="userStore.currentProfile?.role === 'Administrator'">
+                <n-button class="view__header__buttonProbleme" tertiary type="primary" color="white" size="large"
+                    @click="openCreate">
+                    Créer une solution
+                </n-button>
+            </section>
+        </div>
+
         {{ filterResult }}
-        <TableContainer v-if="rows" :columns="columns" :data="(rows as Solution[])"
-            :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
-            :titleKey="'diseaseName'" @action="ButtonAction" @edit="openUpdate">
-        </TableContainer>
-        <div v-else>NO data from API</div>
+        <section class="view__content">
+            <TableContainer v-if="rows" :columns="columns" :data="(rows as Solution[] | SolutionAdmin[])"
+                :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="onActionDefined"
+                :titleKey="'diseaseName'" @action="ButtonAction" @edit="openUpdate">
+            </TableContainer>
+            <div v-else>NO data</div>
+        </section>
 
         <!-- <ProblemTable :columns="columns" :data="rows" primary-key="disease_name_FR"> -->
         <!-- <template #footer>
         <n-button type="primary">Action footer</n-button>
       </template> -->
         <!-- </ProblemTable> -->
-        <div class="table-footer">
+        <section class="view__footer">
             <n-pagination v-model:page="currentPage" :page-count="totalPage" simple />
             <slot name="footer"></slot>
-        </div>
+        </section>
     </section>
     <GenericFormModal v-model:show="showModal" :title="modalTitle" :adapter="solutionAdapter" @submit="handleSubmit">
 
@@ -82,6 +87,8 @@
     import { createSolutionFormAdapter } from '@/domain/form/solutionFormAdapter/SolutionFormAdapter';
     import type { SolutionFormModel } from '@/domain/form/solutionFormAdapter/SolutionFormModel';
     import type UpdateSolution from '@/domain/entities/UpdateSolution';
+    import type SolutionPayload from '@/domain/entities/SolutionListPayload';
+    import type SolutionAdmin from '@/domain/entities/SolutionAdmin';
 
     const statusOptions = [{
         label: 'Activer',
@@ -93,12 +100,12 @@
     const route = useRoute();
     const userStore = useUserStore();
 
-    const results = ref<Solution[] | void>();
+    const results = ref<Solution[] | SolutionPayload | SolutionAdmin[] | void>();
 
     const currentPage = ref<number>(1)
     const totalPage = ref<number>(0)
     const limitItemsPage = ref<number>(3)
-    const rows = ref<Solution[]>()
+    const rows = ref<Solution[] | SolutionAdmin[] | void>()
     // const totalItems = ref<number>();
 
     const columns: Ref<{ key: string; label: string, icon: Component }[]> = ref([])
@@ -116,30 +123,57 @@
     const showModal = ref(false)
     const solutionAdapter = createSolutionFormAdapter()
 
-    columns.value = userStore.currentProfile?.role === "Administrator" ? [
-        { key: 'globalRating', label: 'Global rating', icon: shallowRef(ProblemIcon) },
-        { key: 'solution_description_FR', label: 'Description', icon: shallowRef(ProblemIcon) },
-        { key: 'status_solution', label: 'Status', icon: shallowRef(ProblemIcon) },
-        { key: 'actions', label: 'Actions', icon: shallowRef(AlertAvatarIcon) },
-    ] : [
-        { key: 'globalRating', label: 'Global rating', icon: shallowRef(ProblemIcon) },
-        { key: 'solution_description_FR', label: 'Description', icon: shallowRef(ProblemIcon) },
-        { key: 'commentCount', label: 'Commentaires', icon: shallowRef(CommentIcon) },
-        { key: 'farmerAlertCount', label: 'Alertes', icon: shallowRef(AlertsIcon) },
-        { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: shallowRef(AlertAvatarIcon) },
-        { key: 'actions', label: 'Actions', icon: shallowRef(AlertAvatarIcon) },
-    ]
+    if (userStore.currentProfile?.role === "Administrator") {
+        if (userStore.isProblemViewAction) {
+            columns.value = [
+                { key: 'solution_description_FR', label: 'Description', icon: shallowRef(ProblemIcon) },
+                { key: 'status_solution', label: 'Status', icon: shallowRef(ProblemIcon) },
+                { key: 'actions', label: 'Actions', icon: shallowRef(AlertAvatarIcon) },
+            ]
+        }
+        else {
+            columns.value = [
+                { key: 'description', label: 'Description', icon: shallowRef(ProblemIcon) },
+                { key: 'status_solution', label: 'Status', icon: shallowRef(ProblemIcon) },
+                { key: 'actions', label: 'Actions', icon: shallowRef(AlertAvatarIcon) },
+            ]
+        }
+    }
+    else {
+        columns.value = [
+            { key: 'globalRating', label: 'Global rating', icon: shallowRef(ProblemIcon) },
+            { key: 'solution_description_FR', label: 'Description', icon: shallowRef(ProblemIcon) },
+            { key: 'commentCount', label: 'Commentaires', icon: shallowRef(CommentIcon) },
+            { key: 'farmerAlertCount', label: 'Alertes', icon: shallowRef(AlertsIcon) },
+            { key: 'similarAvatarAlertCount', label: 'Alertes/Avatar', icon: shallowRef(AlertAvatarIcon) },
+            { key: 'actions', label: 'Actions', icon: shallowRef(AlertAvatarIcon) },
+        ]
+    }
+
     onMounted(async () => {
 
         //Si on vient du problemView, alors on utilise la route pour avoir les solutions par rapport à un PROBLEME id
-        if (userStore.isProblemViewAction) {
-            results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution.value?.toString() as string, "fr", "farmer", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+        if (userStore.currentProfile?.role === "Administrator") {
+            if (userStore.isProblemViewAction) {
+                results.value = await solutionService?.getSolutionsByProblemIdAdmin(idProblemSolution.value?.toString() as string, "fr", "admin", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+                rows.value = results.value?.data as Solution[];
+                console.log("results.value?.data : ", results.value)
+            }
+            else
+                results.value = await solutionService?.getSolutionsBySubProblemId(idSubProblemSolution.value?.toString() as string, "fr", "admin", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+            rows.value = results.value as SolutionAdmin[];
+
         }
-        else
-            results.value = await solutionService?.getSolutionsBySubProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farmer", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
-        //Calcul pagination
+        else {
+            if (userStore.isProblemViewAction) {
+                results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution.value?.toString() as string, "fr", "farmer", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+            }
+            else
+                results.value = await solutionService?.getSolutionsBySubProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farmer", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+            rows.value = results.value as Solution[];
+        }//Calcul pagination
         totalPage.value = 1
-        rows.value = results.value as Solution[]
+
         // A modifier dès que l'api est mise à jour (pagination)
         // totalItems.value = results.value?.
         //     pageSize.value = results.value!.totalPages + 1
@@ -154,9 +188,25 @@
 
     watch(currentPage, async () => {
         // if (sortKey.value) sortOrder.value = 'asc'
-        results.value = await solutionService?.getSolutionsByProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farm", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+        if (userStore.currentProfile?.role === "Administrator") {
+            if (userStore.isProblemViewAction) {
+                results.value = await solutionService?.getSolutionsByProblemIdAdmin(idProblemSolution.value?.toString() as string, "fr", "admin", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+                rows.value = results.value?.data as Solution[];
+                console.log("results.value?.data : ", results.value)
+            }
+            else
+                results.value = await solutionService?.getSolutionsBySubProblemId(idSubProblemSolution.value?.toString() as string, "fr", "admin", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+            rows.value = results.value as SolutionAdmin[];
 
-        rows.value = results.value as Solution[];
+        }
+        else {
+            if (userStore.isProblemViewAction) {
+                results.value = await solutionService?.getSolutionsByProblemId(idProblemSolution.value?.toString() as string, "fr", "farmer", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+            }
+            else
+                results.value = await solutionService?.getSolutionsBySubProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farmer", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+            rows.value = results.value as Solution[];
+        }
     })
 
     const mode = ref<'create' | 'update'>('create')
@@ -209,14 +259,19 @@
         if (mode.value === 'create') {
             const created = await solutionAdapter.create()
             console.log('Created :', created)
-            if (userStore.isProblemViewAction) {
-                results.value = await solutionService?.getSolutionsByProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farmer", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+            if (userStore.currentProfile?.role === "Administrator") {
+                if (userStore.isProblemViewAction) {
+                    results.value = await solutionService?.getSolutionsByProblemIdAdmin(idProblemSolution.value?.toString() as string, "fr", "admin", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+                    rows.value = results.value?.data as Solution[];
+                    console.log("results.value?.data : ", results.value)
+                }
+                else
+                    results.value = await solutionService?.getSolutionsBySubProblemId(idSubProblemSolution.value?.toString() as string, "fr", "admin", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
+                rows.value = results.value as SolutionAdmin[];
+
             }
-            else
-                results.value = await solutionService?.getSolutionsBySubProblemId(idSubProblemSolution.value?.toString() as string, "fr", "farmer", userStore.currentUserId as string, currentPage.value, limitItemsPage.value, "", "")
-            //Calcul pagination
+
             totalPage.value = 1
-            rows.value = results.value as Solution[]
 
         }
 
@@ -235,7 +290,7 @@
             console.log("updateProblem", updatedSolution)
             rows.value?.map((subProblem) => {
                 if (idSolution == subProblem.id_solution) {
-                    subProblem.solution_description_FR = updatedSolution?.solution_description_FR as string
+                    subProblem.description = updatedSolution?.solution_description_FR as string
                     subProblem.status_solution = updatedSolution?.status_solution as boolean
                 }
             })

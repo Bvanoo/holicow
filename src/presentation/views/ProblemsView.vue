@@ -219,7 +219,7 @@
                 userStore.isProblemViewAction = true
                 router.push({
                     name: 'solutionsList',
-                    params: { data: [(row as Problem).diseaseId?.toString() as string, (row as Problem).diseaseName?.toString() as string] },
+                    params: { data: [(row as Problem).diseaseId?.toString() as string, "0", (row as Problem).diseaseName?.toString() as string] },
                 })
                 //vers solution
             }

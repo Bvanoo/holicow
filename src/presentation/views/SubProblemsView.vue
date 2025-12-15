@@ -17,10 +17,15 @@
                     </FilterPanel>
                 </TransitionGroup>
             </Transition>
-            <section v-if="userStore.currentProfile?.role === 'Administrator'">
+            <section v-if="userStore.currentProfile?.role === 'Administrator'" class="view__header__button">
                 <n-button class="view__header__buttonProbleme" tertiary type="primary" color="white" size="large"
                     @click="openCreate">
                     Créer un sous-problème
+                </n-button>
+                <n-button v-if="!((rows as SubProblem[] | SubProblemAdmin[]).length > 0)"
+                    class="view__header__buttonProbleme" tertiary type="primary" color="white" size="large"
+                    @click="goToSolutions">
+                    Aller vers les solutions
                 </n-button>
             </section>
         </div>
@@ -194,6 +199,17 @@
     function handleSubmitFilter(payload: Record<string, unknown>) {
         filterResult.value = payload
         console.log(payload)
+    }
+
+    const goToSolutions = () => {
+        userStore.isProblemViewAction = true;
+        router.push({
+            name: 'solutionsList',
+            // params: { data: (row as SubProblemAdmin).id_sub_disease + '_' + (row as SubProblemAdmin).sub_disease_name_FR }
+            params: {
+                data: [idProblem.value as string, "0", problemName.value as string]
+            }
+        });
     }
 
     const openCreate = () => {

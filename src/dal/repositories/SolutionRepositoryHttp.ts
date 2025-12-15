@@ -19,6 +19,8 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
       get(url: string): Promise<Solution[]>
       getSolutionsBySubProblemId: (url: string) => Promise<Solution[]>
       getSolutionsByProblemId: (url: string) => Promise<Solution[]>
+      getSolutionsBySubProblemIdAdmin: (url: string) => Promise<SolutionPayload>
+      getSolutionsByProblemIdAdmin: (url: string) => Promise<SolutionPayload>
       getAllSolution: (url: string) => Promise<SolutionPayload>
 
       getSolutionByProblemFromAlert: (url: string) => Promise<SolutionBySubDisease>
@@ -62,6 +64,35 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
   ): Promise<Solution[]> {
     return await this.http.getSolutionsByProblemId(
       `http://localhost:3000/solution/diseaseSolution/${idProblem}?lang=${lang}&role=${role}&profilId=${profilId}`,
+    )
+  }
+  async getSolutionsBySubProblemIdAdmin(
+    idSubProblem: string,
+    lang: string,
+    role: string,
+    profilId: string,
+    page: number,
+    limit: number,
+    sortedBy: string,
+    sortedOrder: string,
+  ): Promise<SolutionPayload> {
+    console.log('')
+    return await this.http.getSolutionsBySubProblemIdAdmin(
+      `http://localhost:3000/solution/subDiseaseSolution/${idSubProblem}?lang=${lang}&role=${role}&page=${page}&limit=${limit}&profilId=${profilId}`,
+    )
+  }
+  async getSolutionsByProblemIdAdmin(
+    idProblem: string,
+    lang: string,
+    role: string,
+    profilId: string,
+    page: number,
+    limit: number,
+    sortedBy: string,
+    sortedOrder: string,
+  ): Promise<SolutionPayload> {
+    return await this.http.getSolutionsByProblemIdAdmin(
+      `http://localhost:3000/solution/diseaseSolution/${idProblem}?lang=${lang}&role=${role}&page=${page}&limit=${limit}&profilId=${profilId}`,
     )
   }
 

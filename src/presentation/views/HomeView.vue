@@ -20,9 +20,8 @@
       </div>
     </div>
     <section v-if="notif.length !== 0" class="view__content">
-      <TableContainer class="tc" :columns="columns" 
-        :isAuthorized="userStore.currentProfile?.role === 'Administrator'" :actionLabel="() => 'Details'"
-        :titleKey="'disease_name'" @action="showAlert">
+      <TableContainer class="tc" :columns="columns" :isAuthorized="userStore.currentProfile?.role === 'Administrator'"
+        :actionLabel="() => 'Details'" :titleKey="'disease_name'" @action="showAlert">
       </TableContainer>
     </section>
   </section>
@@ -41,7 +40,7 @@
   const userStore = useUserStore();
 
   const alertService = inject<AlertsService>("alertsService");
-  const notif : [] = [];
+  const notif: [] = [];
   const res = ref<AlertPayload | void>();
   const rows = ref<Alert[]>();
   const columns: Ref<{ key: string; label: string, icon: Component | undefined }[]> = ref([])
@@ -57,6 +56,7 @@
     res.value = await alertService?.getAllAlertsByUserId(userStore.currentUserId as string, 'fr', 1, 10);
     rows.value = res.value?.data;
     rows.value?.map(alert => {
+
       alert.warning_date = new Date(alert.warning_date).toLocaleDateString('fr-FR');
       alert.id_troupeau = alert.id_troupeau == null ? 'none' : alert.id_troupeau;
       alert.id_animal = alert.id_animal == null ? 'none' : alert.id_animal;

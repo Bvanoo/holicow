@@ -1,4 +1,3 @@
-
 import type { updateStatusSolve } from '@/domain/entities/updateStatusSolve'
 
 import type CreateSolution from '@/domain/entities/CreateSolution'
@@ -60,6 +59,14 @@ export class AxiosHttpClient {
     const response = await axios.get(url)
     return response.data
   }
+  async getSolutionsBySubProblemIdAdmin(url: string) {
+    const response = await axios.get(url)
+    return response.data
+  }
+  async getSolutionsByProblemIdAdmin(url: string) {
+    const response = await axios.get(url)
+    return response.data
+  }
   async getSolutionById(url: string) {
     const response = await axios.get(url)
     return response.data
@@ -85,26 +92,26 @@ export class AxiosHttpClient {
     const response = await axios.get(url)
     return response.data
   }
-  async getAlertById(url: string){
+  async getAlertById(url: string) {
     const response = await axios.get(url)
     return response.data
   }
 
-  async getSubProblemWithStat(url: string){
+  async getSubProblemWithStat(url: string) {
     const response = await axios.get(url)
     return response.data
   }
-  async updateStatus(url: string){
+  async updateStatus(url: string) {
     const response = await axios.put(url)
     return response.data
   }
 
-  async getSolutionByProblemFromAlert(url: string){
+  async getSolutionByProblemFromAlert(url: string) {
     const response = await axios.get(url)
     return response.data
   }
 
-  async putStatusSolve(url: string,  object: updateStatusSolve){
+  async putStatusSolve(url: string, object: updateStatusSolve) {
     const response = await axios.put(url, object)
     return response.data
   }

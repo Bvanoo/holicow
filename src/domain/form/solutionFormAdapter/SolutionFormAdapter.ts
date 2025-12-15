@@ -19,16 +19,28 @@ async function apiCreateSubProblem(data: SolutionFormModel): Promise<SolutionFor
   const solutionService = new SolutionService(solutionRepositoryHttp)
   const userStore = useUserStore()
   console.log('data', data)
-
-  const newSolution: CreateSolution = {
-    solution_description_FR: data.solution_description_FR as string,
-    //bug de l'api, obligé de " ?? '' ", sinon on ne renvoit rien dans l'objet vers l'api, (si c'est null)
-    solution_description_DE: (data.solution_description_DE as string) ?? '',
-    solution_description_EN: (data.solution_description_EN as string) ?? '',
-    solution_description_NL: (data.solution_description_NL as string) ?? '',
-    status_solution: data.status_solution === 'true',
-    id_disease: Number(data.id_disease),
-    id_subDisease: Number(data.id_sub_disease),
+  let newSolution: CreateSolution
+  if (userStore.isProblemViewAction) {
+    newSolution = {
+      solution_description_FR: data.solution_description_FR as string,
+      //bug de l'api, obligé de " ?? '' ", sinon on ne renvoit rien dans l'objet vers l'api, (si c'est null)
+      solution_description_DE: (data.solution_description_DE as string) ?? '',
+      solution_description_EN: (data.solution_description_EN as string) ?? '',
+      solution_description_NL: (data.solution_description_NL as string) ?? '',
+      status_solution: data.status_solution === 'true',
+      id_disease: Number(data.id_disease),
+    }
+  } else {
+    newSolution = {
+      solution_description_FR: data.solution_description_FR as string,
+      //bug de l'api, obligé de " ?? '' ", sinon on ne renvoit rien dans l'objet vers l'api, (si c'est null)
+      solution_description_DE: (data.solution_description_DE as string) ?? '',
+      solution_description_EN: (data.solution_description_EN as string) ?? '',
+      solution_description_NL: (data.solution_description_NL as string) ?? '',
+      status_solution: data.status_solution === 'true',
+      id_disease: Number(data.id_disease),
+      id_subDisease: Number(data.id_sub_disease),
+    }
   }
   console.log('newSolution', newSolution)
   return await solutionService
