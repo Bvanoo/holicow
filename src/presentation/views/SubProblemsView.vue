@@ -176,14 +176,14 @@
                 name: 'solutionsList',
                 // params: { data: (row as SubProblemAdmin).id_sub_disease + '_' + (row as SubProblemAdmin).sub_disease_name_FR }
                 params: {
-                    data: [idProblem.value as string, (row as SubProblemAdmin).id_sub_disease, problemName.value as string]
+                    data: [idProblem.value as string, (row as SubProblemAdmin).id_sub_disease, problemName.value as string, row.sub_disease_name_FR as string]
                 }
             });
         }
         else {
             router.push({
                 name: 'solutionsList',
-                params: { data: [idProblem.value as string, (row as SubProblem).subDiseaseId?.toString() as string, problemName.value as string] }
+                params: { data: [idProblem.value as string, (row as SubProblem).subDiseaseId?.toString() as string, problemName.value as string, row.subDiseaseName as string] }
             });
         }
     }

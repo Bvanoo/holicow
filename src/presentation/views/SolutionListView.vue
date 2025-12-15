@@ -1,7 +1,7 @@
 <template>
     <!-- <ChatBubble /> -->
     <section class="view">
-        <h1>{{ solutionSubProblemName }}</h1>
+        <h1>{{ solutionProblemName }}</h1>
         <div class="view__header">
             <Transition name="fade-slide" tag="FilterPanel" appear>
                 <FilterPanel title="Filtres" @submit="handleSubmitFilter" class="filter">
@@ -53,10 +53,10 @@
     <GenericFormModal v-model:show="showModal" :title="modalTitle" :adapter="solutionAdapter" @submit="handleSubmit">
 
         <n-form-item label="Nom du problème" v-if="userStore.isProblemViewAction">
-            <n-input :disabled="true" v-model:value="solutionSubProblemName" />
+            <n-input :disabled="true" v-model:value="solutionProblemName" />
         </n-form-item>
         <n-form-item label="Nom du sous-problème" v-else>
-            <n-input :disabled="true" v-model:value="solutionSubProblemName" />
+            <n-input :disabled="true" v-model:value="solutionProblemName" />
         </n-form-item>
         <n-form-item label="Nom du sous-problème" path="sub_disease_name_FR">
             <n-input type="textarea" v-model:value="solutionAdapter.form.value.solution_description_FR" />
@@ -113,11 +113,14 @@
     console.log(route.params.data)
     const idProblemSolution = ref<string>()
     const idSubProblemSolution = ref<string>()
+    const solutionProblemName = ref<string>()
     const solutionSubProblemName = ref<string>()
     if (route.params.data) {
         idProblemSolution.value = route.params.data[0]
         idSubProblemSolution.value = route.params.data[1]
-        solutionSubProblemName.value = route.params.data[2]
+        solutionProblemName.value = route.params.data[2]
+        solutionSubProblemName.value = route.params.data[3]
+
     }
 
     const showModal = ref(false)
