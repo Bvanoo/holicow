@@ -10,7 +10,7 @@
         <section class="view__content">
             <TableContainer class="tc" :columns="columns" :data="(rows as AlertWithProblem[])"
                 :isAuthorized="userStore.currentProfile?.role === 'Administrator'"
-                :actionLabel="() => `Marquer l'alerte comme résolue`" :titleKey="''" @action="resolution"
+                :actionLabel="() => `Marquer l'alerte comme résolue`" :titleKey="''" :isShow="discard" @action="resolution"
                 :isAlert="false">
             </TableContainer>
             <div v-if="checkIfSubDisease(rows) !== 0 && solutionExist == false">
@@ -68,6 +68,7 @@
     const rows = ref<AlertWithProblem[]>([]);
     const resDisease = ref<ProblemByAlert[]>([]);
     const resSubDisease = ref<SubProblemByAlert[]>([]);
+    const discard = ref(false)
     // const resSubDiseaseWithStat = ref<SubProblemPayload[]>([]);
     const solutions = ref<void | SolutionBySubDisease[] | undefined>();
     const sol = ref<SolutionBySubDisease[]>([]);
@@ -138,7 +139,9 @@
 
     async function resolution(row: Alert) {
         const res = await alertService?.updateStatus(row.id_warn.toString());
+        discard.value = true
         notifyStatusChange(res?.alert.warn_status)
+
     }
 
     function notifyStatusChange(status: boolean | undefined) {
