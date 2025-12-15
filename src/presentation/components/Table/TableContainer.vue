@@ -16,7 +16,7 @@
         :style="{ transitionDelay: rIndex * 0.07 + 's' }">
         <!-- {{ onRowCreated(props.) }} -->
         <component :is="isMobile ? TableRowMobile : TableRowDesktop" :columns="columns" :row="row"
-          :actionLabel="actionLabel(row)" :isShow="isShow" :actionLabelOne="actionLabelOne" @action="handleAction" :titleKey="titleKey"
+          :actionLabel="actionLabel(row)" :isShow="!isShow" :actionLabelOne="actionLabelOne" @action="handleAction" :titleKey="titleKey"
           :is-authorized="isAuthorized" :isAlert="isAlert" @edit="openEdit" @delete="openDelete">
 
           <!-- :actionLabel="actionLabel(row)" @action="handleAction" :titleKey="titleKey" :is-authorized="isAuthorized"
@@ -53,6 +53,7 @@
     actionLabelOne?: string
     titleKey: string
   }>()
+
 
   const isAuthorized = props.isAuthorized
 
