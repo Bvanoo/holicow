@@ -122,12 +122,10 @@ export class SolutionService {
   ) {
     return await this.repo
       .getSolutionByProblemFromAlert(idProblem, lang, role, profilId, page, limit)
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+      .catch((err) => console.error(err.message))
   }
 
   async putStatusSolve(idWarn: string, solve: updateStatusSolve) {
-    return await this.repo
-      .putStatusSolve(idWarn, solve)
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+    return await this.repo.putStatusSolve(idWarn, solve).catch((err) => console.error(err.message))
   }
 }

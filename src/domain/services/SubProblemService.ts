@@ -34,12 +34,18 @@ export class SubProblemService {
   }
 
   async updateSubProblem(role: string, id: string, updateProblem: UpdateSubProblemAdmin) {
-    return await this.repo.updateSubProblem(role, id, updateProblem)
+    return await this.repo
+      .updateSubProblem(role, id, updateProblem)
+      .catch((err) => console.error(err.message))
   }
   async createSubProblem(role: string, createSubProblem: CreateSubProblem) {
-    return await this.repo.createSubProblem(role, createSubProblem)
+    return await this.repo
+      .createSubProblem(role, createSubProblem)
+      .catch((err) => console.error(err.message))
   }
   async toggleSubProblemStatus(role: string, idSubProblem: string) {
-    return await this.repo.toggleSubProblemStatus(role, idSubProblem)
+    return await this.repo
+      .toggleSubProblemStatus(role, idSubProblem)
+      .catch((err) => console.error(err.message))
   }
 }

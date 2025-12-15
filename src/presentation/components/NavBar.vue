@@ -96,10 +96,11 @@
 
         <n-drawer v-model:show="showDrawer" placement="left" size="70%">
             <div class="drawer-content">
-                <button v-for="item in tabs" :key="item.key + '-drawer'"
-                    :class="['drawer-item', { active: item.key === route.name }]" @click="onSelect(item.key)">
-                    {{ item.label }}
-                </button>
+                <template v-for="item in tabs" :key="item.key + '-drawer'">
+                    <button v-if="!(userStore.currentProfile?.role === 'Administrator' && item.label === 'Profile')"
+                        :class="['drawer-item', { active: item.key === route.name }]" @click="onSelect(item.key)">
+                        {{ item.label }}
+                    </button></template>
             </div>
         </n-drawer>
     </nav>
