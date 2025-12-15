@@ -23,7 +23,7 @@
 
     <div class="mobile-card-footer">
       <section class="mobile-card-footer-user">
-        <n-button secondary type="info" @click="emit('action', row)">
+        <n-button v-if="isShow" secondary type="info" @click="emit('action', row)">
           <!-- <n-icon :component="UpdateIcon" /> -->
           <!-- voir solution(s) -->
           {{ props.actionLabel }}
@@ -59,6 +59,7 @@
     columns: ColumnDefinition<T>[]
     isAuthorized: boolean
     isAlert?: boolean
+    isShow?: boolean
     titleKey: string,
     actionLabel: string
     actionLabelOne?: string

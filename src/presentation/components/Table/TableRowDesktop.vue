@@ -7,7 +7,7 @@
           {{ row[col.key] }}</template>
         <template v-else-if="col.key === 'actions'">
           <section class="mobile-card-footer-user">
-            <n-button secondary type="info" @click="emit('action', row)">
+            <n-button v-if="isShow" secondary type="info" @click="emit('action', row)">
               <!-- <n-icon :component="UpdateIcon" /> -->
               <!-- voir solution(s) -->
               {{ props.actionLabel }}
@@ -50,6 +50,7 @@
     columns: ColumnDefinition<T>[]
     isAuthorized: boolean
     isAlert?: boolean
+    isShow?: boolean
     actionLabel: string
     actionLabelOne?: string
     titleKey: string
