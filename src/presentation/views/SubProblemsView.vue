@@ -1,7 +1,7 @@
 <template>
     <!-- <ChatBubble /> -->
     <section class="view">
-        <h1>{{ problemName }}</h1>
+        <h1 class="view--title">{{ problemName }}</h1>
         <div class="view__header">
 
             <Transition name="fade-slide" tag="FilterPanel" appear>
@@ -294,7 +294,4 @@
         padding-bottom: 12px;
     }
 
-    h1 {
-        color: white;
-    }
 </style>

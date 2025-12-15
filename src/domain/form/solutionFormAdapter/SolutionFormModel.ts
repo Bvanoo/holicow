@@ -8,6 +8,7 @@ export interface SolutionFormModel extends Record<string, unknown> {
   status_solution: string
   id_disease?: string
   id_sub_disease?: string
+  description?: string
 }
 
 export const SolutionFormInitial: SolutionFormModel = {

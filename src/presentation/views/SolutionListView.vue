@@ -1,7 +1,7 @@
 <template>
     <!-- <ChatBubble /> -->
     <section class="view">
-        <h1>{{ solutionProblemName }}</h1>
+        <h1 class="view--title">{{ solutionProblemName }}</h1>
         <div class="view__header">
             <Transition name="fade-slide" tag="FilterPanel" appear>
                 <FilterPanel title="Filtres" @submit="handleSubmitFilter" class="filter">
@@ -222,7 +222,7 @@
     function ButtonAction(row: Solution) {
         router.push({
             name: 'solution',
-            params: { data: [row.id_solution, solutionProblemName.value as string, solutionSubProblemName.value as string]}
+            params: { data: [row.id_solution, solutionProblemName.value as string, solutionSubProblemName.value as string] }
         });
     }
 
@@ -247,11 +247,12 @@
     }
     const openUpdate = (row: Solution) => {
         mode.value = 'update'
-        console.log(row)
+        console.log('openUpdate', row)
 
         const problemAdminFormModel: SolutionFormModel = {
-            solution_description_FR: row.solution_description_FR as string,
+            solution_description_FR: userStore.isProblemViewAction ? row.solution_description_FR : row.description as string,
             status_solution: row.status_solution ? "true" : "false",
+            id_solution: row.id_solution
         }
 
         solutionAdapter.load(problemAdminFormModel)
@@ -288,13 +289,13 @@
                 status_solution: updated.status_solution === "true",
 
             }
-
+            console.log("idSolution", idSolution)
             const updatedSolution = await solutionService?.updateSolution("admin", Number(idSolution), updateSolution)
-            console.log("updateProblem", updatedSolution)
-            rows.value?.map((subProblem) => {
-                if (idSolution == subProblem.id_solution) {
-                    subProblem.description = updatedSolution?.solution_description_FR as string
-                    subProblem.status_solution = updatedSolution?.status_solution as boolean
+            console.log("updatedSolution", updatedSolution)
+            rows.value?.map((solution) => {
+                if (idSolution == solution.id_solution) {
+                    solution.description = updatedSolution?.solution_description_FR as string
+                    solution.status_solution = updatedSolution?.status_solution as boolean
                 }
             })
             console.log("rows", rows.value)
