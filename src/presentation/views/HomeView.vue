@@ -56,7 +56,6 @@
     res.value = await alertService?.getAllAlertsByUserId(userStore.currentUserId as string, 'fr', 1, 10);
     rows.value = res.value?.data;
     rows.value?.map(alert => {
-
       alert.warning_date = new Date(alert.warning_date).toLocaleDateString('fr-FR');
       alert.id_troupeau = alert.id_troupeau == null ? 'none' : alert.id_troupeau;
       alert.id_animal = alert.id_animal == null ? 'none' : alert.id_animal;
@@ -65,7 +64,7 @@
 
   function showAlert(row: Alert) {
     router.push({
-      name: 'alerte',
+      name: 'alert',
       params: { data: row.id_warn }
     });
   }

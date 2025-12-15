@@ -1,55 +1,57 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
-  <div class="main-container">
-    <transition name="fade-slide" tag="div">
-      <n-card class="main-container-card" hoverable>
-        <div class="main-container-card-header">
-          <div class="main-container-card-header-title">
-            {{ problemName }} &nbsp; - &nbsp; {{ subproblemName }}
+  <div class="main">
+    <div class="main-container">
+      <transition name="fade-slide" tag="div">
+        <n-card class="main-container-card" hoverable>
+          <div class="main-container-card-header">
+            <div class="main-container-card-header-title">
+              {{ problemName }} &nbsp; - &nbsp; {{ subproblemName }}
+            </div>
+            <n-badge :value="alerts" :color="badgeColor" />
           </div>
-          <n-badge :value="alerts" :color="badgeColor" />
-        </div>
 
-        <div class="main-container-card-content">
-          <div class="main-container-card-content-title">{{ 'Solution : ' }}</div>
-          <div class="main-container-card-content-rating">
-            {{ 'Cote globale : ' }}
-            <div>
-              <span v-for="(value, index) in globalNote" :key="index">
-                {{ '⭐' }}
-              </span>
+          <div class="main-container-card-content">
+            <div class="main-container-card-content-title">{{ 'Solution : ' }}</div>
+            <div class="main-container-card-content-rating">
+              {{ 'Cote globale : ' }}
+              <div>
+                <!-- <span v-for="(value, index) in globalNote" :key="index">
+                  {{ '⭐' }}
+                </span> -->
+              </div>
+            </div>
+            <div class="main-container-card-content-rating">
+              {{ 'Ma cote : ' }}
+              <div>
+                <!-- <span v-for="(value, index) in myNote" :key="index">
+                  {{ '⭐' }}
+                </span> -->
+              </div>
             </div>
           </div>
-          <div class="main-container-card-content-rating">
-            {{ 'Ma cote : ' }}
-            <div>
-              <span v-for="(value, index) in myNote" :key="index">
-                {{ '⭐' }}
-              </span>
-            </div>
+
+          <div class="main-container-card-content-prevention">
+            <p>
+
+              {{ prevention }}
+            </p>
           </div>
-        </div>
 
-        <div class="main-container-card-content-prevention">
-          <p>
-
-            {{ prevention }}
-          </p>
-        </div>
-
-        <!-- <div class="user-bubble-section">
+          <!-- <div class="user-bubble-section">
           <SimpleChatBubble :id="(-1).toString()"
             :avatar-path="userCommentAvatarPath ?? 'https://www.placehold.co/64x64'" :content="userCommentContent"
             :author="userName" :date="userCommentDate" :icon-path="'/pen.svg'" />
         </div> -->
-      </n-card>
-    </transition>
+        </n-card>
+      </transition>
 
-    <n-empty v-if="comments.length === 0" description="Aucun Commentaire" class="empty-block" />
-    <template v-else v-for="(value, index) in comments" :key="index">
-    <!-- Insérer des chatBubble avec les noms d'auteur et leurs avatars :date="value.date.toLocaleDateString()" -->
-    <SimpleChatBubble :content="value.content"   :icon-path="'/pen.svg'" />
-    </template>
+      <n-empty v-if="comments.length === 0" description="Aucun Commentaire" class="empty-block" />
+      <template v-else v-for="(value, index) in comments" :key="index">
+        <!-- Insérer des chatBubble avec les noms d'auteur et leurs avatars :date="value.date.toLocaleDateString()" -->
+        <SimpleChatBubble :content="value.content" :icon-path="'/pen.svg'" />
+      </template>
+    </div>
   </div>
 </template>
 
@@ -83,18 +85,24 @@
     globalNote: 0,
     badgeColor: '#000000',
     alerts: -1,
-    prevention: 'Désinfection avant et après la traite (trempage ou pulvérisation)',
+
     userName: 'John Doe',
     userCommentDate: new Date().toLocaleDateString(),
   })
 </script>
 
 <style scoped>
+  .main {
+    display: flex;
+    justify-content: center;
+  }
+
   .main-container {
     display: flex;
     flex-direction: column;
     gap: 18px;
     padding: 16px;
+    width: 70%;
   }
 
   .main-container-card {
@@ -140,6 +148,8 @@
   .main-container-card-content-prevention {
     display: flex;
     justify-content: center;
+    font-size: 16px;
+    margin: 8px;
   }
 
   .main-container-card-content-prevention-title {
