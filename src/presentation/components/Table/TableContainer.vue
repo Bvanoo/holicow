@@ -17,7 +17,7 @@
         <!-- {{ onRowCreated(props.) }} -->
         <component :is="isMobile ? TableRowMobile : TableRowDesktop" :columns="columns" :row="row"
           :actionLabel="actionLabel(row)" @action="handleAction" :titleKey="titleKey" :is-authorized="isAuthorized"
-          @edit="openEdit" @delete="openDelete">
+          :is-alert="true" @edit="openEdit" @delete="openDelete">
           <!-- Forward all column slots -->
           <!-- <template v-for="col in columns" #[col.key]="slotProps">
             <slot :name="col.key" v-bind="slotProps" />

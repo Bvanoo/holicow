@@ -130,12 +130,7 @@
                 { key: 'status_disease', label: 'Status', icon: shallowRef(AlertAvatarIcon) },
                 { key: 'actions', label: 'Actions', icon: shallowRef(AlertAvatarIcon) },
             ]
-            results.value = await problemService?.getAllProblemsAdmin(
-                currentPage.value,
-                limitItemsPage.value,
-                '',
-                '',
-            )
+            results.value = await problemService?.getAllProblemsAdmin(currentPage.value, limitItemsPage.value, '', '')
             totalPages.value = Number(results.value?.totalPages)
             console.log('limitItems.value', limitItemsPage.value)
             rows.value = results.value!.data as ProblemAdmin[]
@@ -194,23 +189,23 @@
     function ButtonAction(row: Problem | ProblemAdmin) {
         //Les objets que nous renvoit l'api ne sont pas les mêmes en fonction de l'admin ou du farmer
         if (userStore.currentProfile?.role === 'Administrator') {
-            if (row.SubDiseaseExisting) {
-                router.push({
-                    name: 'sub problems',
-                    params: {
-                        data: (row as ProblemAdmin).id_disease + '_' + (row as ProblemAdmin).disease_name_FR,
-                    },
-                })
-            } else {
-                userStore.isProblemViewAction = true
-                router.push({
-                    name: 'solutionsList',
-                    params: {
-                        data: (row as ProblemAdmin).id_disease + '_' + (row as ProblemAdmin).disease_name_FR,
-                    },
-                })
-                //vers solution
-            }
+            // if (row.SubDiseaseExisting) {
+            router.push({
+                name: 'sub problems',
+                params: {
+                    data: (row as ProblemAdmin).id_disease + '_' + (row as ProblemAdmin).disease_name_FR,
+                },
+            })
+            // } else {
+            //     userStore.isProblemViewAction = true
+            //     router.push({
+            //         name: 'solutionsList',
+            //         params: {
+            //             data: (row as ProblemAdmin).id_disease + '_' + (row as ProblemAdmin).disease_name_FR,
+            //         },
+            //     })
+            //     //vers solution
+            // }
         } else {
             if (row.SubDiseaseExisting) {
                 console.log(row.diseaseId)
@@ -230,6 +225,9 @@
     }
 
     function onActionDefined(row: Problem) {
+        if (userStore.currentProfile?.role === "Administrator")
+            return 'voir les sous-problèmes'
+
         if (row.SubDiseaseExisting) {
             return 'voir les sous-problèmes'
         } else {
@@ -284,6 +282,8 @@
         if (mode.value === 'create') {
             const created = await problemAdapter.create()
             console.log('Created :', created)
+            results.value = await problemService?.getAllProblemsAdmin(currentPage.value, limitItemsPage.value, '', '')
+            totalPages.value = Number(results.value?.totalPages)
         }
 
         if (mode.value === 'update') {

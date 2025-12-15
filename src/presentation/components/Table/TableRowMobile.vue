@@ -53,10 +53,10 @@
     row: T
     columns: ColumnDefinition<T>[]
     isAuthorized: boolean
+    isAlert?: boolean
     titleKey: string,
     actionLabel: string
   }>()
-
   const emit = defineEmits<{
     (e: 'edit', row: T): void
     (e: 'delete', row: T): void

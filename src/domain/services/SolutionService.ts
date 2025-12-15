@@ -1,5 +1,6 @@
-import { showSimpleErrorBox } from '../exception/utils'
 import type { SolutionRepositoryHttp } from '@/dal/repositories/SolutionRepositoryHttp'
+import type CreateSolution from '../entities/CreateSolution'
+import type UpdateSolution from '../entities/UpdateSolution'
 
 export class SolutionService {
   constructor(private repo: SolutionRepositoryHttp) {}
@@ -29,7 +30,7 @@ export class SolutionService {
         sortedBy,
         sortedOrder,
       )
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+      .catch((err) => console.error(err.message))
   }
   async getSolutionsByProblemId(
     idProblem: string,
@@ -43,11 +44,21 @@ export class SolutionService {
   ) {
     return await this.repo
       .getSolutionsByProblemId(idProblem, lang, role, profilId, page, limit, sortedBy, sortedOrder)
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+      .catch((err) => console.error(err.message))
   }
   async getSolutionById(idSolution: string, lang: string) {
     return await this.repo
       .getSolutionById(idSolution, lang)
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+      .catch((err) => console.error(err.message))
+  }
+  async createSolution(role: string, lang: string, profilId: string, newSolution: CreateSolution) {
+    return await this.repo
+      .createSolution(role, lang, profilId, newSolution)
+      .catch((err) => console.warn(err.message))
+  }
+  async updateSolution(role: string, idSolution: number, updateSolution: UpdateSolution) {
+    return await this.repo
+      .updateSolution(role, idSolution, updateSolution)
+      .catch((err) => console.warn(err.message))
   }
 }

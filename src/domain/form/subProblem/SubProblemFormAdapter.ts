@@ -19,14 +19,14 @@ async function apiCreateSubProblem(data: SubProblemFormModel): Promise<SubProble
   console.log('data', data)
 
   const newSubProblem: CreateSubProblem = {
-    sub_disease_name_FR: data.sub_disease_name_FR,
-    sub_disease_name_DE: '',
-    sub_disease_name_EN: '',
-    sub_disease_name_NL: '',
-    status_sub_disease: false,
-    diseaseId: data.id_disease as string,
+    sub_disease_name_FR: data.sub_disease_name_FR as string,
+    sub_disease_name_DE: data.sub_disease_name_DE as string,
+    sub_disease_name_EN: data.sub_disease_name_EN as string,
+    sub_disease_name_NL: data.sub_disease_name_NL as string,
+    status_sub_disease: data.status_sub_disease === 'true',
+    id_disease: Number(data.id_disease),
   }
-  return subProblemService
+  return await subProblemService
     ?.createSubProblem('admin', newSubProblem)
     .then(async (result) => {
       console.log('------------', result)
@@ -35,6 +35,9 @@ async function apiCreateSubProblem(data: SubProblemFormModel): Promise<SubProble
           id_disease: result.disease?.id_disease,
           id_sub_disease: result.id_sub_disease,
           sub_disease_name_FR: result.sub_disease_name_FR,
+          sub_disease_name_DE: result.sub_disease_name_DE,
+          sub_disease_name_EN: result.sub_disease_name_EN,
+          sub_disease_name_NL: result.sub_disease_name_NL,
           status_sub_disease: result.status_sub_disease ? 'true' : 'false',
         }
         console.log('CREATE Problem:', formProblem)

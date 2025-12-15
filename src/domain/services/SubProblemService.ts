@@ -1,19 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { SubProblemRepositoryHttp } from '@/dal/repositories/SubProblemRepositoryHttp'
-import type CreateProblem from '../entities/createProblem'
-import type Problem from '../entities/Problem'
-import type ProblemPayload from '../entities/ProblemPayload'
-import type SubProblem from '../entities/SubProblem'
-import type SubProblemAdmin from '../entities/SubProblemAdmin'
 import type SubProblemPayload from '../entities/SubProblemPayload'
-import type UpdateProblemAdmin from '../entities/UpdateProblemAdmin'
 // import type SubProblemPayload from '../entities/SubProblemPayload'
-import { showSimpleErrorBox } from '../exception/utils'
-import type { ProblemRepositoryHttp } from '@/dal/repositories/ProblemRepositoryHttp'
-import type UpdateSubProblem from '../entities/updateSubProblem'
 import type UpdateSubProblemAdmin from '../entities/UpdateSubProblemAdmin'
 import type CreateSubProblem from '../entities/createSubProblem'
-import type ToggleSubProblem from '../entities/ToggleSubProblem'
 import type SubProblemPayloadAdmin from '../entities/SubProblemPayloadAdmin'
 
 export class SubProblemService {
@@ -29,7 +18,7 @@ export class SubProblemService {
   ): Promise<SubProblemPayload | void> {
     return await this.repo
       .getAllSubProblemByProblemId(idProfile, idProblem, page, limit)
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+      .catch((err) => console.error(err.message))
   }
   async getSubProblemByProblemIdAdmin(
     // idProfile: string,
@@ -41,7 +30,7 @@ export class SubProblemService {
   ): Promise<SubProblemPayloadAdmin | void> {
     return await this.repo
       .getAllSubProblemByProblemIdAdmin(idProblem, page, limit, sortedBy, sortedOrder)
-      .catch((err) => showSimpleErrorBox(new Date(), err.message, err.details))
+      .catch((err) => console.error(err.message))
   }
 
   async updateSubProblem(role: string, id: string, updateProblem: UpdateSubProblemAdmin) {

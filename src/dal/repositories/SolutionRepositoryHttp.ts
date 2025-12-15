@@ -3,6 +3,10 @@
 import type { ISolutionRepository } from '@/domain/repositories/ISolutionRepository'
 import type SolutionPayload from '@/domain/entities/SolutionListPayload'
 import type Solution from '@/domain/entities/Solution'
+import type CreatedSolution from '@/domain/entities/CreatedSolution'
+import type CreateSolution from '@/domain/entities/CreateSolution'
+import type UpdateSolution from '@/domain/entities/UpdateSolution'
+import type UpdatedSolution from '@/domain/entities/UpdatedSolution'
 
 export class SolutionRepositoryHttp implements ISolutionRepository {
   constructor(
@@ -12,11 +16,10 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
       getSolutionsByProblemId: (url: string) => Promise<Solution[]>
       getAllSolution: (url: string) => Promise<SolutionPayload>
       getSolutionById: (url: string) => Promise<Solution>
+      createSolution: (url: string, newSolution: CreateSolution) => Promise<CreatedSolution>
+      updateSolution: (url: string, newSolution: UpdateSolution) => Promise<UpdatedSolution>
     },
   ) {}
-  get(url: string): Promise<Solution[]> {
-    throw new Error('Method not implemented.')
-  }
   async getAllSolution(page: number, limit: number): Promise<SolutionPayload> {
     return await this.http.getAllSolution(
       `http://localhost:3000/solution?page=${page}&limit=${limit}`,
@@ -35,7 +38,7 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
   ): Promise<Solution[]> {
     console.log('')
     return await this.http.getSolutionsBySubProblemId(
-      `http://localhost:3000/solution/subDisease-solution/${idSubProblem}?lang=${lang}&role=${role}`,
+      `http://localhost:3000/solution/subDiseaseSolution/${idSubProblem}?lang=${lang}&role=${role}&page=${page}&limit=${limit}&profilId=${profilId}`,
     )
   }
   async getSolutionsByProblemId(
@@ -55,6 +58,27 @@ export class SolutionRepositoryHttp implements ISolutionRepository {
   async getSolutionById(id: string, lang: string): Promise<Solution> {
     return await this.http.getSolutionById(
       `http://localhost:3000/solution/comment/${id}?lang=${lang}`,
+    )
+  }
+  async createSolution(
+    role: string,
+    lang: string,
+    profilId: string,
+    newSolution: CreateSolution,
+  ): Promise<CreatedSolution> {
+    return await this.http.createSolution(
+      `http://localhost:3000/solution/create/${role}?lang=${lang}&profilId=${profilId}`,
+      newSolution,
+    )
+  }
+  async updateSolution(
+    role: string,
+    idSolution: number,
+    updateSolution: UpdateSolution,
+  ): Promise<UpdatedSolution> {
+    return await this.http.updateSolution(
+      `http://localhost:3000/solution/modify/${role}/${idSolution}`,
+      updateSolution,
     )
   }
 }

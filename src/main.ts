@@ -6,7 +6,6 @@ import router from './router'
 import naive from 'naive-ui'
 
 import './assets/main.scss'
-import { useUserStore } from '@/stores/User'
 import { registerDependencies } from './di/DependenciesProvider'
 
 
