@@ -1,5 +1,5 @@
 <template>
-  <section v-if="userStore.currentProfile?.role !== 'Administrator'" class="view">
+  <section  class="view">
     <div class="view__header">
       <div class="view--title">Mes alerts actives</div>
     </div>
@@ -38,7 +38,9 @@
 
   onMounted(async () => {
     res.value = await alertService?.getAllResolvedAlertsByUserId(userStore.currentUserId as string, 'fr', 1, 10);
+    console.log(res.value)
     rows.value = res.value?.data;
+    console.log(rows.value)
     rows.value?.map(alert => {
       alert.warning_date = new Date(alert.warning_date).toLocaleDateString('fr-FR');
       alert.id_troupeau = alert.id_troupeau == null ? 'none' : alert.id_troupeau;

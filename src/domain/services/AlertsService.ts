@@ -12,7 +12,7 @@ export class AlertsService {
 
     async getAllResolvedAlertsByUserId(userId: string, lang: string, page: number, limit: number) {
     return await this.repo
-      .getAllAlertsByUserId(userId, lang, limit, page)
+      .getAllResolvedAlertsByUserId(userId, lang, limit, page)
       .catch((err) => console.error(err.message))
   }
 

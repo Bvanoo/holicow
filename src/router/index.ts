@@ -59,7 +59,7 @@ const router = createRouter({
     },
         {
       name: 'alerts',
-      path: '/alerts/:data',
+      path: '/alerts',
       component: () => import('@/presentation/views/AlertsView.vue'),
     },
     {
