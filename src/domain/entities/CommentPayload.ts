@@ -1,13 +1,12 @@
 import type Comment from "./Comment"
-import type Alert from "@/domain/entities/Alert.ts";
-import {defineStore} from "pinia";
+import type Solve from "@/domain/entities/Solve.ts";
 
 export interface CommentPayload {
-  data: Comment[]
-  total: number
-  page: number
-  limit: number
-  totalPages: number
+  id_solution : number;
+  content : string;
+  status_solution : boolean;
+  solves: Solve[];
+  comments: Comment[];
 }
 
 

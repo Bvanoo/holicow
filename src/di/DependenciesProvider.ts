@@ -8,6 +8,8 @@ import { SolutionRepositoryHttp } from '@/dal/repositories/SolutionRepositoryHtt
 import { SolutionService } from '@/domain/services/SolutionService'
 import { SubProblemRepositoryHttp } from '@/dal/repositories/SubProblemRepositoryHttp'
 import { SubProblemService } from '@/domain/services/SubProblemService'
+import {CommentsRepositoryHttp} from "@/dal/repositories/CommentsRepositoryHttp.ts";
+import { CommentService } from '@/domain/services/CommentService.ts';
 
 // const dependenciesStore = useDependenciesStore()
 
@@ -25,6 +27,9 @@ export function registerDependencies(app: App) {
 
   const solutionRepositoryHttp = new SolutionRepositoryHttp(http)
   const solutionService = new SolutionService(solutionRepositoryHttp)
+
+  const commentsRepositoryHttp = new CommentsRepositoryHttp(http)
+  const commentService = new CommentService(commentsRepositoryHttp)
 
   // provide global
   app.provide('problemService', problemService)

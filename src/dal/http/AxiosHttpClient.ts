@@ -81,4 +81,8 @@ export class AxiosHttpClient {
     const response = await axios.get(url)
     return response.data
   }
+  async getCommentBySolutionId(url: string) {
+    const response = await axios.get(url)
+    return response.data
+  }
 }

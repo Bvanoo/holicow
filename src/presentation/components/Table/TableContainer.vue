@@ -21,7 +21,7 @@
           <!-- Forward all column slots -->
           <!-- <template v-for="col in columns" #[col.key]="slotProps">
             <slot :name="col.key" v-bind="slotProps" />
-          </template> -->
+          </template>-->
         </component>
       </RowContainer>
     </TransitionGroup>

@@ -9,7 +9,10 @@ import './assets/main.scss'
 import { useUserStore } from '@/stores/User'
 import { registerDependencies } from './di/DependenciesProvider'
 
+
 const app = createApp(App)
+
+
 registerDependencies(app)
 app.use(createPinia())
 app.use(router)
@@ -21,5 +24,4 @@ app.use(naive)
 // await userStore.hydrateApp()
 
 // console.log('usersService.getFirstLogin("101")', userStore.getCurrentUser)
-
 app.mount('#app')
