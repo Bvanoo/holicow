@@ -33,7 +33,7 @@
     { key: 'id_animal', label: 'Id animal', icon: undefined },
     { key: 'id_troupeau', label: 'Id troupeau', icon: undefined },
     { key: 'disease_name', label: 'Maladie', icon: undefined },
-    { key: 'actions', label: 'actions', icon: undefined },
+    { key: 'warn_status', label: 'Résolu', icon: undefined },
   ]
 
   onMounted(async () => {
@@ -45,6 +45,7 @@
       alert.warning_date = new Date(alert.warning_date).toLocaleDateString('fr-FR');
       alert.id_troupeau = alert.id_troupeau == null ? 'none' : alert.id_troupeau;
       alert.id_animal = alert.id_animal == null ? 'none' : alert.id_animal;
+      alert.warn_status = alert.warn_status
     })
   })
 
