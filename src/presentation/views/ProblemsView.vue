@@ -124,7 +124,10 @@
     const results = ref<ProblemPayload | void>()
     //#endregion [const] service
 
+    /** Récupération des problèmes dans le OnMounted */
     onMounted(async () => {
+
+        //DTO différent venant de l'API si c'est un admin ou un farmer
         if (userStore?.currentProfile?.role === 'Administrator') {
             columns.value = [
                 { key: 'disease_name_FR', label: 'Nom', icon: shallowRef(ProblemIcon) },
@@ -133,7 +136,7 @@
             ]
             results.value = await problemService?.getAllProblemsAdmin(currentPage.value, limitItemsPage.value, '', '')
             totalPages.value = Number(results.value?.totalPages)
-            console.log('limitItems.value', limitItemsPage.value)
+            // console.log('limitItems.value', limitItemsPage.value)
             rows.value = results.value!.data as ProblemAdmin[]
         } else {
             columns.value = [
@@ -159,9 +162,9 @@
         }
     })
 
-    //Observation du changement de page
+    //Observation du changement de pagination
     watch(currentPage, async () => {
-        console.log('limitItems.value', limitItemsPage.value)
+        // console.log('limitItems.value', limitItemsPage.value)
 
         //Les objets que nous renvoit l'api ne sont pas les mêmes en fonction de l'admin ou du farmer
         if (userStore?.currentProfile?.role === 'Administrator') {
@@ -190,25 +193,15 @@
     function ButtonAction(row: Problem | ProblemAdmin) {
         //Les objets que nous renvoit l'api ne sont pas les mêmes en fonction de l'admin ou du farmer
         if (userStore.currentProfile?.role === 'Administrator') {
-            // if (row.SubDiseaseExisting) {
             router.push({
                 name: 'sub problems',
                 params: {
                     data: [(row as ProblemAdmin).id_disease, (row as ProblemAdmin).disease_name_FR],
-                    // data: (row as ProblemAdmin).id_disease + '_' + (row as ProblemAdmin).disease_name_FR,
                 },
             })
-            // } else {
-            //     userStore.isProblemViewAction = true
-            //     router.push({
-            //         name: 'solutionsList',
-            //         params: {
-            //             data: (row as ProblemAdmin).id_disease + '_' + (row as ProblemAdmin).disease_name_FR,
-            //         },
-            //     })
-            //     //vers solution
-            // }
+
         } else {
+            //S'il n'y a pas de problèmes, alors on va directement vers les solutions, sinon vers les problèmes
             if (row.SubDiseaseExisting) {
                 console.log(row.diseaseId)
                 router.push({
@@ -226,6 +219,7 @@
         }
     }
 
+    //
     function onActionDefined(row: Problem) {
         if (userStore.currentProfile?.role === "Administrator")
             return 'voir les sous-problèmes'
