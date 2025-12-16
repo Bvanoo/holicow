@@ -1,0 +1,168 @@
+@use 'variables' as *;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.navbar {
+  width: 100%;
+  // background: linear-gradient(135deg, $white, $main_color 30%);
+  background-color: $white;
+  box-shadow: 0 0 8px;
+  padding: 8px 16px;
+  position: fixed;
+  z-index: 1000;
+}
+
+.navbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  height: 100px;
+  width: 100%;
+  display: block;
+}
+.logo-placeholder {
+  height: 40px;
+  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef2ff;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+.center {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.tab {
+  font-family: 'Montserrat';
+  background: transparent;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: clamp(0.875rem, 0.7477rem + 0.5581vw, 1.25rem);
+  font-optical-sizing: auto;
+  font-variation-settings: 'wght' 600;
+  font-style: normal;
+  color: $main_color_dark;
+  transition:
+    all,
+    0.3s ease-out;
+}
+.tab:hover {
+  transform: translateY(-3px);
+}
+.tab.active {
+  background: linear-gradient(135deg, $main_color_dark, $main_color);
+  transform: translateY(-3px);
+  box-shadow: 0 0 3px 0 $main_color;
+  color: $white;
+  font-variation-settings: 'wght' 700;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  cursor: pointer;
+}
+
+.stars-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.stars-svg {
+  width: 70px;
+  height: 70px;
+  transform: rotate(-10deg);
+  opacity: 0.95;
+}
+.stars-svg polygon {
+  fill: gold;
+}
+
+.menu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Drawer styles */
+.n-drawer-mask {
+  backdrop-filter: blur(4px);
+}
+.drawer-content {
+  display: flex;
+  flex-direction: column;
+  // gap: 8px;
+  padding-top: 3px;
+}
+.drawer-item {
+  background: transparent;
+  color: $main_color_dark;
+  padding: 12px;
+  text-align: left;
+  font-size: 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+.drawer-item:hover {
+  background-color: $main_color;
+  color: $white;
+  transform: translateY(-3px);
+  box-shadow: 0 0 8px 2px $shadow_0_7;
+}
+.drawer-item.active {
+  background: #f0f6ff;
+}
+
+/* Responsive */
+@media (max-width: $tablet) {
+  .center {
+    display: none;
+  }
+}
+/* Dark theme */
+:root.dark .navbar {
+  background: linear-gradient(180deg, #1e1e1e, #111);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+:root.dark .tab:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+:root.dark .tab.active {
+  background: rgba(255, 255, 255, 0.12);
+}
+:root.dark .drawer-item.active {
+  background: rgba(255, 255, 255, 0.12);
+}
+:root.dark .logo-placeholder {
+  background: #333;
+}

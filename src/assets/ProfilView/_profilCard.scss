@@ -1,0 +1,167 @@
+@use '../variables' as *;
+.n-card.profilCard {
+  display: flex;
+  width: 90%;
+  max-width: $tablet;
+}
+.n-image {
+  display: flex;
+  justify-self: center;
+}
+
+.profilCard {
+  display: flex;
+  margin-bottom: 24px !important;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px 0px $shadow_0_3 !important;
+
+  &__avatar {
+    img {
+      width: 128px;
+    }
+  }
+  &__infos {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+
+    &-title {
+      width: 100%;
+      text-align: center;
+      font-weight: 900;
+      margin-block: 16px 4px;
+      @include textGradiant($main_color_dark, $main_color);
+    }
+
+    &-cards {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 16px;
+      span {
+        font-style: italic;
+        color: transparentize($color: $black, $amount: 0.2);
+      }
+    }
+  }
+  &__alerts {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    &-title {
+      width: 100%;
+      text-align: center;
+      margin-block: 16px 4px;
+      font-weight: 900;
+      @include textGradiant($main_color_dark, $main_color);
+    }
+    &-cards {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 16px;
+      span {
+        font-style: italic;
+        color: transparentize($color: $black, $amount: 0.2);
+      }
+    }
+  }
+
+  &__modify {
+    display: flex;
+    flex-direction: column;
+    &__header {
+      text-align: center;
+      margin-bottom: 24px;
+      h1 {
+        font-weight: 900;
+        @include textGradiant($main_color_dark, $main_color);
+      }
+    }
+
+    &__body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      h3 {
+        text-align: center;
+      }
+      &-infos {
+        display: flex;
+        align-items: start;
+        justify-content: center;
+        flex-flow: row wrap;
+        column-gap: 16px;
+        width: 100%;
+        &-region {
+          width: 100%;
+          max-width: 300px;
+        }
+        &-bool {
+          display: flex;
+          flex-flow: row wrap;
+          justify-content: center;
+          column-gap: 8px;
+          width: fit-content;
+        }
+        &-user {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          flex-flow: row wrap;
+          column-gap: 8px;
+        }
+      }
+      &-alerts {
+        display: flex;
+        justify-content: center;
+        column-gap: 8px;
+        flex-flow: row wrap;
+      }
+      &-alert {
+        display: grid;
+      }
+    }
+
+    &__footer {
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      &-button {
+        border: 0px !important;
+
+        @include button();
+      }
+    }
+  }
+
+  &__button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    &-modifyProfil {
+      @include button();
+      border: 0px !important;
+    }
+  }
+}
+@media (min-width: $mobile) {
+  .profilCard {
+    &__infos {
+      &-cards {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+    &__alerts {
+      &-cards {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+  }
+}
